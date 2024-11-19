@@ -1,13 +1,17 @@
 ﻿@inherits LayoutComponentBase
+@inject NavigationManager _nav
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
     <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+        <div class="d-flex flex-column">
+            <div class="top-row col-12 d-flex justify-content-end">
+                <a href="/Account/Login" class="text-decoration-none btn btn-primary">Zaloguj</a>
+                <a href="/Account/Register" class="text-decoration-none btn btn-secondary">Zarejestruj</a>
+            </div>
+
+            <div class="top-row col-12">
+                <SearchBar />
+            </div>            
         </div>
 
         <article class="content px-4">
