@@ -1,12 +1,27 @@
 ﻿@inherits LayoutComponentBase
-@inject NavigationManager _nav
+@inject NavigationManager NavigationManager
 
 <div class="page">
 	<main>
 		<div class="d-flex flex-column">
 			<div class="top-row col-12 d-flex justify-content-end">
-				<a href="/Account/Login" class="text-decoration-none btn btn-primary">Zaloguj</a>
-				<a href="/Account/Register" class="text-decoration-none btn btn-secondary">Zarejestruj</a>
+				<AuthorizeView>
+					<Authorized>
+						<div class="d-flex align-items-center">
+							<form action="Account/Logout" method="post">
+								<AntiforgeryToken />
+								<input type="hidden" name="ReturnUrl" value="@currentUrl" />
+								<button type="submit" class="btn btn-danger">Wyloguj</button>
+							</form>
+						
+							<a href="/Account/Manage" class="text-decoration-none text-reset"><i class="bi bi-person-fill fs-2"></i></a>
+						</div>						
+					</Authorized>
+					<NotAuthorized>
+						<a href="/Account/Login" class="text-decoration-none btn btn-primary">Zaloguj</a>
+						<a href="/Account/Register" class="text-decoration-none btn btn-secondary">Zarejestruj</a>
+					</NotAuthorized>
+				</AuthorizeView>
 			</div>
 
 			<div class="top-row col-12">
@@ -22,7 +37,7 @@
 			@Body
 		</article>
 
-        <Footer />
+		<Footer />
 	</main>
 </div>
 
@@ -31,3 +46,24 @@
 	<a href="" class="reload">Reload</a>
 	<a class="dismiss">🗙</a>
 </div>
+
+@code {
+	private string? currentUrl;
+
+	protected override void OnInitialized()
+	{
+		currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+		NavigationManager.LocationChanged += OnLocationChanged;
+	}
+
+	private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+	{
+		currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
+		StateHasChanged();
+	}
+
+	public void Dispose()
+	{
+		NavigationManager.LocationChanged -= OnLocationChanged;
+	}
+}
