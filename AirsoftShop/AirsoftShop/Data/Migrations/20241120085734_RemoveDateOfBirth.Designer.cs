@@ -4,6 +4,7 @@ using AirsoftShop.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirsoftShop.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241120085734_RemoveDateOfBirth")]
+    partial class RemoveDateOfBirth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,9 +33,6 @@ namespace AirsoftShop.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
@@ -46,6 +46,9 @@ namespace AirsoftShop.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("HouseNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -76,6 +79,9 @@ namespace AirsoftShop.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Street")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -100,15 +106,15 @@ namespace AirsoftShop.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "17f09af6-adb2-40c2-bc6c-55894edb2bc6",
+                            ConcurrencyStamp = "c0c0b786-8861-4e14-917b-9c3ec2af443a",
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN1",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBHOrlVILM03MNIMQsNgZBGFFDgAPrnWbG2sHm4Q6PuJm9LSi/eWOG/+9ADB2HPjgA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGPO8o5M2gvyXiCJMiPHORAngIZA2HTu1dfWTyGsKOwYDPYPMwetqJTo3TJdiiLvBg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2a5f0feb-d40f-46a7-be94-48310209ef09",
+                            SecurityStamp = "a0683c85-1d2d-4a86-b70e-bc17398c62a7",
                             TwoFactorEnabled = false,
                             UserName = "admin1"
                         },
@@ -116,15 +122,15 @@ namespace AirsoftShop.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bac7d9de-abc0-4c56-8336-fc4491b70723",
+                            ConcurrencyStamp = "9ba01e03-da0d-4709-9eda-3cd85c5a8ba9",
                             Email = "user@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "USER@GMAIL.COM",
                             NormalizedUserName = "USER1",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBHOrlVILM03MNIMQsNgZBGFFDgAPrnWbG2sHm4Q6PuJm9LSi/eWOG/+9ADB2HPjgA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGPO8o5M2gvyXiCJMiPHORAngIZA2HTu1dfWTyGsKOwYDPYPMwetqJTo3TJdiiLvBg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "39919466-2d83-4237-b6c0-66b131342044",
+                            SecurityStamp = "babbfe31-af55-4d94-96ac-199ca50d98a7",
                             TwoFactorEnabled = false,
                             UserName = "user1"
                         },
@@ -132,15 +138,15 @@ namespace AirsoftShop.Migrations
                         {
                             Id = "3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "2d2150a0-3c4f-4dc1-a726-5072d69bb96e",
+                            ConcurrencyStamp = "f563766b-03ef-4ee7-be28-5dc5cdf7cd87",
                             Email = "user2@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "USER2@GMAIL.COM",
                             NormalizedUserName = "USER2",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBHOrlVILM03MNIMQsNgZBGFFDgAPrnWbG2sHm4Q6PuJm9LSi/eWOG/+9ADB2HPjgA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGPO8o5M2gvyXiCJMiPHORAngIZA2HTu1dfWTyGsKOwYDPYPMwetqJTo3TJdiiLvBg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "445a0d9a-3664-401d-919f-df42b1519546",
+                            SecurityStamp = "1703c9b0-1238-4e5d-a81a-596aa7718558",
                             TwoFactorEnabled = false,
                             UserName = "user2"
                         },
@@ -148,15 +154,15 @@ namespace AirsoftShop.Migrations
                         {
                             Id = "4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c05bdbfc-d974-4df0-9b64-e39a7b5e2afd",
+                            ConcurrencyStamp = "0b7d0360-f7f1-4e71-a3bd-ee9f601a2c82",
                             Email = "user3@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "USER3@GMAIL.COM",
                             NormalizedUserName = "USER3",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBHOrlVILM03MNIMQsNgZBGFFDgAPrnWbG2sHm4Q6PuJm9LSi/eWOG/+9ADB2HPjgA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGPO8o5M2gvyXiCJMiPHORAngIZA2HTu1dfWTyGsKOwYDPYPMwetqJTo3TJdiiLvBg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3aedc4f4-0369-45dd-88fa-5de6dbb05cd3",
+                            SecurityStamp = "8808b1d6-0353-4574-a6a9-85c3b14787de",
                             TwoFactorEnabled = false,
                             UserName = "user3"
                         });
