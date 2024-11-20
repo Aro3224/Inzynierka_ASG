@@ -9,7 +9,7 @@
 @inject IdentityUserAccessor UserAccessor
 @inject IdentityRedirectManager RedirectManager
 
-<PageTitle>Profile</PageTitle>
+<PageTitle>Twoje konto</PageTitle>
 
 <h3>Twoje dane</h3>
 <StatusMessage />
@@ -54,90 +54,3 @@
         </EditForm>
     </div>
 </div>
-
-@code {
-    private ApplicationUser user = default!;
-    private string? username;
-    private string? phoneNumber;
-
-    [CascadingParameter]
-    private HttpContext HttpContext { get; set; } = default!;
-
-    [SupplyParameterFromForm]
-    private InputModel Input { get; set; } = new();
-
-    protected override async Task OnInitializedAsync()
-    {
-        user = await UserAccessor.GetRequiredUserAsync(HttpContext);
-        username = await UserManager.GetUserNameAsync(user);
-        phoneNumber = await UserManager.GetPhoneNumberAsync(user);
-
-        Input.UserName ??= username;
-        Input.PhoneNumber ??= phoneNumber;
-        Input.City ??= user.City;
-        Input.Address ??= user.Address;
-        Input.PostalCode ??= user.PostalCode;
-    }
-
-    private async Task OnValidSubmitAsync()
-    {
-        if (Input.PhoneNumber != phoneNumber)
-        {
-            var setPhoneResult = await UserManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-            if (!setPhoneResult.Succeeded)
-            {
-                RedirectManager.RedirectToCurrentPageWithStatus("Error: Failed to set phone number.", HttpContext);
-                return;
-            }
-        }
-
-        if (Input.UserName != username)
-        {
-            var setUserNameResult = await UserManager.SetUserNameAsync(user, Input.UserName);
-            if (!setUserNameResult.Succeeded)
-            {
-                RedirectManager.RedirectToCurrentPageWithStatus("Error: Failed to update username.", HttpContext);
-                return;
-            }
-            username = Input.UserName;
-        }
-
-
-        user.PhoneNumber = Input.PhoneNumber;
-        user.City = Input.City;
-        user.Address = Input.Address;
-        user.PostalCode = Input.PostalCode;
-
-
-        var updateResult = await UserManager.UpdateAsync(user);
-        if (!updateResult.Succeeded)
-        {
-            RedirectManager.RedirectToCurrentPageWithStatus($"Error: {string.Join(", ", updateResult.Errors.Select(e => e.Description))}", HttpContext);
-            return;
-        }
-
-        await SignInManager.RefreshSignInAsync(user);
-
-        RedirectManager.RedirectToCurrentPageWithStatus("Zapisano zmiany", HttpContext);
-    }
-
-    private sealed class InputModel
-    {
-        [Required]
-        [Display(Name = "Username")]
-        public string? UserName { get; set; }
-
-        [Phone]
-        [Display(Name = "Phone number")]
-        public string? PhoneNumber { get; set; }
-
-        [Display(Name = "City")]
-        public string? City { get; set; }
-
-        [Display(Name = "Address")]
-        public string? Address { get; set; }
-
-        [Display(Name = "Postal Code")]
-        public string? PostalCode { get; set; }
-    }
-}
