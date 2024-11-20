@@ -5,22 +5,22 @@
 
 <ul class="nav nav-pills flex-column">
     <li class="nav-item">
-        <NavLink class="nav-link" href="Account/Manage" Match="NavLinkMatch.All">Profile</NavLink>
+        <NavLink class="nav-link" href="Account/Manage" Match="NavLinkMatch.All">Twój profil</NavLink>
+    </li>
+    <li class="nav-item">
+        <NavLink class="nav-link" href="#">Zamówienia</NavLink>
+    </li>
+    <li class="nav-item">
+        <NavLink class="nav-link" href="#">Reklamacje</NavLink>
+    </li>
+    <li class="nav-item">
+        <NavLink class="nav-link" href="#">Serwis</NavLink>
     </li>
     <li class="nav-item">
         <NavLink class="nav-link" href="Account/Manage/Email">Email</NavLink>
     </li>
     <li class="nav-item">
         <NavLink class="nav-link" href="Account/Manage/ChangePassword">Password</NavLink>
-    </li>
-    @if (hasExternalLogins)
-    {
-        <li class="nav-item">
-            <NavLink class="nav-link" href="Account/Manage/ExternalLogins">External logins</NavLink>
-        </li>
-    }
-    <li class="nav-item">
-        <NavLink class="nav-link" href="Account/Manage/TwoFactorAuthentication">Two-factor authentication</NavLink>
     </li>
     <li class="nav-item">
         <NavLink class="nav-link" href="Account/Manage/PersonalData">Personal data</NavLink>
