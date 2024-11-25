@@ -4,8 +4,8 @@ namespace AirsoftShop.Components.Admin.Pages
 {
     public partial class Index
     {
-        List<UserWithRole> users = [];
-        List<UserWithRole> PagedUsers => users.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+        List<UserWithData> users = [];
+        List<UserWithData> PagedUsers => users.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
         private int CurrentPage { get; set; } = 1;
         private int PageSize { get; set; } = 10;
 

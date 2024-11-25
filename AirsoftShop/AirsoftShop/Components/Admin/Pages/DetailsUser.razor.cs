@@ -11,7 +11,7 @@ namespace AirsoftShop.Components.Admin.Pages
         [Parameter]
         public string Id { get; set; }
 
-        public UserWithRole User { get; set; }
+        public UserWithData User { get; set; }
 
         [CascadingParameter]
         public IModalService Modal { get; set; } = default!;

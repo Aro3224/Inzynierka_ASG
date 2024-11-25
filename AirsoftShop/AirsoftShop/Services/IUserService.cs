@@ -5,16 +5,16 @@ namespace AirsoftShop.Services
 {
     public interface IUserService
     {
-        Task<List<UserWithRole>> GetAllUsersAsync();
+        Task<List<UserWithData>> GetAllUsersAsync();
 
         Task<List<IdentityRole>> GetAllRolesAsync();
 
-        Task<UserWithRole> Details(string id);
+        Task<UserWithData> Details(string id);
 
-        Task Edit(UserWithRole user, string id);
+        Task Edit(UserWithData user, string id);
 
         Task Delete(string id);
 
-        Task<List<UserWithRole>> FilterUsersAsync(string searchTerm);
+        Task<List<UserWithData>> FilterUsersAsync(string searchTerm);
     }
 }

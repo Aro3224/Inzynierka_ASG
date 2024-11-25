@@ -21,23 +21,30 @@ namespace AirsoftShop.Services
             _userManager.DeleteAsync(user);
         }
 
-        public async Task<UserWithRole> Details(string id)
+        public async Task<UserWithData> Details(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
             var userRole = await _userManager.GetRolesAsync(user);
 
-            var userWithRole = new UserWithRole
+            var userWithRole = new UserWithData
             {
                 Id = user.Id,
                 Name = user.UserName,
                 Email = user.Email,
-                Role = userRole.FirstOrDefault()
+                Role = userRole.FirstOrDefault(),
+                IsEmailConfirmed = user.EmailConfirmed,
+                PhoneNumber = user.PhoneNumber,
+                IsPhoneConfirmed = user.PhoneNumberConfirmed,
+                IsTwoFactorEnabled = user.TwoFactorEnabled,
+                City = user.City,
+                PostalCode = user.PostalCode,
+                Address = user.Address
             };
 
             return userWithRole;
         }
 
-        public async Task Edit(UserWithRole user, string id)
+        public async Task Edit(UserWithData user, string id)
         {
             var dbUser = await _userManager.FindByIdAsync(id);
             var dbUserRoles = await _userManager.GetRolesAsync(dbUser);
@@ -45,6 +52,13 @@ namespace AirsoftShop.Services
 
             dbUser.UserName = user.Name;
             dbUser.Email = user.Email;
+            dbUser.PhoneNumber = user.PhoneNumber;
+            dbUser.City = user.City;
+            dbUser.PostalCode = user.PostalCode;
+            dbUser.Address = user.Address;
+            dbUser.EmailConfirmed = user.IsEmailConfirmed;
+            dbUser.PhoneNumberConfirmed = user.IsPhoneConfirmed;
+            dbUser.TwoFactorEnabled = user.IsTwoFactorEnabled;
 
             await _userManager.UpdateAsync(dbUser);
 
@@ -59,15 +73,15 @@ namespace AirsoftShop.Services
             }
         }
 
-        public async Task<List<UserWithRole>> GetAllUsersAsync()
+        public async Task<List<UserWithData>> GetAllUsersAsync()
         {
             var users = _userManager.Users.ToList();
-            var userWithRoles = new List<UserWithRole>();
+            var userWithRoles = new List<UserWithData>();
 
             foreach (var user in users)
             {
                 var role = await _userManager.GetRolesAsync(user);
-                userWithRoles.Add(new UserWithRole
+                userWithRoles.Add(new UserWithData
                 {
                     Id = user.Id,
                     Name = user.UserName,
@@ -76,7 +90,7 @@ namespace AirsoftShop.Services
                 });
             }
 
-            Console.WriteLine($"Users loaded: {userWithRoles.Count}");
+            Console.WriteLine($"Liczba wczytanych użytkowników: {userWithRoles.Count}");
 
             return userWithRoles;
         }
@@ -88,11 +102,11 @@ namespace AirsoftShop.Services
             return roles;
         }
 
-        public async Task<List<UserWithRole>> FilterUsersAsync(string searchTerm)
+        public async Task<List<UserWithData>> FilterUsersAsync(string searchTerm)
         {
             var result = await GetAllUsersAsync();
 
-            var filteredResult = result.Where(user => user.Name.ToLower().Contains(searchTerm.ToLower())).ToList();
+            var filteredResult = result.Where(user => user.Email.ToLower().Contains(searchTerm.ToLower())).ToList();
 
             return filteredResult;
         }
