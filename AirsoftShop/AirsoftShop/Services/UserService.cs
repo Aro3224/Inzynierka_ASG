@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AirsoftShop.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace AirsoftShop.Data.Services
+namespace AirsoftShop.Services
 {
     public class UserService : IUserService
     {

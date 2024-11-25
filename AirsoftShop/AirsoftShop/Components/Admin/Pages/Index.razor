@@ -1,5 +1,50 @@
 ﻿@page "/Admin/Manage"
+@inject IUserService UserService
+@inject NavigationManager NavManager
+
+@attribute [Authorize(Roles = "Admin")]
 
 <PageTitle>Użytkownicy</PageTitle>
 
-<h2>WIP: Zarządzanie userami</h2>
+<h2>Użytkownicy</h2>
+
+<input type="text" class="mb-2" placeholder="Szukaj..." @bind="searchTerm" @bind:after="Search" />
+
+@if (users.Count > 0)
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="th-click" @onclick="@(() => SortBy("Name"))">Nazwa</th>
+                <th class="th-click" @onclick="@(() => SortBy("Email"))">Email</th>
+                <th class="th-click" @onclick="@(() => SortBy("Role"))">Rola</th>
+                <th>Szczegóły</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in PagedUsers)
+            {
+                <tr>
+                    <td>@user.Name</td>
+                    <td>@user.Email</td>
+                    <td>@user.Role</td>
+                    <td class="d-flex flex-column align-items-center"><button type="button" class="btn btn-primary" @onclick="@(() => NavManager.NavigateTo($"Admin/UserDetails/{user.Id}"))">Pokaż</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="pagin">
+        <button class="btn btn-primary" @onclick="PreviousPage" disabled="@(!CanGoToPreviousPage)">Poprzednia</button>
+        <input @bind="CurrentPage" @bind:after="GoToPage" />
+        <button class="btn btn-primary" @onclick="NextPage" disabled="@(!CanGoToNextPage)">Następna</button>
+    </div>
+}
+else if (users.Count == 0)
+{
+    <p>Wczytywanie...</p>
+}
+else
+{
+    <p>Nie można wczytać listy użytkowników!</p>
+}

@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AirsoftShop.Data;
+using Microsoft.AspNetCore.Identity;
 
-namespace AirsoftShop.Data.Services
+namespace AirsoftShop.Services
 {
     public interface IUserService
     {

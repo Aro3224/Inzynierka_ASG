@@ -1,6 +1,8 @@
 using AirsoftShop.Components;
 using AirsoftShop.Components.Account;
 using AirsoftShop.Data;
+using AirsoftShop.Services;
+using Blazored.Modal;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +43,9 @@ namespace AirsoftShop
                 .AddDefaultTokenProviders();
 
             builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
+
+            builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddBlazoredModal();
 
             var app = builder.Build();
 
