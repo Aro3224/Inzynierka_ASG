@@ -1,0 +1,47 @@
+﻿@inherits LayoutComponentBase
+@layout AirsoftShop.Components.Layout.MainLayout
+
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Identity
+@using AirsoftShop.Data
+@using System.Security.Claims
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject UserManager<ApplicationUser> UserManager
+@inject NavigationManager NavigationManager
+
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <div>
+            <h2>Panel administratora. Witaj @userName!</h2>
+            <hr />
+            <div class="row">
+                <div class="col-md-3">
+                    <AdminNavMenu />
+                </div>
+                <div class="col-md-9">
+                    @Body
+                </div>
+            </div>
+        </div>
+    </Authorized>
+
+    <NotAuthorized>
+        <p>Nie masz uprawnień do przeglądania tej strony.</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    private string userName = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            userName = user.Identity.Name;
+        }
+    }
+}
