@@ -24,10 +24,44 @@
 			</div>
 
 			<div>
+				<span><b>Email potwierdzony:</b></span>
+				<span><BooleanDisplay Bool="@User.IsEmailConfirmed"></BooleanDisplay></span>
+			</div>
+
+			<div>
 				<span><b>Rola:</b></span>
 				<span>@User.Role</span>
 			</div>
 
+			<div>
+				<span><b>Numer telefonu:</b></span>
+				<span>@User.PhoneNumber</span>
+			</div>
+
+			<div>
+				<span><b>Numer potwierdzony:</b></span>
+				<span><BooleanDisplay Bool="@User.IsPhoneConfirmed"></BooleanDisplay></span>
+			</div>
+
+			<div>
+				<span><b>Weryfikacja dwuetapowa:</b></span>
+				<span><BooleanDisplay Bool="@User.IsTwoFactorEnabled"></BooleanDisplay></span>
+			</div>
+
+			<div>
+				<span><b>Miasto:</b></span>
+				<span>@User.City</span>
+			</div>
+
+			<div>
+				<span><b>Kod pocztowy:</b></span>
+				<span>@User.PostalCode</span>
+			</div>
+
+			<div>
+				<span><b>Adres:</b></span>
+				<span>@User.Address</span>
+			</div>
 			<div class="container-fluid">
 				<button class="btn btn-secondary" @onclick="@(() => NavManager.NavigateTo($"edit-user/{Id}"))">Edytuj</button>
 				<button class="btn btn-danger" @onclick="@(() => Delete(Id))">Usuń</button>
