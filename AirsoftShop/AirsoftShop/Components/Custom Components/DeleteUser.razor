@@ -1,0 +1,9 @@
+﻿@inject IUserService UserService
+@inject NavigationManager NavManager
+
+<div>
+	<p>Na pewno chcesz usunąć tego użytkownika?</p>
+
+	<button type="button" class="btn btn-danger" @onclick="Delete">Usuń</button>
+	<button type="button" class="btn btn-secondary" @onclick="Close">Anuluj</button>
+</div>
