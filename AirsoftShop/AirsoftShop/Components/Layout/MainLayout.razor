@@ -5,17 +5,23 @@
 	<main>
 		<div class="d-flex flex-column">
 			<div class="top-row col-12 d-flex justify-content-end">
-				<AuthorizeView>
+				<AuthorizeView Context="LogInAuth">
 					<Authorized>
-						<div class="d-flex align-items-center">
+						<div class="col-6">
 							<form action="Account/Logout" method="post">
 								<AntiforgeryToken />
 								<input type="hidden" name="ReturnUrl" value="@currentUrl" />
 								<button type="submit" class="btn btn-danger">Wyloguj</button>
 							</form>
-						
+						</div>
+						<div class="col-6 d-flex align-items-center justify-content-end">
+
+							<AuthorizeView Roles="Admin">
+								<a href="/Admin/Manage" class="text-decoration-none btn btn-success">Administrator</a>
+							</AuthorizeView>
+
 							<a href="/Account/Manage" class="text-decoration-none text-reset"><i class="bi bi-person-fill fs-2"></i></a>
-						</div>						
+						</div>
 					</Authorized>
 					<NotAuthorized>
 						<a href="/Account/Login" class="text-decoration-none btn btn-primary">Zaloguj</a>
