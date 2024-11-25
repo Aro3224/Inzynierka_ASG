@@ -1,0 +1,41 @@
+﻿@page "/Admin/UserDetails/{Id}"
+
+@using AirsoftShop.Components.Custom_Components
+@inject NavigationManager NavManager
+@inject IUserService UserService
+
+@attribute [Authorize(Roles = "Admin")]
+
+<PageTitle>Dane użytkownika</PageTitle>
+<GoToPrevPage Page="Admin/Manage" Text="Dane użytkownika" />
+
+@if (User is not null)
+{
+	<div class="custom-container mt-5">
+		<div class="py-2">
+			<div>
+				<span><b>Nazwa:</b></span>
+				<span>"@User.Name"</span>
+			</div>
+
+			<div>
+				<span><b>Email:</b></span>
+				<span>@User.Email</span>
+			</div>
+
+			<div>
+				<span><b>Rola:</b></span>
+				<span>@User.Role</span>
+			</div>
+
+			<div class="container-fluid">
+				<button class="btn btn-secondary" @onclick="@(() => NavManager.NavigateTo($"edit-user/{Id}"))">Edytuj</button>
+				<button class="btn btn-danger" @onclick="@(() => Delete(Id))">Usuń</button>
+			</div>
+		</div>
+	</div>
+}
+else
+{
+	<p>Wczytywanie...</p>
+}

@@ -19,7 +19,7 @@ namespace AirsoftShop.Components.Custom_Components
 
             await UserService.Delete(Id);
 
-            NavManager.NavigateTo("/users");
+            NavManager.NavigateTo("/Admin/Manage");
         }
     }
 }
