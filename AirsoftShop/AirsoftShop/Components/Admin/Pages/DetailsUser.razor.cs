@@ -28,15 +28,15 @@ namespace AirsoftShop.Components.Admin.Pages
         {
             await Task.Delay(500);
 
-            Console.WriteLine("Wczytywanie danych u¿ytkownika...");
+            Console.WriteLine("Initializing user details...");
             User = await UserService.Details(Id);
             if (User != null)
             {
-                Console.WriteLine($"Wczytano u¿ytkownika z ID: {User.Id}");
+                Console.WriteLine($"Initialized user with id: {User.Id}");
             }
             else
             {
-                Console.WriteLine("Nie ma u¿ytkownika z podanym ID!");
+                Console.WriteLine("There's no user with given Id!");
             }
         }
     }

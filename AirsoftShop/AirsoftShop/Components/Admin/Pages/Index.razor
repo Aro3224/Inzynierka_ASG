@@ -40,9 +40,13 @@
         <button class="btn btn-primary" @onclick="NextPage" disabled="@(!CanGoToNextPage)">Następna</button>
     </div>
 }
-else if (users.Count == 0)
+else if (users.Count == 0 && searchTerm is null)
 {
     <p>Wczytywanie...</p>
+}
+else if (users.Count == 0)
+{
+    <p>Brak wyników</p>
 }
 else
 {

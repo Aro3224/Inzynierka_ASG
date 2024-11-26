@@ -1,6 +1,5 @@
 ﻿@page "/Admin/UserDetails/{Id}"
 
-@using AirsoftShop.Components.Custom_Components
 @inject NavigationManager NavManager
 @inject IUserService UserService
 
@@ -63,7 +62,7 @@
 				<span>@User.Address</span>
 			</div>
 			<div class="container-fluid">
-				<button class="btn btn-secondary" @onclick="@(() => NavManager.NavigateTo($"edit-user/{Id}"))">Edytuj</button>
+				<button class="btn btn-secondary" @onclick="@(() => NavManager.NavigateTo($"/Admin/UserDetails/Edit/{Id}"))">Edytuj</button>
 				<button class="btn btn-danger" @onclick="@(() => Delete(Id))">Usuń</button>
 			</div>
 		</div>

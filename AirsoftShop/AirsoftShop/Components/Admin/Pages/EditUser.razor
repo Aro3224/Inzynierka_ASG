@@ -1,0 +1,88 @@
+﻿@page "/Admin/UserDetails/Edit/{Id}"
+@inject IUserService UserService
+@inject NavigationManager NavManager
+
+@attribute [Authorize(Roles = "Admin")]
+
+
+<PageTitle>Edit User</PageTitle>
+<GoToPrevPageId Page="Admin/UserDetails" Id="@Id" Text="Edycja użytkownika" />
+
+<div class="custom-container pt-3">
+	<div>
+		<EditForm Model="User" OnValidSubmit="HandleSubmit" class="edit-form d-flex flex-column">
+			<DataAnnotationsValidator />
+			<div>
+				<label for="name">Nazwa:</label>
+				<InputText id="name" @bind-Value="User.Name" class="form-control" />
+				<ValidationMessage For="@(() => User.Name)" />
+			</div>
+
+			<div>
+				<label for="email">Email:</label>
+				<InputText id="email" @bind-Value="User.Email" class="form-control" />
+				<ValidationMessage For="@(() => User.Email)" />
+			</div>
+
+			<div>
+				<label for="emailconfirmed">Email potwierdzony:</label>
+				<InputSelect @bind-Value="User.IsEmailConfirmed" class="form-select">
+					<option value="true">Tak</option>
+					<option value="false">Nie</option>
+				</InputSelect>
+			</div>
+
+			<div>
+				<label for="role">Rola:</label>
+				<InputSelect @bind-Value="User.Role" class="form-select">
+					@foreach (var role in roles)
+					{
+						<option value="@role">@role</option>
+					}
+				</InputSelect>
+			</div>
+
+			<div>
+				<label for="phonenumber">Numer telefonu:</label>
+				<InputText id="phonenumber" @bind-Value="User.PhoneNumber" class="form-control" />
+				<ValidationMessage For="@(() => User.PhoneNumber)" />
+			</div>
+
+			<div>
+				<label for="phoneconfirmed">Numer potwierdzony:</label>
+				<InputSelect @bind-Value="User.IsPhoneConfirmed" class="form-select">
+					<option value="true">Tak</option>
+					<option value="false">Nie</option>
+				</InputSelect>
+			</div>
+
+			<div>
+				<label for="twofactor">Weryfikacja dwuetapowa:</label>
+				<InputSelect @bind-Value="User.IsTwoFactorEnabled" class="form-select">
+					<option value="true">Tak</option>
+					<option value="false">Nie</option>
+				</InputSelect>
+			</div>
+
+			<div>
+				<label for="city">Miasto:</label>
+				<InputText id="city" @bind-Value="User.City" class="form-control" />
+				<ValidationMessage For="@(() => User.City)" />
+			</div>
+
+			<div>
+				<label for="postalcode">Kod pocztowy:</label>
+				<InputText id="postalcode" @bind-Value="User.PostalCode" class="form-control" />
+				<ValidationMessage For="@(() => User.PostalCode)" />
+			</div>
+
+			<div>
+				<label for="address">Adres:</label>
+				<InputText id="address" @bind-Value="User.Address" class="form-control" />
+				<ValidationMessage For="@(() => User.Address)" />
+			</div>
+
+			<button type="submit" class="btn btn-secondary">Zatwierdź</button>
+		</EditForm>
+	</div>
+</div>
