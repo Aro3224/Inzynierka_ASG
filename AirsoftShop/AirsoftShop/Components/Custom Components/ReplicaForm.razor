@@ -19,6 +19,12 @@
 			</div>
 
 			<div>
+				<label for="count">Ilość:</label>
+				<InputNumber id="count" @bind-value="Replica.Count" class="form-control" />
+				<ValidationMessage For="@(() => Replica.Count)" />
+			</div>
+
+			<div>
 				<label for="description">Opis:</label>
 				<InputTextArea id="description" @bind-value="Replica.Description" class="form-control" />
 				<ValidationMessage For="@(() => Replica.Description)" />
@@ -48,7 +54,7 @@
 			</div>
 
 			<div>
-				<label for="weight">Waga:</label>
+				<label for="weight">Waga (g):</label>
 				<input type="number" id="weight" @bind="Replica.Weight" class="form-control" />
 				<ValidationMessage For="@(() => Replica.Weight)" />
 			</div>
@@ -73,6 +79,32 @@
 					}
 				</select>
 				<ValidationMessage For="@(() => Replica.WeaponAge)" />
+			</div>
+
+			<div>
+				<label for="lenght">Długość broni (mm):</label>
+				<input type="number" id="lenght" @bind="Replica.Lenght" class="form-control" />
+				<ValidationMessage For="@(() => Replica.Lenght)" />
+			</div>
+
+			<div>
+				<label for="barrellenght">Długość lufy wewnętrznej:</label>
+				<input type="number" id="barrellenght" @bind="Replica.BarrelLenght" class="form-control" />
+				<ValidationMessage For="@(() => Replica.BarrelLenght)" />
+			</div>
+
+			<div>
+				<label for="fps">FPS:</label>
+				<input type="number" id="fps" @bind="Replica.FPS" class="form-control" />
+				<ValidationMessage For="@(() => Replica.FPS)" />
+			</div>
+
+			<div>
+				<BoolSelector @bind-Value="Replica.HasHopUp" Label="Hop-up:" Id="hasHopUp" />
+			</div>
+
+			<div>
+				<BoolSelector @bind-Value="Replica.HasBlowBack" Label="Blow-Back:" Id="hasBlowBack" />
 			</div>
 
 			<div>
@@ -106,6 +138,21 @@
 			</div>
 
 			<div>
+				<BoolSelector @bind-Value="Replica.HasBattery" Label="Akumulator w zestawie:" Id="hasBattery" />
+			</div>
+
+			<div>
+				<label for="magtype">Gearbox:</label>
+				<select @bind="Replica.WeaponGearboxType" class="form-select">
+					@foreach (WeaponGearboxType gearboxType in Enum.GetValues(typeof(WeaponGearboxType)))
+					{
+						<option value="@gearboxType"><EnumDisplayName TEnum="WeaponGearboxType" Value="gearboxType" /></option>
+					}
+				</select>
+				<ValidationMessage For="@(() => Replica.WeaponGearboxType)" />
+			</div>
+
+			<div>
 				<label for="magtype">Typ magazynka:</label>
 				<select @bind="Replica.MagazineType" class="form-select">
 					@foreach (MagazineType magType in Enum.GetValues(typeof(MagazineType)))
@@ -114,6 +161,12 @@
 					}
 				</select>
 				<ValidationMessage For="@(() => Replica.MagazineType)" />
+			</div>
+
+			<div>
+				<label for="magcap">Pojemność magazynka:</label>
+				<input type="number" id="magcap" @bind="Replica.MagazineCapacity" class="form-control" />
+				<ValidationMessage For="@(() => Replica.MagazineCapacity)" />
 			</div>
 
 			<button type="submit" class="btn btn-secondary">Dodaj produkt</button>

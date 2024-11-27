@@ -68,7 +68,10 @@ namespace AirsoftShop.Data
 
     public enum WeaponGearboxType
     {
-        [Display(Name = "Inne")]
+        [Display(Name = "Brak")]
+        None = 0,
+
+        [Display(Name = "Inny")]
         Unspecified = 1,
 
         [Display(Name = "Specjalny")]
@@ -150,6 +153,9 @@ namespace AirsoftShop.Data
 
         [Required]
         public decimal Price { get; set; }
+
+        [Required]
+        public int Count { get; set; } = 1;
 
         public string Description { get; set; }
 
