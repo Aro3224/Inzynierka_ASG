@@ -4,72 +4,140 @@ namespace AirsoftShop.Data
 {
     public enum ProductType
     {
+        [Display(Name = "Replika")]
         Replica = 1,
+
+        [Display(Name = "Część")]
         Part = 2,
+
+        [Display(Name = "Akcesoria")]
         Accessory = 3,
+
+        [Display(Name = "Ekwipunek")]
         Equipment = 4
     }
 
     public enum WeaponType
     {
+        [Display(Name = "Sprężynowa")]
         Spring = 1,
+
+        [Display(Name = "Gazowa")]
         Gas = 2,
+
+        [Display(Name = "Elektryczna")]
         Electric = 3
     }
 
     [Flags]
     public enum WeaponFireType
     {
+        [Display(Name = "Pojedynczy")]
         Semi = 1,
+
+        [Display(Name = "Ciągły")]
         Auto = 2,
+
+        [Display(Name = "Seria")]
         Burst = 4,
+
+        [Display(Name = "Czterotaktowy")]
         BoltAction = 8,
+
+        [Display(Name = "Pompa")]
         PumpAction = 16,
     }
 
     public enum WeaponAge
     {
+        [Display(Name = "Inne")]
         Unspecified = 1,
+
+        [Display(Name = "1 wojna światowa")]
         WW1 = 2,
+
+        [Display(Name = "2 wojna światowa")]
         WW2 = 3,
+
+        [Display(Name = "Zimna wojna")]
         ColdWar = 4,
+
+        [Display(Name = "Współczesność")]
         Modern = 5
     }
 
     public enum WeaponGearboxType
     {
+        [Display(Name = "Inne")]
         Unspecified = 1,
+
+        [Display(Name = "Specjalny")]
         Special = 2,
-        V2 = 3,
+      
+        [Display(Name = "V2 Ulepszony")]
         V2Mod = 4,
+
+        V2 = 3,
         V3 = 5,
         V6 = 6
     }
 
     public enum Manufacturer
     {
+        [Display(Name = "Gun Company 1")]
         GunCompany1 = 1,
+
+        [Display(Name = "Gun Company 2")]
         GunCompany2 = 2,
+
+        [Display(Name = "Gun Company 3")]
         GunCompany3 = 3
     }
 
     [Flags]
     public enum ItemMaterial
     {
+        [Display(Name = "Polimer")]
         Polymer = 1,
+
+        [Display(Name = "Aluminium")]
         Aluminium = 2,
+
+        [Display(Name = "Cynk")]
         AluminiumZink = 4,
+
+        [Display(Name = "Tworzywo sztuczne")]
         Plastic = 8,
+
+        [Display(Name = "Metal")]
         Steel = 16,
+
+        [Display(Name = "Drewno")]
         Wood = 32
     }
 
     public enum MagazineType
     {
+        [Display(Name = "Low-cap")]
         LowCap = 1,
+
+        [Display(Name = "Real-cap")]
         RealCap = 2,
+
+        [Display(Name = "Mid-cap")]
         MidCap = 3,
+
+        [Display(Name = "High-cap")]
         HighCap = 4
+    }
+
+    public enum PartType
+    {
+        [Display(Name = "Wewnętrzna")]
+        Internal = 1,
+
+        [Display(Name = "Zewnętrzna")]
+        External = 2,
     }
 
     public abstract class Product

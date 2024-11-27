@@ -1,4 +1,5 @@
-﻿
+﻿@using AirsoftShop.Data
+
 
 <div class="custom-container pt-3">
 	<div>
@@ -6,36 +7,115 @@
 			<DataAnnotationsValidator />
 
 			<div>
-				<label for="name">Nazwa przedmiotu</label>
+				<label for="name">Nazwa przedmiotu:</label>
 				<InputText id="name" @bind-Value="Replica.Name" class="form-control" />
 				<ValidationMessage For="@(() => Replica.Name)" />
 			</div>
 
 			<div>
-				<label for="author">Cena</label>
+				<label for="author">Cena:</label>
 				<InputNumber id="author" @bind-value="Replica.Price" class="form-control" />
 				<ValidationMessage For="@(() => Replica.Price)" />
 			</div>
 
 			<div>
-				<label for="description">Opis</label>
+				<label for="description">Opis:</label>
 				<InputTextArea id="description" @bind-value="Replica.Description" class="form-control" />
 				<ValidationMessage For="@(() => Replica.Description)" />
 			</div>
 
 			<div>
-				<label for="productid">Id Produktu</label>
+				<label for="productid">ID Produktu:</label>
 				<InputText id="productid" @bind-Value="Replica.ProductId" class="form-control" />
 				<ValidationMessage For="@(() => Replica.ProductId)" />
 			</div>
 
-			@* <div>
-				<label for="available">Is available</label>
-				<select @onchange="(e) => ParseToBool(e.Value)" class="form-select">
-					<option selected value="True">Yes</option>
-					<option value="False">No</option>
+			<div>
+				<label for="manufacturer">Marka:</label>
+				<select @bind="Replica.Manufacturer" class="form-select">
+					@foreach (Manufacturer manufacturer in Enum.GetValues(typeof(Manufacturer)))
+					{
+						<option value="@manufacturer"><EnumDisplayName TEnum="Manufacturer" Value="manufacturer" /></option>
+					}
 				</select>
-			</div> *@
+				<ValidationMessage For="@(() => Replica.Manufacturer)" />
+			</div>
+
+			<div>
+				<label for="warranty">Gwarancja (miesiące):</label>
+				<input type="number" id="warranty" @bind="Replica.WarrantyPeriodMonths" class="form-control" />
+				<ValidationMessage For="@(() => Replica.WarrantyPeriodMonths)" />
+			</div>
+
+			<div>
+				<label for="weight">Waga:</label>
+				<input type="number" id="weight" @bind="Replica.Weight" class="form-control" />
+				<ValidationMessage For="@(() => Replica.Weight)" />
+			</div>
+
+			<div>
+				<label for="weapontype">Rodzaj broni:</label>
+				<select @bind="Replica.WeaponType" class="form-select">
+					@foreach (WeaponType type in Enum.GetValues(typeof(WeaponType)))
+					{
+						<option value="@type"><EnumDisplayName TEnum="WeaponType" Value="type" /></option>
+					}
+				</select>
+				<ValidationMessage For="@(() => Replica.WeaponType)" />
+			</div>
+
+			<div>
+				<label for="weaponage">Epoka:</label>
+				<select @bind="Replica.WeaponAge" class="form-select">
+					@foreach (WeaponAge age in Enum.GetValues(typeof(WeaponAge)))
+					{
+						<option value="@age"><EnumDisplayName TEnum="WeaponAge" Value="age" /></option>
+					}
+				</select>
+				<ValidationMessage For="@(() => Replica.WeaponAge)" />
+			</div>
+
+			<div>
+				<p>Tryby ognia:</p>
+				@foreach (WeaponFireType fireType in Enum.GetValues(typeof(WeaponFireType)))
+				{
+					<div>
+						<input type="checkbox"
+							   value="@fireType"
+							   @onchange="e => ToggleFireType(fireType, (bool)e.Value)" />
+						<label>
+							<EnumDisplayName TEnum="WeaponFireType" Value="fireType" />
+						</label>
+					</div>
+				}
+			</div>
+
+			<div>
+				<p>Materiał:</p>
+				@foreach (ItemMaterial itemMaterial in Enum.GetValues(typeof(ItemMaterial)))
+				{
+					<div>
+						<input type="checkbox"
+							   value="@itemMaterial"
+							   @onchange="e => ToggleMaterial(itemMaterial, (bool)e.Value)" />
+						<label>
+							<EnumDisplayName TEnum="ItemMaterial" Value="itemMaterial" />
+						</label>
+					</div>
+				}
+			</div>
+
+			<div>
+				<label for="magtype">Typ magazynka:</label>
+				<select @bind="Replica.MagazineType" class="form-select">
+					@foreach (MagazineType magType in Enum.GetValues(typeof(MagazineType)))
+					{
+						<option value="@magType"><EnumDisplayName TEnum="MagazineType" Value="magType" /></option>
+					}
+				</select>
+				<ValidationMessage For="@(() => Replica.MagazineType)" />
+			</div>
+
 			<button type="submit" class="btn btn-secondary">Dodaj produkt</button>
 		</EditForm>
 	</div>

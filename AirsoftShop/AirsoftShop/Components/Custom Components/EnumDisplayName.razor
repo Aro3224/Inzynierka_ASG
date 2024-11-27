@@ -1,0 +1,24 @@
+﻿@typeparam TEnum where TEnum : struct, Enum
+
+@{
+    if (!typeof(TEnum).IsEnum)
+    {
+        throw new InvalidOperationException($"{nameof(TEnum)} must be an enum type.");
+    }
+}
+
+<span>@GetDisplayName(Value)</span>
+
+@code {
+    [Parameter]
+    public TEnum Value { get; set; }
+
+    private string GetDisplayName(TEnum value)
+    {
+        var fieldInfo = value.GetType().GetField(value.ToString());
+        var displayAttribute = fieldInfo?.GetCustomAttributes(typeof(System.ComponentModel.DataAnnotations.DisplayAttribute), false)
+                              .FirstOrDefault() as System.ComponentModel.DataAnnotations.DisplayAttribute;
+
+        return displayAttribute?.Name ?? value.ToString();
+    }
+}

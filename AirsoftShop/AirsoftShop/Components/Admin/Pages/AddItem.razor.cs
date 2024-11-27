@@ -12,8 +12,6 @@ namespace AirsoftShop.Components.Admin.Pages
             try
             {
                 await ProductService.CreateProductAsync(product);
-                resultMessage = "Produkt został zapisany pomyślnie!";
-                await Task.Delay(3000);
                 NavManager.NavigateTo("/Admin/ItemManage");
             }
             catch (Exception ex)
