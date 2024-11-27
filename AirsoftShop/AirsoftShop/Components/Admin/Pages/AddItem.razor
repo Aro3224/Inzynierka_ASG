@@ -1,5 +1,41 @@
 ﻿@page "/Admin/AddItem"
+@using AirsoftShop.Data
 
 <PageTitle>Dodaj przedmiot</PageTitle>
 
-<h2>WIP: dodaj przedmiot</h2>
+@inject IProductService ProductService
+@inject NavigationManager NavManager
+
+@attribute [Authorize(Roles = "Admin")]
+
+<label for="productType">Wybierz rodzaj produktu:</label>
+<select id="productType" @bind="selectedProductType" class="form-select">
+    <option value="@(ProductType.Replica)">Replika</option>
+    <option value="@(ProductType.Part)">Część</option>
+    <option value="@(ProductType.Accessory)">Akcesoria</option>
+    <option value="@(ProductType.Equipment)">Ekwipunek</option>
+</select>
+
+<hr />
+
+@if (selectedProductType == ProductType.Replica)
+{
+    <ReplicaForm OnSave="@HandleSave" />
+}
+@* else if (selectedProductType == ProductType.Part)
+{
+    <PartForm OnSave="@HandleSave" />
+}
+else if (selectedProductType == ProductType.Accessory)
+{
+    <AccessoryForm OnSave="@HandleSave" />
+}
+else if (selectedProductType == ProductType.Equipment)
+{
+    <EquipmentForm OnSave="@HandleSave" />
+} *@
+
+@if (!string.IsNullOrEmpty(resultMessage))
+{
+    <p>@resultMessage</p>
+}

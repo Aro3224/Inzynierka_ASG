@@ -45,6 +45,7 @@ namespace AirsoftShop
             builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddBlazoredModal();
 
             var app = builder.Build();

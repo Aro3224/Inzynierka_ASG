@@ -4,18 +4,18 @@ namespace AirsoftShop.Services
 {
     public interface IProductService
     {
-        Task<List<T>> GetAllProductsAsync<T>() where T : Product;
+        Task<List<Product>> GetAllProductsAsync();
 
         Task<int> TotalProductsAsync();
 
-        Task<T> GetProductDetailsAsync<T>(string id) where T : Product;
+        Task GetProductDetailsAsync(string id);
 
-        Task CreateProductAsync<T>(T product) where T : Product;
+        Task CreateProductAsync(Product product);
 
-        Task EditProductAsync<T>(T product) where T : Product;
+        Task EditProductAsync(Product product);
 
         Task DeleteProductAsync(string id);
 
-        Task<List<T>> FilterProductsAsync<T>(string searchTerm) where T : Product;
+        Task<List<Product>> FilterProductsAsync(string searchTerm);
     }
 }

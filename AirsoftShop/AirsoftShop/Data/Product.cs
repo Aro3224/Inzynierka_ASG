@@ -2,6 +2,14 @@
 
 namespace AirsoftShop.Data
 {
+    public enum ProductType
+    {
+        Replica = 1,
+        Part = 2,
+        Accessory = 3,
+        Equipment = 4
+    }
+
     public enum WeaponType
     {
         Spring = 1,
@@ -85,10 +93,14 @@ namespace AirsoftShop.Data
         public int WarrantyPeriodMonths { get; set; }
 
         public decimal Weight { get; set; }
+
+        public abstract ProductType ProductType { get; }
     }
 
     public class Replica : Product
     {
+        public override ProductType ProductType => ProductType.Replica;
+
         [Required]
         public WeaponType WeaponType { get; set; }
 

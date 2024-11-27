@@ -1,0 +1,42 @@
+﻿
+
+<div class="custom-container pt-3">
+	<div>
+		<EditForm Model="@Replica" OnValidSubmit="@HandleValidSubmit" class="edit-form">
+			<DataAnnotationsValidator />
+
+			<div>
+				<label for="name">Nazwa przedmiotu</label>
+				<InputText id="name" @bind-Value="Replica.Name" class="form-control" />
+				<ValidationMessage For="@(() => Replica.Name)" />
+			</div>
+
+			<div>
+				<label for="author">Cena</label>
+				<InputNumber id="author" @bind-value="Replica.Price" class="form-control" />
+				<ValidationMessage For="@(() => Replica.Price)" />
+			</div>
+
+			<div>
+				<label for="description">Opis</label>
+				<InputTextArea id="description" @bind-value="Replica.Description" class="form-control" />
+				<ValidationMessage For="@(() => Replica.Description)" />
+			</div>
+
+			<div>
+				<label for="productid">Id Produktu</label>
+				<InputText id="productid" @bind-Value="Replica.ProductId" class="form-control" />
+				<ValidationMessage For="@(() => Replica.ProductId)" />
+			</div>
+
+			@* <div>
+				<label for="available">Is available</label>
+				<select @onchange="(e) => ParseToBool(e.Value)" class="form-select">
+					<option selected value="True">Yes</option>
+					<option value="False">No</option>
+				</select>
+			</div> *@
+			<button type="submit" class="btn btn-secondary">Dodaj produkt</button>
+		</EditForm>
+	</div>
+</div>
