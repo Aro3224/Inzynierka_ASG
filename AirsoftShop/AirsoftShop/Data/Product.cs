@@ -272,7 +272,67 @@ namespace AirsoftShop.Data
         SniperPart = 21,
 
         [Display(Name = "Inne")]
-        Unspecified = 22,
+        Unspecified = 22
+    }
+
+    public enum BbType
+    {
+        [Display(Name = "Standardowe")]
+        Normal = 1,
+
+        [Display(Name = "Biodegradowalne")]
+        Bio = 2,
+
+        [Display(Name = "Podświetlane")]
+        Tracer = 3,
+
+        [Display(Name = "8mm")]
+        EightMm = 5,
+
+        [Display(Name = "Inne")]
+        Unspecified = 6
+    }
+
+    public enum GasType
+    {
+        [Display(Name = "Green Gas")]
+        GreenGas = 1,
+
+        [Display(Name = "CO2")]
+        Carbon = 2,
+    }
+
+    public enum BatteryType
+    {
+        [Display(Name = "Li-Po")]
+        LiPo = 1,
+
+        [Display(Name = "Li-Ion")]
+        LiIon = 2,
+
+        [Display(Name = "Li-Fe")]
+        LiFe = 3,
+
+        [Display(Name = "NiMH/NiCd")]
+        NiMH = 4,
+
+        [Display(Name = "Inne")]
+        Unspecified = 5
+    }
+
+    public enum BatteryPlug
+    {
+        [Display(Name = "T-connector")]
+        TConnector = 1,
+
+        [Display(Name = "Mała Tamiya")]
+        TamiyaSmall = 2,
+
+        [Display(Name = "Duża Tamiya")]
+        TamiyaLarge = 3,
+
+        [Display(Name = "Inne")]
+        Unspecified = 4
     }
 
     public abstract class Product
@@ -370,6 +430,18 @@ namespace AirsoftShop.Data
     public class Accessory : Product
     {
         public override ProductType ProductType => ProductType.Accessory;
+
+        public decimal BbWeight { get; set; }
+
+        public BbType BbType { get; set; }
+
+        public int BbAmmount { get; set; }
+
+        public GasType GasType { get; set; }
+
+        public BatteryType BatteryType { get; set; }
+
+        public BatteryPlug BatteryPlug { get; set; }
     }
 
     public class Equipment : Product

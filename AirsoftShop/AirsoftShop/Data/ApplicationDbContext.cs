@@ -10,6 +10,8 @@ namespace AirsoftShop.Data
 
         public DbSet<Part> Parts { get; set; }
 
+        public DbSet<Accessory> Accessories { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
