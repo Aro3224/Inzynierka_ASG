@@ -163,6 +163,8 @@ namespace AirsoftShop.Data
 
     public enum PartType
     {
+        None = 0,
+
         [Display(Name = "Wewnętrzna")]
         Internal = 1,
 
@@ -172,6 +174,8 @@ namespace AirsoftShop.Data
 
     public enum ExternalPartType
     {
+        None = 0,
+
         [Display(Name = "Magazynek")]
         Magazine = 1,
 
@@ -208,6 +212,8 @@ namespace AirsoftShop.Data
 
     public enum InternalPartType
     {
+        None = 0,
+
         [Display(Name = "Gearbox")]
         Gearbox = 1,
 
@@ -410,7 +416,7 @@ namespace AirsoftShop.Data
         public override ProductType ProductType => ProductType.Part;
 
         [Required]
-        public PartType PartType { get; set; }
+        public PartType PartType { get; set; } = PartType.None;
 
         public InternalPartType InternalPartType { get; set; }
 

@@ -77,7 +77,7 @@ namespace AirsoftShop.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Accessories");
+                    b.ToTable("Accessories", (string)null);
                 });
 
             modelBuilder.Entity("AirsoftShop.Data.ApplicationUser", b =>
@@ -281,7 +281,7 @@ namespace AirsoftShop.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Parts");
+                    b.ToTable("Parts", (string)null);
                 });
 
             modelBuilder.Entity("AirsoftShop.Data.Replica", b =>
@@ -363,7 +363,7 @@ namespace AirsoftShop.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Replicas");
+                    b.ToTable("Replicas", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

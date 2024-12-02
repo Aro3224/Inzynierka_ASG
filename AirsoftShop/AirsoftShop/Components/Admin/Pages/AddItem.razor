@@ -16,24 +16,53 @@
     <option value="@(ProductType.Equipment)">Ekwipunek</option>
 </select>
 
+@if (selectedProductType == ProductType.Part)
+{
+    <label for="partType">Wybierz typ części:</label>
+    <select id="partType" @bind="Part.PartType" class="form-select">
+        <option value="@(PartType.External)">Zewnętrzna</option>
+        <option value="@(PartType.Internal)">Wewnętrzna</option>
+    </select>
+}
+
+@if (Part.PartType == PartType.External && selectedProductType == ProductType.Part)
+{
+    <label for="externalPartType">Wybierz część zewnętrzną:</label>
+    <select id="externalPartType" @bind="Part.ExternalPartType" class="form-select">
+        <option value="@(ExternalPartType.Magazine)">Magazynek</option>
+        <option value="@(ExternalPartType.Scope)">Kolimator/Luneta</option>
+        <option value="@(ExternalPartType.Ironsight)">Celownik mechaniczny</option>
+        <option value="@(ExternalPartType.Grip)">Uchwyt</option>
+        <option value="@(ExternalPartType.Mount)">Montaż</option>
+        <option value="@(ExternalPartType.Stock)">Kolba/Dodatek</option>
+        <option value="@(ExternalPartType.Flashlight)">Latarka taktyczna</option>
+        <option value="@(ExternalPartType.BarrelMod)">Dodatek do lufy</option>
+        <option value="@(ExternalPartType.Bipod)">Dwójnóg</option>
+        <option value="@(ExternalPartType.BodyPart)">Część korpusu</option>
+        <option value="@(ExternalPartType.Unspecified)">Inne</option>
+    </select>
+}
+else if (Part.PartType == PartType.Internal)
+{
+    <label for="internalPartType">Wybierz część wewnętrzną:</label>
+    <select id="internalPartType" @bind="Part.InternalPartType" class="form-select">
+        <option value="@(InternalPartType.Gearbox)">Gearbox</option>
+        <option value="@(InternalPartType.GearboxSkeleton)">Szkielet Gearboxa</option>
+        <option value="@(InternalPartType.Piston)">Tłok</option>
+        <option value="@(InternalPartType.PistonHead)">Głowa tłoku</option>
+    </select>
+}
+
 <hr />
 
 @if (selectedProductType == ProductType.Replica)
 {
     <ReplicaForm OnSave="@HandleSave" />
 }
-@* else if (selectedProductType == ProductType.Part)
+else if (selectedProductType == ProductType.Part && !(Part.InternalPartType == InternalPartType.None) || !(Part.ExternalPartType == ExternalPartType.None))
 {
-    <PartForm OnSave="@HandleSave" />
+    <PartForm Part="Part" OnSave="@HandleSave" />
 }
-else if (selectedProductType == ProductType.Accessory)
-{
-    <AccessoryForm OnSave="@HandleSave" />
-}
-else if (selectedProductType == ProductType.Equipment)
-{
-    <EquipmentForm OnSave="@HandleSave" />
-} *@
 
 @if (!string.IsNullOrEmpty(resultMessage))
 {

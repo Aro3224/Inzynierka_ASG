@@ -1,0 +1,80 @@
+﻿@using AirsoftShop.Data
+
+
+<div class="custom-container pt-3">
+	<div>
+		<EditForm Model="@Part" OnValidSubmit="@HandleValidSubmit" class="edit-form">
+			<DataAnnotationsValidator />
+
+			<div>
+				<label for="name">Nazwa przedmiotu:</label>
+				<InputText id="name" @bind-Value="Part.Name" class="form-control" />
+				<ValidationMessage For="@(() => Part.Name)" />
+			</div>
+
+			<div>
+				<label for="author">Cena:</label>
+				<InputNumber id="author" @bind-value="Part.Price" class="form-control" />
+				<ValidationMessage For="@(() => Part.Price)" />
+			</div>
+
+			<div>
+				<label for="count">Ilość:</label>
+				<InputNumber id="count" @bind-value="Part.Count" class="form-control" />
+				<ValidationMessage For="@(() => Part.Count)" />
+			</div>
+
+			<div>
+				<label for="description">Opis:</label>
+				<InputTextArea id="description" @bind-value="Part.Description" class="form-control" />
+				<ValidationMessage For="@(() => Part.Description)" />
+			</div>
+
+			<div>
+				<label for="productid">ID Produktu:</label>
+				<InputText id="productid" @bind-Value="Part.ProductId" class="form-control" />
+				<ValidationMessage For="@(() => Part.ProductId)" />
+			</div>
+
+			<div>
+				<label for="manufacturer">Marka:</label>
+				<select @bind="Part.Manufacturer" class="form-select">
+					@foreach (Manufacturer manufacturer in Enum.GetValues(typeof(Manufacturer)))
+					{
+						<option value="@manufacturer"><EnumDisplayName TEnum="Manufacturer" Value="manufacturer" /></option>
+					}
+				</select>
+				<ValidationMessage For="@(() => Part.Manufacturer)" />
+			</div>
+
+			<div>
+				<label for="warranty">Gwarancja (miesiące):</label>
+				<input type="number" id="warranty" @bind="Part.WarrantyPeriodMonths" class="form-control" />
+				<ValidationMessage For="@(() => Part.WarrantyPeriodMonths)" />
+			</div>
+
+			<div>
+				<label for="weight">Waga (g):</label>
+				<input type="number" id="weight" @bind="Part.Weight" class="form-control" />
+				<ValidationMessage For="@(() => Part.Weight)" />
+			</div>
+
+			@if (Part.PartType == PartType.External) {
+				@if (Part.ExternalPartType == ExternalPartType.Magazine) {
+					<div>
+						<label for="magtype">Typ magazynka:</label>
+						<select @bind="Part.MagazineType" class="form-select">
+							@foreach (MagazineType magType in Enum.GetValues(typeof(MagazineType)))
+							{
+								<option value="@magType"><EnumDisplayName TEnum="MagazineType" Value="magType" /></option>
+							}
+						</select>
+						<ValidationMessage For="@(() => Part.MagazineType)" />
+					</div>
+				}
+			}
+
+			<button type="submit" class="btn btn-secondary">Dodaj produkt</button>
+		</EditForm>
+	</div>
+</div>

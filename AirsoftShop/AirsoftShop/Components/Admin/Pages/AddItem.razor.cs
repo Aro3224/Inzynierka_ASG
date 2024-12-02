@@ -7,6 +7,9 @@ namespace AirsoftShop.Components.Admin.Pages
         private ProductType selectedProductType;
         private string resultMessage;
 
+        private Part Part { get; set; } = new Part();
+
+
         private async Task HandleSave(Product product)
         {
             try
