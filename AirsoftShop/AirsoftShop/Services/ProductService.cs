@@ -19,18 +19,18 @@ namespace AirsoftShop.Services
                     var replica = (Replica)product;
                     _context.Add(replica);
                     break;
-                //case ProductType.Part:
-                //    var part = (Part)product;
-                //    _context.Add(part);
-                //    break;
-                //case ProductType.Accessory:
-                //    var accessory = (Accessory)product;
-                //    _context.Add(accessory);
-                //    break;
-                //case ProductType.Equipment:
-                //    var equipment = (Equipment)product;
-                //    _context.Add(equipment);
-                //    break;
+                case ProductType.Part:
+                    var part = (Part)product;
+                    _context.Add(part);
+                    break;
+                case ProductType.Accessory:
+                    var accessory = (Accessory)product;
+                    _context.Add(accessory);
+                    break;
+                case ProductType.Equipment:
+                    var equipment = (Equipment)product;
+                    _context.Add(equipment);
+                    break;
                 default:
                     throw new ArgumentException("Nieobsługiwany typ produktu.");
             }

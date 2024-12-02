@@ -13,13 +13,13 @@
 			</div>
 
 			<div>
-				<label for="author">Cena:</label>
+				<label for="author">Cena (zł):</label>
 				<InputNumber id="author" @bind-value="Part.Price" class="form-control" />
 				<ValidationMessage For="@(() => Part.Price)" />
 			</div>
 
 			<div>
-				<label for="count">Ilość:</label>
+				<label for="count">Ilość (sztuki):</label>
 				<InputNumber id="count" @bind-value="Part.Count" class="form-control" />
 				<ValidationMessage For="@(() => Part.Count)" />
 			</div>
@@ -70,6 +70,27 @@
 							}
 						</select>
 						<ValidationMessage For="@(() => Part.MagazineType)" />
+					</div>
+
+					<div>
+						<label for="magcap">Pojemność magazynka (kulki):</label>
+						<input type="number" id="magcap" @bind="Part.MagazineCapacity" class="form-control" />
+						<ValidationMessage For="@(() => Part.MagazineCapacity)" />
+					</div>
+
+					<div>
+						<p>Materiał:</p>
+						@foreach (ItemMaterial itemMaterial in Enum.GetValues(typeof(ItemMaterial)))
+						{
+							<div>
+								<input type="checkbox"
+									   value="@itemMaterial"
+									   @onchange="e => ToggleMaterial(itemMaterial, (bool)e.Value)" />
+								<label>
+									<EnumDisplayName TEnum="ItemMaterial" Value="itemMaterial" />
+								</label>
+							</div>
+						}
 					</div>
 				}
 			}
