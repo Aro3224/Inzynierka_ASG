@@ -29,6 +29,33 @@ namespace AirsoftShop.Data
         Electric = 3
     }
 
+    public enum WeaponCategory
+    {
+        [Display(Name = "Pistolet")]
+        Pistol = 1,
+
+        [Display(Name = "Pistolet Maszynowy")]
+        MachinePistol = 2,
+
+        [Display(Name = "Strzelba")]
+        Shotgun = 3,
+
+        [Display(Name = "Karabin Szturmowy/Karabinek")]
+        AssaultRifle = 4,
+
+        [Display(Name = "Karabin")]
+        Carbine = 5,
+
+        [Display(Name = "Karabin Snajperski")]
+        SniperRifle = 6,
+
+        [Display(Name = "Karabin Maszynowy")]
+        MachineGun = 7,
+
+        [Display(Name = "Inne")]
+        SpecialWeapon = 8,
+    }
+
     [Flags]
     public enum WeaponFireType
     {
@@ -66,7 +93,7 @@ namespace AirsoftShop.Data
         Modern = 5
     }
 
-    public enum WeaponGearboxType
+    public enum GearboxType
     {
         [Display(Name = "Brak")]
         None = 0,
@@ -143,6 +170,111 @@ namespace AirsoftShop.Data
         External = 2,
     }
 
+    public enum ExternalPartType
+    {
+        [Display(Name = "Magazynek")]
+        Magazine = 1,
+
+        [Display(Name = "Kolimator/Luneta")]
+        Scope = 2,
+
+        [Display(Name = "Celownik mechaniczny")]
+        Ironsight = 3,
+
+        [Display(Name = "Uchwyt")]
+        Grip = 4,
+
+        [Display(Name = "Montaż")]
+        Mount = 5,
+
+        [Display(Name = "Kolba/Dodatek")]
+        Stock = 6,
+
+        [Display(Name = "Latarka taktyczna")]
+        Flashlight = 7,
+
+        [Display(Name = "Dodatek do lufy")]
+        BarrelMod = 8,
+
+        [Display(Name = "Dwójnóg")]
+        Bipod = 9,
+
+        [Display(Name = "Część korpusu")]
+        BodyPart = 10,
+
+        [Display(Name = "Inne")]
+        Unspecified = 11
+    }
+
+    public enum InternalPartType
+    {
+        [Display(Name = "Gearbox")]
+        Gearbox = 1,
+
+        [Display(Name = "Szkielet gearboxa")]
+        GearboxSkeleton = 2,
+
+        [Display(Name = "Tłok")]
+        Piston = 3,
+
+        [Display(Name = "Głowica tłoku")]
+        PistonHead = 4,
+
+        [Display(Name = "Cylinder")]
+        Cylinder = 5,
+
+        [Display(Name = "Głowica cylindra")]
+        CylinderHead = 6,
+
+        [Display(Name = "Dysza")]
+        Nozzle = 7,
+
+        [Display(Name = "Koło zębate")]
+        GearWheel = 8,
+
+        [Display(Name = "Łożysko")]
+        Bearing = 9,
+
+        [Display(Name = "Lufa wewnętrzna")]
+        InnerBarrel = 10,
+
+        [Display(Name = "Lufa precyzyjna")]
+        PrecisionBarrel = 11,
+
+        [Display(Name = "Komora Hop-up")]
+        HopUpChamber = 12,
+
+        [Display(Name = "Gumka Hop-up")]
+        HopUpRubber = 13,
+
+        [Display(Name = "Spust")]
+        Trigger = 14,
+
+        [Display(Name = "Elektronika")]
+        Electronics = 15,
+
+        [Display(Name = "Silnik")]
+        Engine = 16,
+
+        [Display(Name = "Listwa dosyłacza")]
+        FeederRail = 17,
+
+        [Display(Name = "Płytka selektora")]
+        SelectorPlate = 18,
+
+        [Display(Name = "Prowadnica sprężyn")]
+        SpringGuide = 19,
+
+        [Display(Name = "Część do repliki gazowej")]
+        GbbPart = 20,
+
+        [Display(Name = "Część do repliki snajperskiej")]
+        SniperPart = 21,
+
+        [Display(Name = "Inne")]
+        Unspecified = 22,
+    }
+
     public abstract class Product
     {
         [Key]
@@ -179,6 +311,9 @@ namespace AirsoftShop.Data
         public WeaponType WeaponType { get; set; }
 
         [Required]
+        public WeaponCategory WeaponCategory { get; set; }
+
+        [Required]
         public WeaponAge WeaponAge { get; set; } = WeaponAge.Unspecified;
 
         [Required]
@@ -190,7 +325,7 @@ namespace AirsoftShop.Data
         [Required]
         public MagazineType MagazineType { get; set; }
 
-        public WeaponGearboxType WeaponGearboxType { get; set; }
+        public GearboxType WeaponGearboxType { get; set; }
 
         public int MagazineCapacity { get; set; }
 
@@ -210,18 +345,35 @@ namespace AirsoftShop.Data
         public int FPS { get; set; }
     }
 
-    //public class Part : Product
-    //{
+    public class Part : Product
+    {
+        public override ProductType ProductType => ProductType.Part;
 
-    //}
+        [Required]
+        public PartType PartType { get; set; }
 
-    //public class Accessory : Product
-    //{
+        public InternalPartType InternalPartType { get; set; }
 
-    //}
+        public ExternalPartType ExternalPartType { get; set; }
 
-    //public class Equipment : Product
-    //{
+        public ItemMaterial ItemMaterial { get; set; }
 
-    //}
+        public MagazineType MagazineType { get; set; }
+
+        public int MagazineCapacity { get; set; }
+
+        public GearboxType GearboxType { get; set; }
+
+        public decimal ItemLenght { get; set; }
+    }
+
+    public class Accessory : Product
+    {
+        public override ProductType ProductType => ProductType.Accessory;
+    }
+
+    public class Equipment : Product
+    {
+        public override ProductType ProductType => ProductType.Equipment;
+    }
 }

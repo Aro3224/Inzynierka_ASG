@@ -8,6 +8,8 @@ namespace AirsoftShop.Data
     {
         public DbSet<Replica> Replicas { get; set; }
 
+        public DbSet<Part> Parts { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

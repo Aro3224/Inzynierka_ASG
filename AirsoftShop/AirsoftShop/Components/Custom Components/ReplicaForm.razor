@@ -60,7 +60,7 @@
 			</div>
 
 			<div>
-				<label for="weapontype">Rodzaj broni:</label>
+				<label for="weapontype">Typ broni:</label>
 				<select @bind="Replica.WeaponType" class="form-select">
 					@foreach (WeaponType type in Enum.GetValues(typeof(WeaponType)))
 					{
@@ -68,6 +68,17 @@
 					}
 				</select>
 				<ValidationMessage For="@(() => Replica.WeaponType)" />
+			</div>
+
+			<div>
+				<label for="weaponcategory">Kategoria broni:</label>
+				<select @bind="Replica.WeaponCategory" class="form-select">
+					@foreach (WeaponCategory type in Enum.GetValues(typeof(WeaponCategory)))
+					{
+						<option value="@type"><EnumDisplayName TEnum="WeaponCategory" Value="type" /></option>
+					}
+				</select>
+				<ValidationMessage For="@(() => Replica.WeaponCategory)" />
 			</div>
 
 			<div>
@@ -88,7 +99,7 @@
 			</div>
 
 			<div>
-				<label for="barrellenght">Długość lufy wewnętrznej:</label>
+				<label for="barrellenght">Długość lufy wewnętrznej (mm):</label>
 				<input type="number" id="barrellenght" @bind="Replica.BarrelLenght" class="form-control" />
 				<ValidationMessage For="@(() => Replica.BarrelLenght)" />
 			</div>
@@ -144,9 +155,9 @@
 			<div>
 				<label for="magtype">Gearbox:</label>
 				<select @bind="Replica.WeaponGearboxType" class="form-select">
-					@foreach (WeaponGearboxType gearboxType in Enum.GetValues(typeof(WeaponGearboxType)))
+					@foreach (GearboxType gearboxType in Enum.GetValues(typeof(GearboxType)))
 					{
-						<option value="@gearboxType"><EnumDisplayName TEnum="WeaponGearboxType" Value="gearboxType" /></option>
+						<option value="@gearboxType"><EnumDisplayName TEnum="GearboxType" Value="gearboxType" /></option>
 					}
 				</select>
 				<ValidationMessage For="@(() => Replica.WeaponGearboxType)" />
