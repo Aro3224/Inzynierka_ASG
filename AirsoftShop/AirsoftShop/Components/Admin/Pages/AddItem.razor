@@ -9,62 +9,82 @@
 @attribute [Authorize(Roles = "Admin")]
 
 <label for="productType">Wybierz rodzaj produktu:</label>
-<select id="productType" @bind="selectedProductType" class="form-select">
-    <option value="@(ProductType.Replica)">Replika</option>
-    <option value="@(ProductType.Part)">Część</option>
-    <option value="@(ProductType.Accessory)">Akcesoria</option>
-    <option value="@(ProductType.Equipment)">Ekwipunek</option>
+<select id="productType" @bind="SelectedProductType" class="form-select">
+	<option value="@(ProductType.Replica)">Replika</option>
+	<option value="@(ProductType.Part)">Część</option>
+	<option value="@(ProductType.Accessory)">Akcesoria</option>
+	<option value="@(ProductType.Equipment)">Ekwipunek</option>
 </select>
 
-@if (selectedProductType == ProductType.Part)
+@if (SelectedProductType == ProductType.Part)
 {
-    <label for="partType">Wybierz typ części:</label>
-    <select id="partType" @bind="Part.PartType" class="form-select">
-        <option value="@(PartType.External)">Zewnętrzna</option>
-        <option value="@(PartType.Internal)">Wewnętrzna</option>
-    </select>
+	<label for="partType">Wybierz typ części:</label>
+	<select id="partType" @bind="Part.PartType" class="form-select">
+		<option value="@(PartType.External)">Zewnętrzna</option>
+		<option value="@(PartType.Internal)">Wewnętrzna</option>
+	</select>
+}
+else if (SelectedProductType == ProductType.Accessory)
+{
+	<label for="accessoryType">Wybierz typ produktu:</label>
+	<select id="accessoryType" @bind="Accessory.AccessoryType" class="form-select">
+		@foreach (AccessoryType accType in Enum.GetValues(typeof(AccessoryType)))
+		{
+			if (!(accType == AccessoryType.None))
+			{
+			<option value="@accType"><EnumDisplayName TEnum="AccessoryType" Value="accType" /></option>
+			}
+		}
+	</select>
 }
 
-@if (Part.PartType == PartType.External && selectedProductType == ProductType.Part)
+@if (Part.PartType == PartType.External && SelectedProductType == ProductType.Part)
 {
-    <label for="externalPartType">Wybierz część zewnętrzną:</label>
-    <select id="externalPartType" @bind="Part.ExternalPartType" class="form-select">
-        <option value="@(ExternalPartType.Magazine)">Magazynek</option>
-        <option value="@(ExternalPartType.Scope)">Kolimator/Luneta</option>
-        <option value="@(ExternalPartType.Ironsight)">Celownik mechaniczny</option>
-        <option value="@(ExternalPartType.Grip)">Uchwyt</option>
-        <option value="@(ExternalPartType.Mount)">Montaż</option>
-        <option value="@(ExternalPartType.Stock)">Kolba/Dodatek</option>
-        <option value="@(ExternalPartType.Flashlight)">Latarka taktyczna</option>
-        <option value="@(ExternalPartType.BarrelMod)">Dodatek do lufy</option>
-        <option value="@(ExternalPartType.Bipod)">Dwójnóg</option>
-        <option value="@(ExternalPartType.BodyPart)">Część korpusu</option>
-        <option value="@(ExternalPartType.Unspecified)">Inne</option>
-    </select>
+	<label for="externalPartType">Wybierz część zewnętrzną:</label>
+	<select id="externalPartType" @bind="Part.ExternalPartType" class="form-select">
+		@foreach (ExternalPartType extPartType in Enum.GetValues(typeof(ExternalPartType)))
+		{
+			if (!(extPartType == ExternalPartType.None))
+			{
+				<option value="@extPartType"><EnumDisplayName TEnum="ExternalPartType" Value="extPartType" /></option>
+			}
+		}
+	</select>
 }
-else if (Part.PartType == PartType.Internal)
+else if (Part.PartType == PartType.Internal && SelectedProductType == ProductType.Part)
 {
-    <label for="internalPartType">Wybierz część wewnętrzną:</label>
-    <select id="internalPartType" @bind="Part.InternalPartType" class="form-select">
-        <option value="@(InternalPartType.Gearbox)">Gearbox</option>
-        <option value="@(InternalPartType.GearboxSkeleton)">Szkielet Gearboxa</option>
-        <option value="@(InternalPartType.Piston)">Tłok</option>
-        <option value="@(InternalPartType.PistonHead)">Głowa tłoku</option>
-    </select>
+	<label for="internalPartType">Wybierz część wewnętrzną:</label>
+	<select id="internalPartType" @bind="Part.InternalPartType" class="form-select">
+		@foreach (InternalPartType intPartType in Enum.GetValues(typeof(InternalPartType)))
+		{
+			if (!(intPartType == InternalPartType.None))
+			{
+				<option value="@intPartType"><EnumDisplayName TEnum="InternalPartType" Value="intPartType" /></option>
+			}
+		}
+	</select>
 }
 
 <hr />
 
-@if (selectedProductType == ProductType.Replica)
+@if (SelectedProductType == ProductType.Replica)
 {
-    <ReplicaForm OnSave="@HandleSave" />
+	<ReplicaForm OnSave="@HandleSave" />
 }
-else if (selectedProductType == ProductType.Part && !(Part.InternalPartType == InternalPartType.None) || !(Part.ExternalPartType == ExternalPartType.None))
+else if (SelectedProductType == ProductType.Part && !(Part.InternalPartType == InternalPartType.None) || !(Part.ExternalPartType == ExternalPartType.None))
 {
-    <PartForm Part="Part" OnSave="@HandleSave" />
+	<PartForm Part="Part" OnSave="@HandleSave" />
+}
+else if (SelectedProductType == ProductType.Accessory)
+{
+	<AccessoryForm Accessory="Accessory" OnSave="@HandleSave" />
+}
+else if (SelectedProductType == ProductType.Equipment)
+{
+	<EquipmentForm />
 }
 
 @if (!string.IsNullOrEmpty(resultMessage))
 {
-    <p>@resultMessage</p>
+	<p>@resultMessage</p>
 }

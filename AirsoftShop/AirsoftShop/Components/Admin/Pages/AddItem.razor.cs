@@ -9,6 +9,26 @@ namespace AirsoftShop.Components.Admin.Pages
 
         private Part Part { get; set; } = new Part();
 
+        private Accessory Accessory { get; set; } = new Accessory();
+
+        private ProductType SelectedProductType
+        {
+            get => selectedProductType;
+            set
+            {
+                if (selectedProductType != value)
+                {
+                    selectedProductType = value;
+                    ResetFormState();
+                }
+            }
+        }
+
+        private void ResetFormState()
+        {
+            Part = new Part();
+            Accessory = new Accessory();
+        }
 
         private async Task HandleSave(Product product)
         {

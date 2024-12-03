@@ -59,8 +59,25 @@
 				<ValidationMessage For="@(() => Part.Weight)" />
 			</div>
 
-			@if (Part.PartType == PartType.External) {
-				@if (Part.ExternalPartType == ExternalPartType.Magazine) {
+			<div>
+				<p>Materiał:</p>
+				@foreach (ItemMaterial itemMaterial in Enum.GetValues(typeof(ItemMaterial)))
+				{
+					<div>
+						<input type="checkbox"
+							   value="@itemMaterial"
+							   @onchange="e => ToggleMaterial(itemMaterial, (bool)e.Value)" />
+						<label>
+							<EnumDisplayName TEnum="ItemMaterial" Value="itemMaterial" />
+						</label>
+					</div>
+				}
+			</div>
+
+			@if (Part.PartType == PartType.External)
+			{
+				@if (Part.ExternalPartType == ExternalPartType.Magazine)
+				{
 					<div>
 						<label for="magtype">Typ magazynka:</label>
 						<select @bind="Part.MagazineType" class="form-select">
@@ -77,20 +94,36 @@
 						<input type="number" id="magcap" @bind="Part.MagazineCapacity" class="form-control" />
 						<ValidationMessage For="@(() => Part.MagazineCapacity)" />
 					</div>
+				}
+			}
+
+			@if (Part.PartType == PartType.Internal)
+			{
+				@if (Part.InternalPartType == InternalPartType.Gearbox || Part.InternalPartType == InternalPartType.GearboxSkeleton)
+				{
+					<div>
+						<label for="magtype">Gearbox:</label>
+						<select @bind="Part.GearboxType" class="form-select">
+							@foreach (GearboxType gearboxType in Enum.GetValues(typeof(GearboxType)))
+							{
+								<option value="@gearboxType"><EnumDisplayName TEnum="GearboxType" Value="gearboxType" /></option>
+							}
+						</select>
+						<ValidationMessage For="@(() => Part.GearboxType)" />
+					</div>
 
 					<div>
-						<p>Materiał:</p>
-						@foreach (ItemMaterial itemMaterial in Enum.GetValues(typeof(ItemMaterial)))
-						{
-							<div>
-								<input type="checkbox"
-									   value="@itemMaterial"
-									   @onchange="e => ToggleMaterial(itemMaterial, (bool)e.Value)" />
-								<label>
-									<EnumDisplayName TEnum="ItemMaterial" Value="itemMaterial" />
-								</label>
-							</div>
-						}
+						<label for="bearing">Średnica łożysk w Gearboxie (mm):</label>
+						<input type="number" id="bearing" @bind="Part.BearingDiameter" class="form-control" />
+						<ValidationMessage For="@(() => Part.BearingDiameter)" />
+					</div>
+				}
+
+				@if (Part.InternalPartType == InternalPartType.InnerBarrel || Part.InternalPartType == InternalPartType.PrecisionBarrel || Part.InternalPartType == InternalPartType.Spring) {
+					<div>
+						<label for="lenght">Długość (mm):</label>
+						<input type="number" id="lenght" @bind="Part.ItemLenght" class="form-control" />
+						<ValidationMessage For="@(() => Part.ItemLenght)" />
 					</div>
 				}
 			}

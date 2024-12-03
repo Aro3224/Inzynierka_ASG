@@ -271,14 +271,17 @@ namespace AirsoftShop.Data
         [Display(Name = "Prowadnica sprężyn")]
         SpringGuide = 19,
 
+        [Display(Name = "Sprężyna")]
+        Spring = 20,
+
         [Display(Name = "Część do repliki gazowej")]
-        GbbPart = 20,
+        GbbPart = 21,
 
         [Display(Name = "Część do repliki snajperskiej")]
-        SniperPart = 21,
+        SniperPart = 22,
 
         [Display(Name = "Inne")]
-        Unspecified = 22
+        Unspecified = 23
     }
 
     public enum BbType
@@ -292,11 +295,8 @@ namespace AirsoftShop.Data
         [Display(Name = "Podświetlane")]
         Tracer = 3,
 
-        [Display(Name = "8mm")]
-        EightMm = 5,
-
         [Display(Name = "Inne")]
-        Unspecified = 6
+        Unspecified = 4
     }
 
     public enum GasType
@@ -339,6 +339,59 @@ namespace AirsoftShop.Data
 
         [Display(Name = "Inne")]
         Unspecified = 4
+    }
+
+    public enum BatteryVoltage
+    {
+        [Display(Name = "7,2V")]
+        Voltage_7_2 = 1,
+
+        [Display(Name = "7,4V")]
+        Voltage_7_4 = 2,
+
+        [Display(Name = "8,4V")]
+        Voltage_8_4 = 3,
+
+        [Display(Name = "9,6V")]
+        Voltage_9_6 = 4,
+
+        [Display(Name = "10,8V")]
+        Voltage_10_8 = 5,
+
+        [Display(Name = "11,1V")]
+        Voltage_11_1 = 6,
+    }
+
+    public enum AccessoryType
+    {
+        None = 0,
+
+        [Display(Name = "Kulki/Amunicja")]
+        Bbs = 1,
+
+        [Display(Name = "Gaz")]
+        Gas = 2,
+
+        [Display(Name = "Ładowarka")]
+        Charger = 3,
+
+        [Display(Name = "Bateria")]
+        Battery = 4,
+
+        [Display(Name = "Farba")]
+        Paint = 5,
+
+        [Display(Name = "Olej")]
+        Oil = 6,
+
+        [Display(Name = "Narzędzie")]
+        Tool = 7,
+
+        [Display(Name = "Ekwipunek strzelniczy")]
+        Equipment = 8,
+
+        [Display(Name = "Inne")]
+        Unspecified = 9,
     }
 
     public abstract class Product
@@ -431,23 +484,29 @@ namespace AirsoftShop.Data
         public GearboxType GearboxType { get; set; }
 
         public decimal ItemLenght { get; set; }
+
+        public decimal BearingDiameter { get; set; }
     }
 
     public class Accessory : Product
     {
         public override ProductType ProductType => ProductType.Accessory;
 
+        public AccessoryType AccessoryType { get; set; }
+
         public decimal BbWeight { get; set; }
 
         public BbType BbType { get; set; }
 
-        public int BbAmmount { get; set; }
+        public int Bbsize { get; set; } = 6;
 
         public GasType GasType { get; set; }
 
         public BatteryType BatteryType { get; set; }
 
         public BatteryPlug BatteryPlug { get; set; }
+
+        public BatteryVoltage BatteryVoltage { get; set; }
     }
 
     public class Equipment : Product
