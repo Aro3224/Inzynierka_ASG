@@ -72,9 +72,29 @@ namespace AirsoftShop.Services
             return allProducts;
         }
 
-        public Task GetProductDetailsAsync(string id)
+        public async Task<Product> GetProductDetailsAsync(int productId, ProductType productType)
         {
-            throw new NotImplementedException();
+            switch (productType)
+            {
+                case ProductType.Replica:
+                    return await _context.Replicas
+                        .FirstOrDefaultAsync(r => r.Id == productId);
+
+                case ProductType.Part:
+                    return await _context.Parts
+                        .FirstOrDefaultAsync(p => p.Id == productId);
+
+                case ProductType.Accessory:
+                    return await _context.Accessories
+                        .FirstOrDefaultAsync(a => a.Id == productId);
+
+                //case ProductType.Equipment:
+                //    return await _context.Equipment
+                //        .FirstOrDefaultAsync(e => e.Id == productId);
+
+                default:
+                    return null;
+            }
         }
 
         public Task<int> TotalProductsAsync()

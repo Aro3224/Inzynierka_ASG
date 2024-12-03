@@ -33,7 +33,7 @@
                     <td>@product.Price</td>
                     <td>@product.ProductId</td>
                     <td><EnumDisplayName TEnum="ProductType" Value="product.ProductType" /></td>
-                    <td class="d-flex flex-column align-items-center"><button type="button" class="btn btn-primary" @onclick="@(() => NavManager.NavigateTo($"Admin/ProductDetails/{product.Id}"))">Pokaż</button></td>
+                    <td class="d-flex flex-column align-items-center"><button type="button" class="btn btn-primary" @onclick="@(() => NavManager.NavigateTo($"Admin/ProductDetails/{product.ProductType}/{product.Id}"))">Pokaż</button></td>
                 </tr>
             }
         </tbody>
