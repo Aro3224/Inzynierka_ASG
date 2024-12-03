@@ -1,4 +1,5 @@
 ﻿using AirsoftShop.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace AirsoftShop.Services
 {
@@ -48,14 +49,27 @@ namespace AirsoftShop.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<Product>> FilterProductsAsync(string searchTerm)
+        public async Task<List<Product>> FilterProductsAsync(string searchTerm)
         {
-            throw new NotImplementedException();
+            var result = await GetAllProductsAsync();
+
+            var filteredResult = result.Where(product => product.Name.ToLower().Contains(searchTerm.ToLower())).ToList();
+
+            return filteredResult;
         }
 
-        public Task<List<Product>> GetAllProductsAsync()
+        public async Task<List<Product>> GetAllProductsAsync()
         {
-            throw new NotImplementedException();
+            var replicas = await _context.Replicas.ToListAsync();
+            var parts = await _context.Parts.ToListAsync();
+            var accessories = await _context.Accessories.ToListAsync();
+
+            var allProducts = replicas.Cast<Product>()
+                .Concat(parts.Cast<Product>())
+                .Concat(accessories.Cast<Product>())
+                .ToList();
+
+            return allProducts;
         }
 
         public Task GetProductDetailsAsync(string id)

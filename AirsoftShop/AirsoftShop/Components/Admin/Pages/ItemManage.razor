@@ -1,5 +1,59 @@
 ﻿@page "/Admin/ItemManage"
+@inject IProductService ProductService
+@inject NavigationManager NavManager
+@using AirsoftShop.Data
 
 <PageTitle>Produkty</PageTitle>
 
-<h2>WIP: Zarządzanie produktami</h2>
+<h2>Zarządzanie produktami</h2>
+
+@attribute [Authorize(Roles = "Admin")]
+
+<input type="text" class="mb-2" placeholder="Szukaj..." @bind="searchTerm" @bind:after="Search" />
+
+@if (products.Count > 0)
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="th-click" @onclick="@(() => SortBy("Name"))">Nazwa</th>
+                <th class="th-click" @onclick="@(() => SortBy("Count"))">Ile</th>
+                <th class="th-click" @onclick="@(() => SortBy("Price"))">Cena</th>
+                <th class="th-click" @onclick="@(() => SortBy("ProductId"))">Id produktu</th>
+                <th class="th-click" @onclick="@(() => SortBy("ProductType"))">Typ produktu</th>
+                <th>Szczegóły</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in PagedProducts)
+            {
+                <tr>
+                    <td>@product.Name</td>
+                    <td>@product.Count</td>
+                    <td>@product.Price</td>
+                    <td>@product.ProductId</td>
+                    <td><EnumDisplayName TEnum="ProductType" Value="product.ProductType" /></td>
+                    <td class="d-flex flex-column align-items-center"><button type="button" class="btn btn-primary" @onclick="@(() => NavManager.NavigateTo($"Admin/ProductDetails/{product.Id}"))">Pokaż</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="pagin">
+        <button class="btn btn-primary" @onclick="PreviousPage" disabled="@(!CanGoToPreviousPage)">Poprzednia</button>
+        <input @bind="CurrentPage" @bind:after="GoToPage" />
+        <button class="btn btn-primary" @onclick="NextPage" disabled="@(!CanGoToNextPage)">Następna</button>
+    </div>
+}
+else if (products.Count == 0 && searchTerm is null)
+{
+    <p>Wczytywanie...</p>
+}
+else if (products.Count == 0)
+{
+    <p>Brak wyników</p>
+}
+else
+{
+    <p>Nie można wczytać listy produktów!</p>
+}
