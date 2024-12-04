@@ -10,7 +10,7 @@ namespace AirsoftShop.Components.Admin.Pages
         public string Id { get; set; }
 
         [Parameter]
-        public ProductType ProductType { get; set; }
+        public string ProductType { get; set; }
 
         public Product Product { get; set; }
 
@@ -33,7 +33,13 @@ namespace AirsoftShop.Components.Admin.Pages
 
             int productId = int.Parse(Id);
 
-            Product = await ProductService.GetProductDetailsAsync(productId, ProductType);
+            if (!Enum.TryParse<ProductType>(ProductType, true, out var productType))
+            {
+                Console.WriteLine($"Invalid product type: {ProductType}");
+                return;
+            }
+
+            Product = await ProductService.GetProductDetailsAsync(productId, productType);
             if (Product != null)
             {
                 Console.WriteLine($"Initialized product with id: {Product.Id}");

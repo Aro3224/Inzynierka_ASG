@@ -39,6 +39,7 @@
 			<div>
 				<label for="manufacturer">Marka:</label>
 				<select @bind="Replica.Manufacturer" class="form-select">
+					<option value="" selected disabled>Wybierz...</option>
 					@foreach (Manufacturer manufacturer in Enum.GetValues(typeof(Manufacturer)))
 					{
 						<option value="@manufacturer"><EnumDisplayName TEnum="Manufacturer" Value="manufacturer" /></option>
@@ -62,6 +63,7 @@
 			<div>
 				<label for="weapontype">Typ broni:</label>
 				<select @bind="Replica.WeaponType" class="form-select">
+					<option value="" selected disabled>Wybierz...</option>
 					@foreach (WeaponType type in Enum.GetValues(typeof(WeaponType)))
 					{
 						<option value="@type"><EnumDisplayName TEnum="WeaponType" Value="type" /></option>
@@ -73,6 +75,7 @@
 			<div>
 				<label for="weaponcategory">Kategoria broni:</label>
 				<select @bind="Replica.WeaponCategory" class="form-select">
+					<option value="" selected disabled>Wybierz...</option>
 					@foreach (WeaponCategory type in Enum.GetValues(typeof(WeaponCategory)))
 					{
 						<option value="@type"><EnumDisplayName TEnum="WeaponCategory" Value="type" /></option>
@@ -128,9 +131,10 @@
 							   @onchange="e => ToggleFireType(fireType, (bool)e.Value)" />
 						<label>
 							<EnumDisplayName TEnum="WeaponFireType" Value="fireType" />
-						</label>
+						</label>					
 					</div>
 				}
+				<ValidationMessage For="@(() => Replica.WeaponFireType)" />
 			</div>
 
 			<div>
@@ -143,9 +147,10 @@
 							   @onchange="e => ToggleMaterial(itemMaterial, (bool)e.Value)" />
 						<label>
 							<EnumDisplayName TEnum="ItemMaterial" Value="itemMaterial" />
-						</label>
-					</div>
+						</label>						
+					</div>				
 				}
+				<ValidationMessage For="@(() => Replica.ItemMaterial)" />
 			</div>
 
 			<div>
@@ -155,6 +160,7 @@
 			<div>
 				<label for="magtype">Gearbox:</label>
 				<select @bind="Replica.WeaponGearboxType" class="form-select">
+					<option value="" selected disabled>Wybierz...</option>
 					@foreach (GearboxType gearboxType in Enum.GetValues(typeof(GearboxType)))
 					{
 						<option value="@gearboxType"><EnumDisplayName TEnum="GearboxType" Value="gearboxType" /></option>
@@ -166,6 +172,7 @@
 			<div>
 				<label for="magtype">Typ magazynka:</label>
 				<select @bind="Replica.MagazineType" class="form-select">
+					<option value="" selected disabled>Wybierz...</option>
 					@foreach (MagazineType magType in Enum.GetValues(typeof(MagazineType)))
 					{
 						<option value="@magType"><EnumDisplayName TEnum="MagazineType" Value="magType" /></option>
