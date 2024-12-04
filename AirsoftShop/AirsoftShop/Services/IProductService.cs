@@ -8,7 +8,7 @@ namespace AirsoftShop.Services
 
         Task<int> TotalProductsAsync();
 
-        Task GetProductDetailsAsync(string id);
+        Task<Product> GetProductDetailsAsync(int productId, ProductType productType);
 
         Task CreateProductAsync(Product product);
 

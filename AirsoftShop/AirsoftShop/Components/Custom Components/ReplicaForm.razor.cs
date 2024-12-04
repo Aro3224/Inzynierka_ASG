@@ -37,6 +37,7 @@ namespace AirsoftShop.Components.Custom_Components
 
         private async Task HandleValidSubmit()
         {
+            Console.WriteLine("Saving");
             await OnSave.InvokeAsync(Replica);
         }
     }

@@ -4,6 +4,7 @@ using AirsoftShop.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirsoftShop.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241204091920_NullableProperties")]
+    partial class NullableProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,7 +33,7 @@ namespace AirsoftShop.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AccessoryType")
+                    b.Property<int?>("AccessoryType")
                         .HasColumnType("int");
 
                     b.Property<int?>("BatteryPlug")
@@ -55,29 +58,26 @@ namespace AirsoftShop.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("GasType")
                         .HasColumnType("int");
 
-                    b.Property<int>("Manufacturer")
+                    b.Property<int?>("Manufacturer")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("Price")
-                        .IsRequired()
+                    b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ProductId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("WarrantyPeriodMonths")
-                        .IsRequired()
+                    b.Property<int>("WarrantyPeriodMonths")
                         .HasColumnType("int");
 
                     b.Property<decimal?>("Weight")
@@ -166,15 +166,15 @@ namespace AirsoftShop.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "657f08e6-01eb-467d-85a5-0dbfd07f6d20",
+                            ConcurrencyStamp = "9dbc1090-bbb9-4190-9160-581863b16ef8",
                             Email = "admin@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN1",
-                            PasswordHash = "AQAAAAIAAYagAAAAEInkfjBLizUvfVIxPpp5hy5tDa/7InfqlqUD/lF6IqEYsSAsWJNqAhonRLwwX4Ny4A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOcq1Ef4SPAmvRwoBzlp6zQx8Hny6u0gAVnmR1zqPTG7Md+2kaH5QIthPTUJOBT7gA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "07783109-bff9-40f1-956c-02fdf37fae08",
+                            SecurityStamp = "7ef08aa5-955d-48bb-ab0e-40462ae88a45",
                             TwoFactorEnabled = false,
                             UserName = "admin1"
                         },
@@ -182,15 +182,15 @@ namespace AirsoftShop.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b7212201-0fa7-41cf-9d0f-1e8456bd5212",
+                            ConcurrencyStamp = "b6aabbcc-21ae-4e65-9e22-4a98abc81aba",
                             Email = "user@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "USER@GMAIL.COM",
                             NormalizedUserName = "USER1",
-                            PasswordHash = "AQAAAAIAAYagAAAAEInkfjBLizUvfVIxPpp5hy5tDa/7InfqlqUD/lF6IqEYsSAsWJNqAhonRLwwX4Ny4A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOcq1Ef4SPAmvRwoBzlp6zQx8Hny6u0gAVnmR1zqPTG7Md+2kaH5QIthPTUJOBT7gA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ef361cd2-dee8-4b2d-8b20-36a2489d0819",
+                            SecurityStamp = "9b230724-63d4-4525-8e91-75845e383265",
                             TwoFactorEnabled = false,
                             UserName = "user1"
                         },
@@ -198,15 +198,15 @@ namespace AirsoftShop.Migrations
                         {
                             Id = "3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5fb00e75-3638-46c5-a0de-04d51433f5b1",
+                            ConcurrencyStamp = "d678a418-e826-4344-8095-122478e4e928",
                             Email = "user2@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "USER2@GMAIL.COM",
                             NormalizedUserName = "USER2",
-                            PasswordHash = "AQAAAAIAAYagAAAAEInkfjBLizUvfVIxPpp5hy5tDa/7InfqlqUD/lF6IqEYsSAsWJNqAhonRLwwX4Ny4A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOcq1Ef4SPAmvRwoBzlp6zQx8Hny6u0gAVnmR1zqPTG7Md+2kaH5QIthPTUJOBT7gA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4b500cf2-5795-40b6-bca8-a430b9c91d53",
+                            SecurityStamp = "31855a50-157b-4d16-a238-24dac9a50d68",
                             TwoFactorEnabled = false,
                             UserName = "user2"
                         },
@@ -214,15 +214,15 @@ namespace AirsoftShop.Migrations
                         {
                             Id = "4",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c8f4b8e5-c686-4fb9-99ee-db12b79c3636",
+                            ConcurrencyStamp = "b22656ce-39da-4428-846a-250f02aff275",
                             Email = "user3@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "USER3@GMAIL.COM",
                             NormalizedUserName = "USER3",
-                            PasswordHash = "AQAAAAIAAYagAAAAEInkfjBLizUvfVIxPpp5hy5tDa/7InfqlqUD/lF6IqEYsSAsWJNqAhonRLwwX4Ny4A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOcq1Ef4SPAmvRwoBzlp6zQx8Hny6u0gAVnmR1zqPTG7Md+2kaH5QIthPTUJOBT7gA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8603a364-a0dd-4cf8-bc4d-2702691e1564",
+                            SecurityStamp = "4d4bff16-9c14-4a2e-903f-dd8a389a2506",
                             TwoFactorEnabled = false,
                             UserName = "user3"
                         });
@@ -243,7 +243,6 @@ namespace AirsoftShop.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ExternalPartType")
@@ -258,7 +257,7 @@ namespace AirsoftShop.Migrations
                     b.Property<decimal?>("ItemLenght")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("ItemMaterial")
+                    b.Property<int?>("ItemMaterial")
                         .HasColumnType("int");
 
                     b.Property<int?>("MagazineCapacity")
@@ -267,7 +266,7 @@ namespace AirsoftShop.Migrations
                     b.Property<int?>("MagazineType")
                         .HasColumnType("int");
 
-                    b.Property<int>("Manufacturer")
+                    b.Property<int?>("Manufacturer")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -277,16 +276,14 @@ namespace AirsoftShop.Migrations
                     b.Property<int>("PartType")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("Price")
-                        .IsRequired()
+                    b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ProductId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("WarrantyPeriodMonths")
-                        .IsRequired()
+                    b.Property<int>("WarrantyPeriodMonths")
                         .HasColumnType("int");
 
                     b.Property<decimal?>("Weight")
@@ -312,11 +309,9 @@ namespace AirsoftShop.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("FPS")
-                        .IsRequired()
+                    b.Property<int>("FPS")
                         .HasColumnType("int");
 
                     b.Property<bool>("HasBattery")
@@ -331,34 +326,30 @@ namespace AirsoftShop.Migrations
                     b.Property<int>("ItemMaterial")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("Lenght")
-                        .IsRequired()
+                    b.Property<decimal>("Lenght")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("MagazineCapacity")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int>("MagazineType")
                         .HasColumnType("int");
 
-                    b.Property<int>("Manufacturer")
+                    b.Property<int?>("Manufacturer")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("Price")
-                        .IsRequired()
+                    b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ProductId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("WarrantyPeriodMonths")
-                        .IsRequired()
+                    b.Property<int>("WarrantyPeriodMonths")
                         .HasColumnType("int");
 
                     b.Property<int>("WeaponAge")
@@ -370,7 +361,7 @@ namespace AirsoftShop.Migrations
                     b.Property<int>("WeaponFireType")
                         .HasColumnType("int");
 
-                    b.Property<int>("WeaponGearboxType")
+                    b.Property<int?>("WeaponGearboxType")
                         .HasColumnType("int");
 
                     b.Property<int>("WeaponType")

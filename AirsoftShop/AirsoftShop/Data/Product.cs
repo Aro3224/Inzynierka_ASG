@@ -163,8 +163,6 @@ namespace AirsoftShop.Data
 
     public enum PartType
     {
-        None = 0,
-
         [Display(Name = "Wewnętrzna")]
         Internal = 1,
 
@@ -174,8 +172,6 @@ namespace AirsoftShop.Data
 
     public enum ExternalPartType
     {
-        None = 0,
-
         [Display(Name = "Magazynek")]
         Magazine = 1,
 
@@ -212,8 +208,6 @@ namespace AirsoftShop.Data
 
     public enum InternalPartType
     {
-        None = 0,
-
         [Display(Name = "Gearbox")]
         Gearbox = 1,
 
@@ -364,8 +358,6 @@ namespace AirsoftShop.Data
 
     public enum AccessoryType
     {
-        None = 0,
-
         [Display(Name = "Kulki/Amunicja")]
         Bbs = 1,
 
@@ -400,25 +392,29 @@ namespace AirsoftShop.Data
         public int Id { get; set; }
 
         [Required]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [Required]
-        public decimal Price { get; set; }
+        public decimal? Price { get; set; }
 
         [Required]
         public int Count { get; set; } = 1;
 
-        public string Description { get; set; }
+        [Required]
+        public string? Description { get; set; }
 
         [Required]
-        public string ProductId { get; set; }
+        public string? ProductId { get; set; }
 
-        public Manufacturer Manufacturer { get; set; }
+        [Required]
+        public Manufacturer? Manufacturer { get; set; }
 
-        public int WarrantyPeriodMonths { get; set; }
+        [Required]
+        public int? WarrantyPeriodMonths { get; set; }
 
-        public decimal Weight { get; set; }
+        public decimal? Weight { get; set; }
 
+        [Required]
         public abstract ProductType ProductType { get; }
     }
 
@@ -427,10 +423,10 @@ namespace AirsoftShop.Data
         public override ProductType ProductType => ProductType.Replica;
 
         [Required]
-        public WeaponType WeaponType { get; set; }
+        public WeaponType? WeaponType { get; set; }
 
         [Required]
-        public WeaponCategory WeaponCategory { get; set; }
+        public WeaponCategory? WeaponCategory { get; set; }
 
         [Required]
         public WeaponAge WeaponAge { get; set; } = WeaponAge.Unspecified;
@@ -442,11 +438,13 @@ namespace AirsoftShop.Data
         public ItemMaterial ItemMaterial { get; set; }
 
         [Required]
-        public MagazineType MagazineType { get; set; }
+        public MagazineType? MagazineType { get; set; }
 
-        public GearboxType WeaponGearboxType { get; set; }
+        [Required]
+        public GearboxType? WeaponGearboxType { get; set; }
 
-        public int MagazineCapacity { get; set; }
+        [Required]
+        public int? MagazineCapacity { get; set; }
 
         [Required]
         public bool HasBattery { get; set; } = false;
@@ -457,11 +455,13 @@ namespace AirsoftShop.Data
         [Required]
         public bool HasBlowBack { get; set; } = false;
 
-        public decimal Lenght { get; set; }
+        [Required]
+        public decimal? Lenght { get; set; }
 
-        public decimal BarrelLenght { get; set; }
+        public decimal? BarrelLenght { get; set; }
 
-        public int FPS { get; set; }
+        [Required]
+        public int? FPS { get; set; }
     }
 
     public class Part : Product
@@ -469,44 +469,46 @@ namespace AirsoftShop.Data
         public override ProductType ProductType => ProductType.Part;
 
         [Required]
-        public PartType PartType { get; set; } = PartType.None;
+        public PartType? PartType { get; set; }
 
-        public InternalPartType InternalPartType { get; set; }
+        public InternalPartType? InternalPartType { get; set; }
 
-        public ExternalPartType ExternalPartType { get; set; }
+        public ExternalPartType? ExternalPartType { get; set; }
 
+        [Required]
         public ItemMaterial ItemMaterial { get; set; }
 
-        public MagazineType MagazineType { get; set; }
+        public MagazineType? MagazineType { get; set; }
 
-        public int MagazineCapacity { get; set; }
+        public int? MagazineCapacity { get; set; }
 
-        public GearboxType GearboxType { get; set; }
+        public GearboxType? GearboxType { get; set; }
 
-        public decimal ItemLenght { get; set; }
+        public decimal? ItemLenght { get; set; }
 
-        public decimal BearingDiameter { get; set; }
+        public decimal? BearingDiameter { get; set; }
     }
 
     public class Accessory : Product
     {
         public override ProductType ProductType => ProductType.Accessory;
 
-        public AccessoryType AccessoryType { get; set; }
+        [Required]
+        public AccessoryType? AccessoryType { get; set; }
 
-        public decimal BbWeight { get; set; }
+        public decimal? BbWeight { get; set; }
 
-        public BbType BbType { get; set; }
+        public BbType? BbType { get; set; }
 
-        public int Bbsize { get; set; } = 6;
+        public int? Bbsize { get; set; } = 6;
 
-        public GasType GasType { get; set; }
+        public GasType? GasType { get; set; }
 
-        public BatteryType BatteryType { get; set; }
+        public BatteryType? BatteryType { get; set; }
 
-        public BatteryPlug BatteryPlug { get; set; }
+        public BatteryPlug? BatteryPlug { get; set; }
 
-        public BatteryVoltage BatteryVoltage { get; set; }
+        public BatteryVoltage? BatteryVoltage { get; set; }
     }
 
     public class Equipment : Product

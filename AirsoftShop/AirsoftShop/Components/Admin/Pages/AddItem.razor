@@ -24,9 +24,12 @@
 	{
 		<div>
 			<label for="partType">Wybierz typ części:</label>
-			<select id="partType" @bind="Part.PartType" class="form-select">
-				<option value="@(PartType.External)">Zewnętrzna</option>
-				<option value="@(PartType.Internal)">Wewnętrzna</option>
+			<select id="partType" @bind="partType" class="form-select">
+				<option value="" selected disabled>Wybierz...</option>
+				@foreach (PartType partType in Enum.GetValues(typeof(PartType)))
+				{
+					<option value="@partType"><EnumDisplayName TEnum="PartType" Value="partType" /></option>
+				}
 			</select>
 		</div>
 	}
@@ -34,13 +37,11 @@
 	{
 		<div>
 			<label for="accessoryType">Wybierz typ produktu:</label>
-			<select id="accessoryType" @bind="Accessory.AccessoryType" class="form-select">
+			<select id="accessoryType" @bind="AccessoryType" class="form-select">
+				<option value="" selected disabled>Wybierz...</option>
 				@foreach (AccessoryType accType in Enum.GetValues(typeof(AccessoryType)))
 				{
-					if (!(accType == AccessoryType.None))
-					{
-						<option value="@accType"><EnumDisplayName TEnum="AccessoryType" Value="accType" /></option>
-					}
+					<option value="@accType"><EnumDisplayName TEnum="AccessoryType" Value="accType" /></option>
 				}
 			</select>
 		</div>
@@ -50,13 +51,11 @@
 	{
 		<div>
 			<label for="externalPartType">Wybierz część zewnętrzną:</label>
-			<select id="externalPartType" @bind="Part.ExternalPartType" class="form-select">
+			<select id="externalPartType" @bind="ExternalPartType" class="form-select">
+				<option value="" selected disabled>Wybierz...</option>
 				@foreach (ExternalPartType extPartType in Enum.GetValues(typeof(ExternalPartType)))
 				{
-					if (!(extPartType == ExternalPartType.None))
-					{
-						<option value="@extPartType"><EnumDisplayName TEnum="ExternalPartType" Value="extPartType" /></option>
-					}
+					<option value="@extPartType"><EnumDisplayName TEnum="ExternalPartType" Value="extPartType" /></option>
 				}
 			</select>
 		</div>
@@ -65,13 +64,11 @@
 	{
 		<div>
 			<label for="internalPartType">Wybierz część wewnętrzną:</label>
-			<select id="internalPartType" @bind="Part.InternalPartType" class="form-select">
+			<select id="internalPartType" @bind="InternalPartType" class="form-select">
+				<option value="" selected disabled>Wybierz...</option>
 				@foreach (InternalPartType intPartType in Enum.GetValues(typeof(InternalPartType)))
 				{
-					if (!(intPartType == InternalPartType.None))
-					{
-						<option value="@intPartType"><EnumDisplayName TEnum="InternalPartType" Value="intPartType" /></option>
-					}
+					<option value="@intPartType"><EnumDisplayName TEnum="InternalPartType" Value="intPartType" /></option>
 				}
 			</select>
 		</div>
@@ -83,7 +80,7 @@
 {
 	<ReplicaForm OnSave="@HandleSave" />
 }
-else if (SelectedProductType == ProductType.Part && !(Part.InternalPartType == InternalPartType.None) || !(Part.ExternalPartType == ExternalPartType.None))
+else if (SelectedProductType == ProductType.Part && Part.InternalPartType is not null || Part.ExternalPartType is not null)
 {
 	<PartForm Part="Part" OnSave="@HandleSave" />
 }

@@ -1,0 +1,53 @@
+﻿@page "/Admin/ProductDetails/{ProductType}/{Id}"
+@using AirsoftShop.Data
+
+@inject NavigationManager NavManager
+@inject IProductService ProductService
+
+@attribute [Authorize(Roles = "Admin")]
+
+<PageTitle>Szczegóły przedmiotu</PageTitle>
+<GoToPrevPage Page="Admin/ItemManage" Text="Szczegóły przedmiotu" />
+
+@if (Product is not null)
+{
+	<div class="custom-container mt-5">
+		<div class="py-2">
+			<div>
+				<span><b>Nazwa:</b></span>
+				<span>"@Product.Name"</span>
+			</div>
+
+			<div>
+				<span><b>Dostępne sztuki:</b></span>
+				<span>@Product.Count</span>
+			</div>
+
+			<div>
+				<span><b>Cena:</b></span>
+				<span>@Product.Price</span>
+			</div>
+
+			<div>
+				<span><b>ID produktu:</b></span>
+				<span>@Product.ProductId</span>
+			</div>
+
+			<div>
+				<span><b>Typ produktu:</b></span>
+				<span><EnumDisplayName TEnum="ProductType" Value="Product.ProductType" /></span>
+			</div>
+
+
+
+			<div class="container-fluid">
+				<button class="btn btn-secondary" @onclick="@(() => NavManager.NavigateTo($"/Admin/ProductDetails/Edit/{Id}"))">Edytuj</button>
+				<button class="btn btn-danger" @onclick="@(() => Delete(Id))">Usuń</button>
+			</div>
+		</div>
+	</div>
+}
+else
+{
+	<p>Wczytywanie...</p>
+}
