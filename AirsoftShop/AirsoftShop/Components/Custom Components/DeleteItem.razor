@@ -1,5 +1,9 @@
-﻿<h3>DeleteItem</h3>
+﻿@inject IProductService ProductService
+@inject NavigationManager NavManager
 
-@code {
+<div>
+	<p>Na pewno chcesz usunąć ten produkt?</p>
 
-}
+	<button type="button" class="btn btn-danger" @onclick="Delete">Usuń</button>
+	<button type="button" class="btn btn-secondary" @onclick="Close">Anuluj</button>
+</div>

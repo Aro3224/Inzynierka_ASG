@@ -1,5 +1,6 @@
 ﻿using AirsoftShop.Data;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace AirsoftShop.Services
@@ -42,9 +43,56 @@ namespace AirsoftShop.Services
             await _context.SaveChangesAsync();
         }
 
-        public Task DeleteProductAsync(string id)
+        public async Task DeleteProductAsync(string id, string prodType)
         {
-            throw new NotImplementedException();
+            if (!int.TryParse(id, out int productId))
+            {
+                throw new ArgumentException("Invalid product ID");
+            }
+
+            switch (prodType)
+            {
+                case "Replica":
+                    var replica = await _context.Replicas.FindAsync(productId);
+                    if (replica == null)
+                    {
+                        throw new ArgumentException("Replica product not found");
+                    }
+                    _context.Replicas.Remove(replica);
+                    break;
+
+                case "Part":
+                    var part = await _context.Parts.FindAsync(productId);
+                    if (part == null)
+                    {
+                        throw new ArgumentException("Part product not found");
+                    }
+                    _context.Parts.Remove(part);
+                    break;
+
+                case "Accessory":
+                    var accessory = await _context.Accessories.FindAsync(productId);
+                    if (accessory == null)
+                    {
+                        throw new ArgumentException("Accessory product not found");
+                    }
+                    _context.Accessories.Remove(accessory);
+                    break;
+
+                //case "Equipment":
+                //    var equipment = await _context.Equipments.FindAsync(productId);
+                //    if (equipment == null)
+                //    {
+                //        throw new ArgumentException("Equipment product not found");
+                //    }
+                //    _context.Equipments.Remove(equipment);
+                //    break;
+
+                default:
+                    throw new ArgumentException("Unknown product type");
+            }
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task EditProductAsync(Product product, string id)

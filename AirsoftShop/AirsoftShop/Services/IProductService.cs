@@ -14,7 +14,7 @@ namespace AirsoftShop.Services
 
         Task EditProductAsync(Product product, string id);
 
-        Task DeleteProductAsync(string id);
+        Task DeleteProductAsync(string id, string prodType);
 
         Task<List<Product>> FilterProductsAsync(string searchTerm);
     }
