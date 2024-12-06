@@ -1,4 +1,5 @@
 ﻿using AirsoftShop.Data;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace AirsoftShop.Services
@@ -6,10 +7,12 @@ namespace AirsoftShop.Services
     public class ProductService : IProductService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public ProductService(ApplicationDbContext context)
+        public ProductService(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task CreateProductAsync(Product product)
@@ -44,10 +47,43 @@ namespace AirsoftShop.Services
             throw new NotImplementedException();
         }
 
-        public Task EditProductAsync(Product product, string id)
+        public async Task EditProductAsync(Product product, string id)
         {
-            throw new NotImplementedException();
+            if (!int.TryParse(id, out int productId))
+            {
+                throw new ArgumentException("Invalid product ID");
+            }
+
+            Product existingProduct = null;
+
+            switch (product)
+            {
+                case Replica _:
+                    existingProduct = await _context.Replicas.FindAsync(productId);
+                    break;
+                case Part _:
+                    existingProduct = await _context.Parts.FindAsync(productId);
+                    break;
+                case Accessory _:
+                    existingProduct = await _context.Accessories.FindAsync(productId);
+                    break;
+                //case Equipment _:
+                //    existingProduct = await _context.Equipment.FindAsync(productId);
+                //    break;
+                default:
+                    throw new ArgumentException("Unknown product type");
+            }
+
+            if (existingProduct == null)
+            {
+                throw new ArgumentException("Product not found");
+            }
+
+            _mapper.Map(product, existingProduct);
+
+            await _context.SaveChangesAsync();
         }
+
 
         public async Task<List<Product>> FilterProductsAsync(string searchTerm)
         {
