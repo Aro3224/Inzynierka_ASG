@@ -1,13 +1,13 @@
-﻿@page "/Admin/ProductDetails/Edit/{ProductType}/{Id}"
+﻿@page "/Admin/ProductDetails/Edit/{ProdType}/{Id}"
+@using System.ComponentModel.DataAnnotations
 @inject IProductService ProductService
 @inject NavigationManager NavManager
 
 @attribute [Authorize(Roles = "Admin")]
 
-
-<PageTitle>Edit User</PageTitle>
-<GoToPrevPage Page="Admin/ProductDetails" ProductType="@ProductType" Id="@Id" Text="Edycja produktu" />
+<PageTitle>Edytuj produkt</PageTitle>
+<GoToPrevPage Page="Admin/ProductDetails" ProductType="@ProdType" Id="@Id" Text="Edycja produktu" />
 
 <div class="custom-container pt-3">
-	
+
 </div>
