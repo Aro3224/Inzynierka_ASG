@@ -392,27 +392,35 @@ namespace AirsoftShop.Data
         public int Id { get; set; }
 
         [Required]
+        [Display(Name = "Nazwa produktu")]
         public string? Name { get; set; }
 
         [Required]
+        [Display(Name = "Cena (zł)")]
         public decimal? Price { get; set; }
 
         [Required]
+        [Display(Name = "Dostępna ilość")]
         public int Count { get; set; } = 1;
 
         [Required]
+        [Display(Name = "Opis")]
         public string? Description { get; set; }
 
         [Required]
+        [Display(Name = "ID produktu")]
         public string? ProductId { get; set; }
 
         [Required]
+        [Display(Name = "Marka")]
         public Manufacturer? Manufacturer { get; set; }
 
         [Required]
+        [Display(Name = "Gwarancja (miesiące)")]
         public int? WarrantyPeriodMonths { get; set; }
 
-        public decimal? Weight { get; set; }
+        [Display(Name = "Waga (g)")]
+        public int? Weight { get; set; }
 
         [Required]
         public abstract ProductType ProductType { get; }
@@ -420,94 +428,128 @@ namespace AirsoftShop.Data
 
     public class Replica : Product
     {
+        [Display(Name = "Typ produktu")]
         public override ProductType ProductType => ProductType.Replica;
 
         [Required]
+        [Display(Name = "Typ broni")]
         public WeaponType? WeaponType { get; set; }
 
         [Required]
+        [Display(Name = "Kategoria broni")]
         public WeaponCategory? WeaponCategory { get; set; }
 
         [Required]
+        [Display(Name = "Epoka broni")]
         public WeaponAge WeaponAge { get; set; } = WeaponAge.Unspecified;
 
         [Required]
+        [Display(Name = "Tryby ognia")]
         public WeaponFireType WeaponFireType { get; set; }
 
         [Required]
+        [Display(Name = "Materiał")]
         public ItemMaterial ItemMaterial { get; set; }
 
         [Required]
+        [Display(Name = "Rodzaj magazynka")]
         public MagazineType? MagazineType { get; set; }
 
         [Required]
+        [Display(Name = "Gearbox")]
         public GearboxType? WeaponGearboxType { get; set; }
 
         [Required]
+        [Display(Name = "Pojemność magazynka")]
         public int? MagazineCapacity { get; set; }
 
         [Required]
+        [Display(Name = "Bateria w zestawie")]
         public bool HasBattery { get; set; } = false;
 
         [Required]
+        [Display(Name = "Hop-Up")]
         public bool HasHopUp { get; set; } = false;
 
         [Required]
+        [Display(Name = "Blow-Back")]
         public bool HasBlowBack { get; set; } = false;
 
         [Required]
-        public decimal? Lenght { get; set; }
+        [Display(Name = "Długość całkowita (mm)")]
+        public int? Lenght { get; set; }
 
-        public decimal? BarrelLenght { get; set; }
+        [Display(Name = "Długość lufy wewnętrznej (mm)")]
+        public int? BarrelLenght { get; set; }
 
         [Required]
+        [Display(Name = "FPS")]
         public int? FPS { get; set; }
     }
 
     public class Part : Product
     {
+        [Display(Name = "Typ produktu")]
         public override ProductType ProductType => ProductType.Part;
 
         [Required]
+        [Display(Name = "Typ części")]
         public PartType? PartType { get; set; }
 
+        [Display(Name = "Typ części wewnętrznej")]
         public InternalPartType? InternalPartType { get; set; }
 
+        [Display(Name = "Typ części zewnętrznej")]
         public ExternalPartType? ExternalPartType { get; set; }
 
         [Required]
+        [Display(Name = "Materiał")]
         public ItemMaterial ItemMaterial { get; set; }
 
+        [Display(Name = "Rodzaj magazynka")]
         public MagazineType? MagazineType { get; set; }
 
+        [Display(Name = "Pojemność magazynka")]
         public int? MagazineCapacity { get; set; }
 
+        [Display(Name = "Gearbox")]
         public GearboxType? GearboxType { get; set; }
 
-        public decimal? ItemLenght { get; set; }
+        [Display(Name = "Długość (mm)")]
+        public int? ItemLenght { get; set; }
 
-        public decimal? BearingDiameter { get; set; }
+        [Display(Name = "Średnica łożyska (mm)")]
+        public int? BearingDiameter { get; set; }
     }
 
     public class Accessory : Product
     {
+        [Display(Name = "Typ produktu")]
         public override ProductType ProductType => ProductType.Accessory;
 
         [Required]
+        [Display(Name = "Typ dodatku")]
         public AccessoryType? AccessoryType { get; set; }
 
+        [Display(Name = "Waga kulki (g)")]
         public decimal? BbWeight { get; set; }
 
+        [Display(Name = "Typ kulki")]
         public BbType? BbType { get; set; }
 
-        public int? Bbsize { get; set; } = 6;
+        [Display(Name = "Rozmiar kulki (mm)")]
+        public int? Bbsize { get; set; }
 
+        [Display(Name = "Typ gazu")]
         public GasType? GasType { get; set; }
 
+        [Display(Name = "Typ baterii")]
         public BatteryType? BatteryType { get; set; }
 
+        [Display(Name = "Wtyk baterii")]
         public BatteryPlug? BatteryPlug { get; set; }
 
+        [Display(Name = "Napięcie baterii")]
         public BatteryVoltage? BatteryVoltage { get; set; }
     }
 

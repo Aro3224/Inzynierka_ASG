@@ -1,0 +1,16 @@
+﻿.custom-container {
+    display: flex;
+    justify-content: center;
+}
+
+    .custom-container > div {
+        width: 40%;
+    }
+
+.edit-form > div {
+    margin-bottom: 20px;
+}
+
+.edit-form > button {
+    width: 100%;
+}

@@ -1,4 +1,6 @@
+using AirsoftShop.Components.Custom_Components;
 using AirsoftShop.Data;
+using Blazored.Modal;
 using Blazored.Modal.Services;
 using Microsoft.AspNetCore.Components;
 
@@ -17,13 +19,15 @@ namespace AirsoftShop.Components.Admin.Pages
         [CascadingParameter]
         public IModalService Modal { get; set; } = default!;
 
-        private async void Delete(string Id)
+        private async void Delete(string Id, string ProdType)
         {
-            //var parameters = new ModalParameters()
-            //    .Add(nameof(DeleteProduct.Id), Id);
+            var parameters = new ModalParameters()
+                .Add(nameof(DeleteItem.Id), Id)
+                .Add(nameof(DeleteItem.ProdType), ProdType);
 
-            //Modal.Show<DeleteProduct>("Usuñ przedmiot", parameters);
+            Modal.Show<DeleteItem>("Usuñ przedmiot", parameters);
         }
+
 
         protected override async Task OnInitializedAsync()
         {

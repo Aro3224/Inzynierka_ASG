@@ -1,0 +1,49 @@
+﻿@page "/Admin/ProductDetails/Edit/{ProdType}/{Id}"
+@using System.ComponentModel.DataAnnotations
+@inject IProductService ProductService
+@inject NavigationManager NavManager
+
+@attribute [Authorize(Roles = "Admin")]
+
+<PageTitle>Edytuj produkt</PageTitle>
+<GoToPrevPage Page="Admin/ProductDetails" ProductType="@ProdType" Id="@Id" Text="Edycja produktu" />
+
+<div class="custom-container pt-3">
+    <div>
+    <EditForm Model="Product" OnValidSubmit="HandleSubmit" class="edit-form">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        @foreach (var property in Product.GetType().GetProperties())
+        {
+            var value = property.GetValue(Product);
+
+            if (property.Name != nameof(Product.Id) && value != null)
+            {
+                var displayName = property.GetCustomAttributes(typeof(DisplayAttribute), false)
+                .Cast<DisplayAttribute>()
+                .FirstOrDefault()?.Name ?? property.Name;
+
+                <div class="form-group">
+                    <label for="@property.Name">@displayName</label>
+
+                    @if (value is string stringValue)
+                    {
+                        <InputText @bind-Value="stringValue" class="form-control" id="@property.Name" />
+                    }
+                    else if (value is int intValue)
+                    {
+                        <InputNumber @bind-Value="intValue" class="form-control" id="@property.Name" />
+                    }
+                    else if (value is decimal decimalValue)
+                    {
+                        <InputNumber @bind-Value="decimalValue" class="form-control" id="@property.Name" />
+                    }
+                </div>
+            }
+        }
+
+        <button type="submit" class="btn btn-primary">Zapisz</button>
+    </EditForm>
+    </div>
+</div>

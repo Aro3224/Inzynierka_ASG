@@ -1,4 +1,6 @@
 ﻿using AirsoftShop.Data;
+using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace AirsoftShop.Services
@@ -6,10 +8,12 @@ namespace AirsoftShop.Services
     public class ProductService : IProductService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public ProductService(ApplicationDbContext context)
+        public ProductService(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task CreateProductAsync(Product product)
@@ -39,15 +43,95 @@ namespace AirsoftShop.Services
             await _context.SaveChangesAsync();
         }
 
-        public Task DeleteProductAsync(string id)
+        public async Task DeleteProductAsync(string id, string prodType)
         {
-            throw new NotImplementedException();
+            if (!int.TryParse(id, out int productId))
+            {
+                throw new ArgumentException("Invalid product ID");
+            }
+
+            switch (prodType)
+            {
+                case "Replica":
+                    var replica = await _context.Replicas.FindAsync(productId);
+                    if (replica == null)
+                    {
+                        throw new ArgumentException("Replica product not found");
+                    }
+                    _context.Replicas.Remove(replica);
+                    break;
+
+                case "Part":
+                    var part = await _context.Parts.FindAsync(productId);
+                    if (part == null)
+                    {
+                        throw new ArgumentException("Part product not found");
+                    }
+                    _context.Parts.Remove(part);
+                    break;
+
+                case "Accessory":
+                    var accessory = await _context.Accessories.FindAsync(productId);
+                    if (accessory == null)
+                    {
+                        throw new ArgumentException("Accessory product not found");
+                    }
+                    _context.Accessories.Remove(accessory);
+                    break;
+
+                //case "Equipment":
+                //    var equipment = await _context.Equipments.FindAsync(productId);
+                //    if (equipment == null)
+                //    {
+                //        throw new ArgumentException("Equipment product not found");
+                //    }
+                //    _context.Equipments.Remove(equipment);
+                //    break;
+
+                default:
+                    throw new ArgumentException("Unknown product type");
+            }
+
+            await _context.SaveChangesAsync();
         }
 
-        public Task EditProductAsync(Product product)
+        public async Task EditProductAsync(Product product, string id)
         {
-            throw new NotImplementedException();
+            if (!int.TryParse(id, out int productId))
+            {
+                throw new ArgumentException("Invalid product ID");
+            }
+
+            Product existingProduct = null;
+
+            switch (product)
+            {
+                case Replica _:
+                    existingProduct = await _context.Replicas.FindAsync(productId);
+                    break;
+                case Part _:
+                    existingProduct = await _context.Parts.FindAsync(productId);
+                    break;
+                case Accessory _:
+                    existingProduct = await _context.Accessories.FindAsync(productId);
+                    break;
+                //case Equipment _:
+                //    existingProduct = await _context.Equipment.FindAsync(productId);
+                //    break;
+                default:
+                    throw new ArgumentException("Unknown product type");
+            }
+
+            if (existingProduct == null)
+            {
+                throw new ArgumentException("Product not found");
+            }
+
+            _mapper.Map(product, existingProduct);
+
+            await _context.SaveChangesAsync();
         }
+
 
         public async Task<List<Product>> FilterProductsAsync(string searchTerm)
         {
