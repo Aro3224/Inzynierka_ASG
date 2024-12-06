@@ -1,4 +1,5 @@
-﻿using AirsoftShop.Data;
+﻿using System.ComponentModel.DataAnnotations;
+using AirsoftShop.Data;
 using Microsoft.AspNetCore.Components;
 
 namespace AirsoftShop.Components.Admin.Pages
@@ -6,7 +7,6 @@ namespace AirsoftShop.Components.Admin.Pages
     public partial class ItemEdit
     {
         [Parameter] public string Id { get; set; }
-
         [Parameter] public string ProdType { get; set; }
 
         public Product Product { get; set; }
