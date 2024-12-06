@@ -19,19 +19,16 @@
             {
                 var value = property.GetValue(Product);
 
-                // Pobierz `Display(Name)` dla właściwości (nagłówek)
                 var displayName = property.GetCustomAttributes(typeof(DisplayAttribute), false)
                 .Cast<DisplayAttribute>()
                 .FirstOrDefault()?.Name ?? property.Name;
 
                 if (value is not null && property.Name != nameof(Product.Id))
                 {
-                    // Obsługa wartości enum
                     if (value.GetType().IsEnum)
                     {
                         if (value.GetType().GetCustomAttributes(typeof(FlagsAttribute), false).Any())
                         {
-                            // Jeśli enum jest oznaczony jako [Flags]
                             var flags = Enum.GetValues(value.GetType())
                             .Cast<Enum>()
                             .Where(flag => ((Enum)value).HasFlag(flag) && Convert.ToInt32(flag) != 0)
@@ -41,11 +38,10 @@
                             .Cast<DisplayAttribute>()
                             .FirstOrDefault()?.Name ?? flag.ToString());
 
-                            value = string.Join(", ", flags); // Połącz nazwy flag
+                            value = string.Join(", ", flags);
                         }
                         else
                         {
-                            // Standardowy enum (bez [Flags])
                             value = value.GetType()
                             .GetField(value.ToString())
                             ?.GetCustomAttributes(typeof(DisplayAttribute), false)
@@ -53,7 +49,6 @@
                             .FirstOrDefault()?.Name ?? value.ToString();
                         }
                     }
-                    // Obsługa wartości bool
                     else if (value is bool boolValue)
                     {
                         value = boolValue ? "Tak" : "Nie";

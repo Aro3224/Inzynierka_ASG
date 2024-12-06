@@ -420,7 +420,7 @@ namespace AirsoftShop.Data
         public int? WarrantyPeriodMonths { get; set; }
 
         [Display(Name = "Waga (g)")]
-        public decimal? Weight { get; set; }
+        public int? Weight { get; set; }
 
         [Required]
         public abstract ProductType ProductType { get; }
@@ -477,10 +477,10 @@ namespace AirsoftShop.Data
 
         [Required]
         [Display(Name = "Długość całkowita (mm)")]
-        public decimal? Lenght { get; set; }
+        public int? Lenght { get; set; }
 
         [Display(Name = "Długość lufy wewnętrznej (mm)")]
-        public decimal? BarrelLenght { get; set; }
+        public int? BarrelLenght { get; set; }
 
         [Required]
         [Display(Name = "FPS")]
@@ -516,10 +516,10 @@ namespace AirsoftShop.Data
         public GearboxType? GearboxType { get; set; }
 
         [Display(Name = "Długość (mm)")]
-        public decimal? ItemLenght { get; set; }
+        public int? ItemLenght { get; set; }
 
         [Display(Name = "Średnica łożyska (mm)")]
-        public decimal? BearingDiameter { get; set; }
+        public int? BearingDiameter { get; set; }
     }
 
     public class Accessory : Product
