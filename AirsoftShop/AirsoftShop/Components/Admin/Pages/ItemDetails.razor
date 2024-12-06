@@ -1,5 +1,6 @@
 ﻿@page "/Admin/ProductDetails/{ProductType}/{Id}"
 @using AirsoftShop.Data
+@using System.ComponentModel.DataAnnotations
 
 @inject NavigationManager NavManager
 @inject IProductService ProductService
@@ -13,30 +14,57 @@
 {
 	<div class="custom-container mt-5">
 		<div class="py-2">
-			<div>
-				<span><b>Nazwa:</b></span>
-				<span>"@Product.Name"</span>
-			</div>
 
-			<div>
-				<span><b>Dostępne sztuki:</b></span>
-				<span>@Product.Count</span>
-			</div>
+            @foreach (var property in Product.GetType().GetProperties())
+            {
+                var value = property.GetValue(Product);
 
-			<div>
-				<span><b>Cena:</b></span>
-				<span>@Product.Price</span>
-			</div>
+                // Pobierz `Display(Name)` dla właściwości (nagłówek)
+                var displayName = property.GetCustomAttributes(typeof(DisplayAttribute), false)
+                .Cast<DisplayAttribute>()
+                .FirstOrDefault()?.Name ?? property.Name;
 
-			<div>
-				<span><b>ID produktu:</b></span>
-				<span>@Product.ProductId</span>
-			</div>
+                if (value is not null && property.Name != nameof(Product.Id))
+                {
+                    // Obsługa wartości enum
+                    if (value.GetType().IsEnum)
+                    {
+                        if (value.GetType().GetCustomAttributes(typeof(FlagsAttribute), false).Any())
+                        {
+                            // Jeśli enum jest oznaczony jako [Flags]
+                            var flags = Enum.GetValues(value.GetType())
+                            .Cast<Enum>()
+                            .Where(flag => ((Enum)value).HasFlag(flag) && Convert.ToInt32(flag) != 0)
+                            .Select(flag => flag.GetType()
+                            .GetField(flag.ToString())
+                            ?.GetCustomAttributes(typeof(DisplayAttribute), false)
+                            .Cast<DisplayAttribute>()
+                            .FirstOrDefault()?.Name ?? flag.ToString());
 
-			<div>
-				<span><b>Typ produktu:</b></span>
-				<span><EnumDisplayName TEnum="ProductType" Value="Product.ProductType" /></span>
-			</div>
+                            value = string.Join(", ", flags); // Połącz nazwy flag
+                        }
+                        else
+                        {
+                            // Standardowy enum (bez [Flags])
+                            value = value.GetType()
+                            .GetField(value.ToString())
+                            ?.GetCustomAttributes(typeof(DisplayAttribute), false)
+                            .Cast<DisplayAttribute>()
+                            .FirstOrDefault()?.Name ?? value.ToString();
+                        }
+                    }
+                    // Obsługa wartości bool
+                    else if (value is bool boolValue)
+                    {
+                        value = boolValue ? "Tak" : "Nie";
+                    }
+
+                    <div>
+                        <span><b>@displayName:</b></span>
+                        <span>@value</span>
+                    </div>
+                }
+            }
 
 
 
