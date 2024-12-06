@@ -10,9 +10,26 @@ namespace AirsoftShop.Components.Custom_Components
         [Parameter]
         public string Page { get; set; } = "";
 
+        [Parameter]
+        public string ProductType { get; set; } = "";
+
+        [Parameter]
+        public string Id { get; set; }
+
         private void PreviousPage()
         {
-            NavManager.NavigateTo($"/{Page}");
+            if (Id == null && ProductType == "")
+            {
+                NavManager.NavigateTo($"/{Page}");
+            }
+            else if (ProductType == "")
+            {
+                NavManager.NavigateTo($"/{Page}/{Id}");
+            }
+            else if (ProductType != "" && Id != null)
+            {
+                NavManager.NavigateTo($"/{Page}/{ProductType}/{Id}");
+            }
         }
     }
 }
