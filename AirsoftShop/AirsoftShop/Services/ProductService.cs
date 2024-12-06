@@ -44,7 +44,7 @@ namespace AirsoftShop.Services
             throw new NotImplementedException();
         }
 
-        public Task EditProductAsync(Product product)
+        public Task EditProductAsync(Product product, string id)
         {
             throw new NotImplementedException();
         }

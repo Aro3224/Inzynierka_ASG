@@ -64,7 +64,7 @@
 
 
 			<div class="container-fluid">
-				<button class="btn btn-secondary" @onclick="@(() => NavManager.NavigateTo($"/Admin/ProductDetails/Edit/{Id}"))">Edytuj</button>
+				<button class="btn btn-secondary" @onclick="@(() => NavManager.NavigateTo($"/Admin/ProductDetails/Edit/{ProductType}/{Id}"))">Edytuj</button>
 				<button class="btn btn-danger" @onclick="@(() => Delete(Id))">Usuń</button>
 			</div>
 		</div>

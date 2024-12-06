@@ -12,7 +12,7 @@ namespace AirsoftShop.Services
 
         Task CreateProductAsync(Product product);
 
-        Task EditProductAsync(Product product);
+        Task EditProductAsync(Product product, string id);
 
         Task DeleteProductAsync(string id);
 
