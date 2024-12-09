@@ -1,5 +1,6 @@
 ﻿@page "/Admin/ProductDetails/Edit/{ProdType}/{Id}"
 @using System.ComponentModel.DataAnnotations
+@using AirsoftShop.Data
 @inject IProductService ProductService
 @inject NavigationManager NavManager
 
@@ -9,41 +10,238 @@
 <GoToPrevPage Page="Admin/ProductDetails" ProductType="@ProdType" Id="@Id" Text="Edycja produktu" />
 
 <div class="custom-container pt-3">
-    <div>
-    <EditForm Model="Product" OnValidSubmit="HandleSubmit" class="edit-form">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
+	<div>
+		<EditForm Model="Product" OnValidSubmit="HandleSubmit" class="edit-form d-flex flex-column">
+			<DataAnnotationsValidator />
 
-        @foreach (var property in Product.GetType().GetProperties())
-        {
-            var value = property.GetValue(Product);
+			<div>
+				<label for="name">Nazwa:</label>
+				<InputText id="name" @bind-Value="Product.Name" class="form-control" />
+				<ValidationMessage For="@(() => Product.Name)" />
+			</div>
 
-            if (property.Name != nameof(Product.Id) && value != null)
-            {
-                var displayName = property.GetCustomAttributes(typeof(DisplayAttribute), false)
-                .Cast<DisplayAttribute>()
-                .FirstOrDefault()?.Name ?? property.Name;
+			<div>
+				<label for="price">Cena:</label>
+				<InputNumber id="price" @bind-Value="Product.Price" class="form-control" />
+				<ValidationMessage For="@(() => Product.Price)" />
+			</div>
 
-                <div class="form-group">
-                    <label for="@property.Name">@displayName</label>
+			<div>
+				<label for="count">Ilość:</label>
+				<InputNumber id="count" @bind-Value="Product.Count" class="form-control" />
+				<ValidationMessage For="@(() => Product.Count)" />
+			</div>
 
-                    @if (value is string stringValue)
-                    {
-                        <InputText @bind-Value="stringValue" class="form-control" id="@property.Name" />
-                    }
-                    else if (value is int intValue)
-                    {
-                        <InputNumber @bind-Value="intValue" class="form-control" id="@property.Name" />
-                    }
-                    else if (value is decimal decimalValue)
-                    {
-                        <InputNumber @bind-Value="decimalValue" class="form-control" id="@property.Name" />
-                    }
-                </div>
-            }
-        }
+			<div>
+				<label for="description">Opis:</label>
+				<InputTextArea id="description" @bind-Value="Product.Description" class="form-control" />
+				<ValidationMessage For="@(() => Product.Description)" />
+			</div>
 
-        <button type="submit" class="btn btn-primary">Zapisz</button>
-    </EditForm>
-    </div>
+			<div>
+				<label for="prodId">ID produktu:</label>
+				<InputText id="prodId" @bind-Value="Product.ProductId" class="form-control" />
+				<ValidationMessage For="@(() => Product.ProductId)" />
+			</div>
+
+			<div>
+				<label for="weaponType">Typ broni:</label>
+				<InputSelect id="weaponType" @bind-Value="Product.Manufacturer" class="form-select">
+					@foreach (var manufacturer in Enum.GetValues<Manufacturer>())
+					{
+						<option value="@manufacturer"><EnumDisplayName TEnum="Manufacturer" Value="manufacturer" /></option>
+					}
+				</InputSelect>
+				<ValidationMessage For="@(() => Product.Manufacturer)" />
+			</div>
+
+			<div>
+				<label for="warranty">Gwarancja (miesiące):</label>
+				<InputNumber id="warranty" @bind-Value="Product.WarrantyPeriodMonths" class="form-control" />
+				<ValidationMessage For="@(() => Product.WarrantyPeriodMonths)" />
+			</div>
+
+			<div>
+				<label for="weight">Waga (g):</label>
+				<InputNumber id="weight" @bind-Value="Product.Weight" class="form-control" />
+				<ValidationMessage For="@(() => Product.Weight)" />
+			</div>
+
+			@switch (Product)
+			{
+				case Replica replica:
+					<div>
+						<label for="weaponType">Typ broni:</label>
+						<InputSelect id="weaponType" @bind-Value="replica.WeaponType" class="form-select">
+							@foreach (var type in Enum.GetValues<WeaponType>())
+							{
+								<option value="@type"><EnumDisplayName TEnum="WeaponType" Value="type" /></option>
+							}
+						</InputSelect>
+						<ValidationMessage For="@(() => replica.WeaponType)" />
+					</div>
+
+					<div>
+						<label for="weaponCategory">Kategoria broni:</label>
+						<InputSelect id="weaponCategory" @bind-Value="replica.WeaponCategory" class="form-select">
+							@foreach (var category in Enum.GetValues<WeaponCategory>())
+							{
+								<option value="@category"><EnumDisplayName TEnum="WeaponCategory" Value="category" /></option>
+							}
+						</InputSelect>
+						<ValidationMessage For="@(() => replica.WeaponCategory)" />
+					</div>
+
+					<div>
+						<label for="age">Epoka:</label>
+						<InputSelect id="age" @bind-Value="replica.WeaponAge" class="form-select">
+							@foreach (var age in Enum.GetValues<WeaponAge>())
+							{
+								<option value="@age"><EnumDisplayName TEnum="WeaponAge" Value="age" /></option>
+							}
+						</InputSelect>
+						<ValidationMessage For="@(() => replica.WeaponType)" />
+					</div>
+
+					<div>
+						<label for="lenght">Długość broni (mm):</label>
+						<InputNumber id="lenght" @bind-Value="replica.Lenght" class="form-control" />
+						<ValidationMessage For="@(() => replica.Lenght)" />
+					</div>
+
+					<div>
+						<label for="weight">Długość lufy wewnętrznej (mm):</label>
+						<InputNumber id="weight" @bind-Value="replica.BarrelLenght" class="form-control" />
+						<ValidationMessage For="@(() => replica.BarrelLenght)" />
+					</div>
+
+					<div>
+						<label for="fps">FPS:</label>
+						<InputNumber id="fps" @bind-Value="replica.FPS" class="form-control" />
+						<ValidationMessage For="@(() => replica.FPS)" />
+					</div>
+
+					<div>
+						<label for="hopup">Hop-up:</label>
+						<select @onchange="(e) => ParseToBool(e.Value, value => replica.HasHopUp = value)" class="form-select">
+							<option value="True" selected="@replica.HasHopUp">Tak</option>
+							<option value="False" selected="@(!replica.HasHopUp)">Nie</option>
+						</select>
+					</div>
+
+					<div>
+						<label for="blowback">Blowback:</label>
+						<select @onchange="(e) => ParseToBool(e.Value, value => replica.HasBlowBack = value)" class="form-select">
+							<option value="True" selected="@replica.HasBlowBack">Tak</option>
+							<option value="False" selected="@(!replica.HasBlowBack)">Nie</option>
+						</select>
+					</div>
+
+					<div>
+						<p>Tryby ognia:</p>
+						@foreach (WeaponFireType fireType in Enum.GetValues(typeof(WeaponFireType)))
+						{
+							<div>
+								<input type="checkbox"
+									   checked="@(replica.WeaponFireType.HasFlag(fireType))"
+									   @onchange="e => ToggleFireType(fireType, (bool)((ChangeEventArgs)e).Value)" />
+								<label>
+									@(fireType.GetType()
+																.GetField(fireType.ToString())
+																?.GetCustomAttributes(typeof(DisplayAttribute), false)
+																.Cast<DisplayAttribute>()
+																.FirstOrDefault()?.Name ?? fireType.ToString())
+								</label>
+							</div>
+						}
+						<ValidationMessage For="@(() => replica.WeaponFireType)" />
+					</div>
+
+					<div>
+						<p>Materiał:</p>
+						@foreach (ItemMaterial material in Enum.GetValues(typeof(ItemMaterial)))
+						{
+							<div>
+								<input type="checkbox"
+									   checked="@(replica.ItemMaterial.HasFlag(material))"
+									   @onchange="e => ToggleMaterial(material, (bool)((ChangeEventArgs)e).Value)" />
+								<label>
+									@(material.GetType()
+																.GetField(material.ToString())
+																?.GetCustomAttributes(typeof(DisplayAttribute), false)
+																.Cast<DisplayAttribute>()
+																.FirstOrDefault()?.Name ?? material.ToString())
+								</label>
+							</div>
+						}
+						<ValidationMessage For="@(() => replica.ItemMaterial)" />
+					</div>
+
+					<div>
+						<label for="battery">Akumulator w zestawie:</label>
+						<select @onchange="(e) => ParseToBool(e.Value, value => replica.HasBattery = value)" class="form-select">
+							<option value="True" selected="@replica.HasBattery">Tak</option>
+							<option value="False" selected="@(!replica.HasBattery)">Nie</option>
+						</select>
+					</div>
+
+					<div>
+						<label for="gearbox">Gearbox:</label>
+						<InputSelect id="gearbox" @bind-Value="replica.WeaponGearboxType" class="form-select">
+							@foreach (var type in Enum.GetValues<GearboxType>())
+							{
+								<option value="@type"><EnumDisplayName TEnum="GearboxType" Value="type" /></option>
+							}
+						</InputSelect>
+						<ValidationMessage For="@(() => replica.WeaponGearboxType)" />
+					</div>
+
+					<div>
+						<label for="magType">Typ magazynka:</label>
+						<InputSelect id="magType" @bind-Value="replica.MagazineType" class="form-select">
+							@foreach (var type in Enum.GetValues<MagazineType>())
+							{
+								<option value="@type"><EnumDisplayName TEnum="MagazineType" Value="type" /></option>
+							}
+						</InputSelect>
+						<ValidationMessage For="@(() => replica.MagazineType)" />
+					</div>
+
+					break;
+
+				case Part part:
+					<div>
+						<label for="partType">Typ części:</label>
+						<InputSelect id="partType" @bind-Value="part.PartType">
+							@foreach (var type in Enum.GetValues<PartType>())
+							{
+								<option value="@type"><EnumDisplayName TEnum="PartType" Value="type" /></option>
+							}
+						</InputSelect>
+					</div>
+					break;
+
+				case Accessory accessory:
+					<div>
+						<label for="accessoryType">Typ akcesorium:</label>
+						<InputSelect id="accessoryType" @bind-Value="accessory.AccessoryType">
+							@foreach (var type in Enum.GetValues<AccessoryType>())
+							{
+								<option value="@type">@type</option>
+							}
+						</InputSelect>
+					</div>
+					<div>
+						<label for="bbWeight">Waga kulek (g):</label>
+						<InputNumber id="bbWeight" @bind-Value="accessory.BbWeight" />
+					</div>
+					break;
+
+				case Equipment equipment:
+					break;
+			}
+
+			<button type="submit" class="btn btn-secondary">Zapisz zmiany</button>
+		</EditForm>
+	</div>
 </div>
