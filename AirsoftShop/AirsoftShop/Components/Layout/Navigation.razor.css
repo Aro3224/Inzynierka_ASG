@@ -2,25 +2,50 @@
     position: relative;
 }
 
+    .dropdown > a {
+        text-decoration: none !important;
+    }
+
+        .dropdown > a:hover {
+            background-color: #e9ecef;
+        }
+
 .dropdown-menu {
     display: none;
     position: absolute;
     top: 100%;
     left: 0;
-    width: 0;
-    overflow: hidden;
+    width: auto;
     opacity: 0;
     background-color: #f8f9fa;
-    transition: width 0.5s ease, opacity 0.3s ease;
+    transition: opacity 0.3s ease;
+    padding: 1rem;
+    margin-top: 0.5rem;
 }
 
 .dropdown:hover .dropdown-menu {
-    display: block;
-    width: 200px;
+    display: flex;
     opacity: 1;
 }
 
+.dropdown-menu.multi-column {
+    flex-wrap: nowrap;
+    display: flex;
+    gap: 1rem;
+}
+
+.dropdown-menu .dropdown-column {
+    list-style: none;
+    padding: 0;
+}
+
+.dropdown-column > a {
+    margin: 0px;
+    text-decoration: none !important;
+}
+
 .dropdown-item {
+    display: block;
     padding: 10px;
     text-decoration: none;
 }
