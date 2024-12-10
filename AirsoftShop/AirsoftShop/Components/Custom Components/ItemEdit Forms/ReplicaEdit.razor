@@ -1,0 +1,142 @@
+﻿@using AirsoftShop.Data
+@using System.ComponentModel.DataAnnotations
+
+
+<div class="d-flex flex-column gap-3 mb-3">
+	<div>
+		<label for="weaponType">Typ broni:</label>
+		<InputSelect id="weaponType" @bind-Value="Replica.WeaponType" class="form-select">
+			@foreach (var type in Enum.GetValues<WeaponType>())
+			{
+				<option value="@type"><EnumDisplayName TEnum="WeaponType" Value="type" /></option>
+			}
+		</InputSelect>
+		<ValidationMessage For="@(() => Replica.WeaponType)" />
+	</div>
+
+	<div>
+		<label for="weaponCategory">Kategoria broni:</label>
+		<InputSelect id="weaponCategory" @bind-Value="Replica.WeaponCategory" class="form-select">
+			@foreach (var category in Enum.GetValues<WeaponCategory>())
+			{
+				<option value="@category"><EnumDisplayName TEnum="WeaponCategory" Value="category" /></option>
+			}
+		</InputSelect>
+		<ValidationMessage For="@(() => Replica.WeaponCategory)" />
+	</div>
+
+	<div>
+		<label for="age">Epoka:</label>
+		<InputSelect id="age" @bind-Value="Replica.WeaponAge" class="form-select">
+			@foreach (var age in Enum.GetValues<WeaponAge>())
+			{
+				<option value="@age"><EnumDisplayName TEnum="WeaponAge" Value="age" /></option>
+			}
+		</InputSelect>
+		<ValidationMessage For="@(() => Replica.WeaponType)" />
+	</div>
+
+	<div>
+		<label for="lenght">Długość broni (mm):</label>
+		<InputNumber id="lenght" @bind-Value="Replica.Lenght" class="form-control" />
+		<ValidationMessage For="@(() => Replica.Lenght)" />
+	</div>
+
+	<div>
+		<label for="weight">Długość lufy wewnętrznej (mm):</label>
+		<InputNumber id="weight" @bind-Value="Replica.BarrelLenght" class="form-control" />
+		<ValidationMessage For="@(() => Replica.BarrelLenght)" />
+	</div>
+
+	<div>
+		<label for="fps">FPS:</label>
+		<InputNumber id="fps" @bind-Value="Replica.FPS" class="form-control" />
+		<ValidationMessage For="@(() => Replica.FPS)" />
+	</div>
+
+	<div>
+		<label for="hopup">Hop-up:</label>
+		<select @onchange="(e) => ParseToBool(e.Value, value => Replica.HasHopUp = value)" class="form-select">
+			<option value="True" selected="@Replica.HasHopUp">Tak</option>
+			<option value="False" selected="@(!Replica.HasHopUp)">Nie</option>
+		</select>
+	</div>
+
+	<div>
+		<label for="blowback">Blowback:</label>
+		<select @onchange="(e) => ParseToBool(e.Value, value => Replica.HasBlowBack = value)" class="form-select">
+			<option value="True" selected="@Replica.HasBlowBack">Tak</option>
+			<option value="False" selected="@(!Replica.HasBlowBack)">Nie</option>
+		</select>
+	</div>
+
+	<div>
+		<span>Tryby ognia:</span>
+		@foreach (WeaponFireType fireType in Enum.GetValues(typeof(WeaponFireType)))
+		{
+			<div>
+				<input type="checkbox"
+					   checked="@(Replica.WeaponFireType.HasFlag(fireType))"
+					   @onchange="e => ToggleFireType(fireType, (bool)((ChangeEventArgs)e).Value)" />
+				<label>
+					@(fireType.GetType()
+									.GetField(fireType.ToString())
+									?.GetCustomAttributes(typeof(DisplayAttribute), false)
+									.Cast<DisplayAttribute>()
+									.FirstOrDefault()?.Name ?? fireType.ToString())
+				</label>
+			</div>
+		}
+		<ValidationMessage For="@(() => Replica.WeaponFireType)" />
+	</div>
+
+	<div>
+		<span>Materiał:</span>
+		@foreach (ItemMaterial material in Enum.GetValues(typeof(ItemMaterial)))
+		{
+			<div>
+				<input type="checkbox"
+					   checked="@(Replica.ItemMaterial.HasFlag(material))"
+					   @onchange="e => ToggleMaterial(material, (bool)((ChangeEventArgs)e).Value)" />
+				<label>
+					@(material.GetType()
+									.GetField(material.ToString())
+									?.GetCustomAttributes(typeof(DisplayAttribute), false)
+									.Cast<DisplayAttribute>()
+									.FirstOrDefault()?.Name ?? material.ToString())
+				</label>
+			</div>
+		}
+		<ValidationMessage For="@(() => Replica.ItemMaterial)" />
+	</div>
+
+	<div>
+		<label for="battery">Akumulator w zestawie:</label>
+		<select @onchange="(e) => ParseToBool(e.Value, value => Replica.HasBattery = value)" class="form-select">
+			<option value="True" selected="@Replica.HasBattery">Tak</option>
+			<option value="False" selected="@(!Replica.HasBattery)">Nie</option>
+		</select>
+	</div>
+
+	<div>
+		<label for="gearbox">Gearbox:</label>
+		<InputSelect id="gearbox" @bind-Value="Replica.WeaponGearboxType" class="form-select">
+			@foreach (var type in Enum.GetValues<GearboxType>())
+			{
+				<option value="@type"><EnumDisplayName TEnum="GearboxType" Value="type" /></option>
+			}
+		</InputSelect>
+		<ValidationMessage For="@(() => Replica.WeaponGearboxType)" />
+	</div>
+
+	<div>
+		<label for="magType">Typ magazynka:</label>
+		<InputSelect id="magType" @bind-Value="Replica.MagazineType" class="form-select">
+			@foreach (var type in Enum.GetValues<MagazineType>())
+			{
+				<option value="@type"><EnumDisplayName TEnum="MagazineType" Value="type" /></option>
+			}
+		</InputSelect>
+		<ValidationMessage For="@(() => Replica.MagazineType)" />
+	</div>
+</div>

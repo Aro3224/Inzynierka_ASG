@@ -59,50 +59,5 @@ namespace AirsoftShop.Components.Admin.Pages
             await ProductService.EditProductAsync(Product, Id);
             NavManager.NavigateTo($"/Admin/ProductDetails/{ProdType}/{Id}");
         }
-
-        private void ParseToBool(object args, Action<bool> setProperty)
-        {
-            if (string.IsNullOrEmpty(args?.ToString()))
-            {
-                return;
-            }
-
-            if (bool.TryParse(args.ToString(), out var result))
-            {
-                setProperty(result);
-            }
-        }
-
-        private void ToggleMaterial(ItemMaterial material, bool isChecked)
-        {
-            if (Product is Replica replica)
-            {
-                if (isChecked)
-                {
-                    replica.ItemMaterial |= material;
-                }
-                else
-                {
-  
-                    replica.ItemMaterial &= ~material;
-                }
-            }
-        }
-
-        private void ToggleFireType(WeaponFireType fireType, bool isChecked)
-        {
-            if (Product is Replica replica)
-            {
-                if (isChecked)
-                {
-                    replica.WeaponFireType |= fireType;
-                }
-                else
-                {
-
-                    replica.WeaponFireType &= ~fireType;
-                }
-            }
-        }
     }
 }

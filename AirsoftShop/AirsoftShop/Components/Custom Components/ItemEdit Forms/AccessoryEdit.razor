@@ -1,0 +1,80 @@
+﻿@using AirsoftShop.Data
+
+
+<div class="d-flex flex-column gap-3 mb-3">
+	@switch (Accessory.AccessoryType)
+	{
+		case AccessoryType.Bbs:
+			<div>
+				<label for="bbType">Typ kulki:</label>
+				<InputSelect id="bbType" @bind-Value="Accessory.BbType" class="form-select">
+					@foreach (var type in Enum.GetValues<BbType>())
+					{
+						<option value="@type"><EnumDisplayName TEnum="BbType" Value="type" /></option>
+					}
+				</InputSelect>
+				<ValidationMessage For="@(() => Accessory.BbType)" />
+			</div>
+
+			<div>
+				<label for="bbWeight">Waga kulki (g):</label>
+				<InputNumber id="bbWeight" @bind-Value="Accessory.BbWeight" class="form-control" />
+				<ValidationMessage For="@(() => Accessory.BbWeight)" />
+			</div>
+
+			<div>
+				<label for="bbSize">Wielkość kulki (mm):</label>
+				<InputNumber id="bbSize" @bind-Value="Accessory.Bbsize" class="form-control" />
+				<ValidationMessage For="@(() => Accessory.Bbsize)" />
+			</div>
+			break;
+		case AccessoryType.Gas:
+			<div>
+				<label for="gasType">Typ gazu:</label>
+				<InputSelect id="gasType" @bind-Value="Accessory.GasType" class="form-select">
+					@foreach (var type in Enum.GetValues<GasType>())
+					{
+						<option value="@type"><EnumDisplayName TEnum="GasType" Value="type" /></option>
+					}
+				</InputSelect>
+				<ValidationMessage For="@(() => Accessory.GasType)" />
+			</div>
+			break;
+		case AccessoryType.Battery:
+			<div>
+				<label for="batType">Typ baterii:</label>
+				<InputSelect id="batType" @bind-Value="Accessory.BatteryType" class="form-select">
+					@foreach (var type in Enum.GetValues<BatteryType>())
+					{
+						<option value="@type"><EnumDisplayName TEnum="BatteryType" Value="type" /></option>
+					}
+				</InputSelect>
+				<ValidationMessage For="@(() => Accessory.BatteryType)" />
+			</div>
+
+			<div>
+				<label for="batVoltage">Napięcie baterii:</label>
+				<InputSelect id="batVoltage" @bind-Value="Accessory.BatteryVoltage" class="form-select">
+					@foreach (var voltage in Enum.GetValues<BatteryVoltage>())
+					{
+						<option value="@voltage"><EnumDisplayName TEnum="BatteryVoltage" Value="voltage" /></option>
+					}
+				</InputSelect>
+				<ValidationMessage For="@(() => Accessory.BatteryVoltage)" />
+			</div>
+
+			<div>
+				<label for="batPlug">Wtyk:</label>
+				<InputSelect id="batPlug" @bind-Value="Accessory.BatteryPlug" class="form-select">
+					@foreach (var type in Enum.GetValues<BatteryPlug>())
+					{
+						<option value="@type"><EnumDisplayName TEnum="BatteryPlug" Value="type" /></option>
+					}
+				</InputSelect>
+				<ValidationMessage For="@(() => Accessory.BatteryPlug)" />
+			</div>
+			break;
+		default:
+			break;
+	}
+</div>

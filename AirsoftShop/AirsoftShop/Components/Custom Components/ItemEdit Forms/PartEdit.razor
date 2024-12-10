@@ -1,0 +1,90 @@
+﻿@using AirsoftShop.Data
+@using System.ComponentModel.DataAnnotations
+
+
+<div class="d-flex flex-column gap-3 mb-3">
+
+	<div>
+		<span>Materiał:</span>
+		@foreach (ItemMaterial material in Enum.GetValues(typeof(ItemMaterial)))
+		{
+			<div>
+				<input type="checkbox"
+					   checked="@(Part.ItemMaterial.HasFlag(material))"
+					   @onchange="e => ToggleMaterial(material, (bool)((ChangeEventArgs)e).Value)" />
+				<label>
+					@(material.GetType()
+									.GetField(material.ToString())
+									?.GetCustomAttributes(typeof(DisplayAttribute), false)
+									.Cast<DisplayAttribute>()
+									.FirstOrDefault()?.Name ?? material.ToString())
+				</label>
+			</div>
+		}
+		<ValidationMessage For="@(() => Part.ItemMaterial)" />
+	</div>
+
+	@if (Part.PartType == PartType.Internal)
+	{
+		switch (Part.InternalPartType)
+		{
+			case InternalPartType.Gearbox:
+			case InternalPartType.GearboxSkeleton:
+				<div>
+					<label for="gbType">Gearbox:</label>
+					<InputSelect id="gbType" @bind-Value="Part.GearboxType" class="form-select">
+						@foreach (var type in Enum.GetValues<GearboxType>())
+						{
+							<option value="@type"><EnumDisplayName TEnum="GearboxType" Value="type" /></option>
+						}
+					</InputSelect>
+				</div>
+
+				<div>
+					<label for="gbBearing">Średnica łożysk w Gearboxie (mm):</label>
+					<InputNumber id="gbBearing" @bind-Value="Part.BearingDiameter" class="form-control" />
+					<ValidationMessage For="@(() => Part.BearingDiameter)" />
+				</div>
+
+				break;
+
+			case InternalPartType.InnerBarrel:
+			case InternalPartType.PrecisionBarrel:
+			case InternalPartType.Spring:
+				<div>
+					<label for="lenght">Długość (mm):</label>
+					<InputNumber id="lenght" @bind-Value="Part.ItemLenght" class="form-control" />
+					<ValidationMessage For="@(() => Part.ItemLenght)" />
+				</div>
+				break;
+			default:
+				break;
+		}
+	}
+	else if (Part.PartType == PartType.External)
+	{
+		switch (Part.ExternalPartType)
+		{
+			case ExternalPartType.Magazine:
+				<div>
+					<label for="magType">Typ magazynka:</label>
+					<InputSelect id="magType" @bind-Value="Part.MagazineType" class="form-select">
+						@foreach (var type in Enum.GetValues<MagazineType>())
+						{
+							<option value="@type"><EnumDisplayName TEnum="MagazineType" Value="type" /></option>
+						}
+					</InputSelect>
+				</div>
+
+				<div>
+					<label for="magCap">Pojemność magazynka (kulki):</label>
+					<InputNumber id="magCap" @bind-Value="Part.MagazineCapacity" class="form-control" />
+					<ValidationMessage For="@(() => Part.MagazineCapacity)" />
+				</div>
+				break;
+			default:
+				break;
+		}
+	}
+
+</div>
