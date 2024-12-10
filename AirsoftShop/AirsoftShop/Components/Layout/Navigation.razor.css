@@ -1,14 +1,15 @@
-﻿.dropdown {
-    position: relative;
+﻿.dropdown a {
+    text-decoration: none !important;
 }
 
-    .dropdown > a {
-        text-decoration: none !important;
-    }
+.dropdown:hover {
+    background-color: #e9ecef;
+}
 
-        .dropdown > a:hover {
-            background-color: #e9ecef;
-        }
+    .dropdown:hover .dropdown-menu {
+        display: flex;
+        visibility: visible;
+    }
 
 .dropdown-menu {
     display: none;
@@ -16,16 +17,10 @@
     top: 100%;
     left: 0;
     width: auto;
-    opacity: 0;
+    visibility: hidden;
     background-color: #f8f9fa;
     transition: opacity 0.3s ease;
     padding: 1rem;
-    margin-top: 0.5rem;
-}
-
-.dropdown:hover .dropdown-menu {
-    display: flex;
-    opacity: 1;
 }
 
 .dropdown-menu.multi-column {
