@@ -1,5 +1,7 @@
 ﻿@page "/Admin/ProductDetails/Edit/{ProdType}/{Id}"
 @using System.ComponentModel.DataAnnotations
+@using AirsoftShop.Components.Custom_Components.ItemEdit_Forms
+@using AirsoftShop.Data
 @inject IProductService ProductService
 @inject NavigationManager NavManager
 
@@ -9,41 +11,88 @@
 <GoToPrevPage Page="Admin/ProductDetails" ProductType="@ProdType" Id="@Id" Text="Edycja produktu" />
 
 <div class="custom-container pt-3">
-    <div>
-    <EditForm Model="Product" OnValidSubmit="HandleSubmit" class="edit-form">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
+	<div>
+		<EditForm Model="Product" OnValidSubmit="HandleSubmit" class="edit-form d-flex flex-column">
+			<DataAnnotationsValidator />
 
-        @foreach (var property in Product.GetType().GetProperties())
-        {
-            var value = property.GetValue(Product);
+			<div>
+				<label for="name">Nazwa:</label>
+				<InputText id="name" @bind-Value="Product.Name" class="form-control" />
+				<ValidationMessage For="@(() => Product.Name)" />
+			</div>
 
-            if (property.Name != nameof(Product.Id) && value != null)
-            {
-                var displayName = property.GetCustomAttributes(typeof(DisplayAttribute), false)
-                .Cast<DisplayAttribute>()
-                .FirstOrDefault()?.Name ?? property.Name;
+			<div>
+				<label for="price">Cena:</label>
+				<InputNumber id="price" @bind-Value="Product.Price" class="form-control" />
+				<ValidationMessage For="@(() => Product.Price)" />
+			</div>
 
-                <div class="form-group">
-                    <label for="@property.Name">@displayName</label>
+			<div>
+				<label for="count">Ilość:</label>
+				<InputNumber id="count" @bind-Value="Product.Count" class="form-control" />
+				<ValidationMessage For="@(() => Product.Count)" />
+			</div>
 
-                    @if (value is string stringValue)
-                    {
-                        <InputText @bind-Value="stringValue" class="form-control" id="@property.Name" />
-                    }
-                    else if (value is int intValue)
-                    {
-                        <InputNumber @bind-Value="intValue" class="form-control" id="@property.Name" />
-                    }
-                    else if (value is decimal decimalValue)
-                    {
-                        <InputNumber @bind-Value="decimalValue" class="form-control" id="@property.Name" />
-                    }
-                </div>
-            }
-        }
+			<div>
+				<label for="description">Opis:</label>
+				<InputTextArea id="description" @bind-Value="Product.Description" class="form-control" />
+				<ValidationMessage For="@(() => Product.Description)" />
+			</div>
 
-        <button type="submit" class="btn btn-primary">Zapisz</button>
-    </EditForm>
-    </div>
+			<div>
+				<label for="prodId">ID produktu:</label>
+				<InputText id="prodId" @bind-Value="Product.ProductId" class="form-control" />
+				<ValidationMessage For="@(() => Product.ProductId)" />
+			</div>
+
+			<div>
+				<label for="weaponType">Typ broni:</label>
+				<InputSelect id="weaponType" @bind-Value="Product.Manufacturer" class="form-select">
+					@foreach (var manufacturer in Enum.GetValues<Manufacturer>())
+					{
+						<option value="@manufacturer"><EnumDisplayName TEnum="Manufacturer" Value="manufacturer" /></option>
+					}
+				</InputSelect>
+				<ValidationMessage For="@(() => Product.Manufacturer)" />
+			</div>
+
+			<div>
+				<label for="warranty">Gwarancja (miesiące):</label>
+				<InputNumber id="warranty" @bind-Value="Product.WarrantyPeriodMonths" class="form-control" />
+				<ValidationMessage For="@(() => Product.WarrantyPeriodMonths)" />
+			</div>
+
+			<div>
+				<label for="weight">Waga (g):</label>
+				<InputNumber id="weight" @bind-Value="Product.Weight" class="form-control" />
+				<ValidationMessage For="@(() => Product.Weight)" />
+			</div>
+
+			@switch (Product)
+			{
+				case Replica replica:
+
+					<ReplicaEdit Replica="@replica" />
+
+					break;
+
+				case Part part:
+
+					<PartEdit Part="@part" />
+
+					break;
+
+				case Accessory accessory:
+
+					<AccessoryEdit Accessory="@accessory" />
+
+					break;
+
+				case Equipment equipment:
+					break;
+			}
+
+			<button type="submit" class="btn btn-secondary">Zapisz zmiany</button>
+		</EditForm>
+	</div>
 </div>
