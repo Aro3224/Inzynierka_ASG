@@ -16,4 +16,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.10" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\Images\Replicas\sample_image.jpg" />
+  </ItemGroup>
+
 </Project>
