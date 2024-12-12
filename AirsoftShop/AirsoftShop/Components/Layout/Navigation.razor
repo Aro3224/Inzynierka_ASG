@@ -1,29 +1,32 @@
-﻿<div class="container-fluid d-flex justify-content-center">
+﻿@using System.ComponentModel.DataAnnotations
+@using AirsoftShop.Data
+
+<div class="container-fluid d-flex justify-content-center">
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="d-flex gap-2">
 
 			<div class="nav-item dropdown">
-				<a href="" class="nav-link" id="replicasMenu" role="button" aria-expanded="false">
+				<a href="Replicas" class="nav-link" id="replicasMenu" role="button" aria-expanded="false">
 					Repliki ASG
 				</a>
 				<ul class="dropdown-menu multi-column">
 					<li class="dropdown-column">
-						<a class="dropdown-item" href="#">Pistolety</a>
-						<a class="dropdown-item" href="#">Pistolety Maszynowe</a>
-						<a class="dropdown-item" href="#">Strzelby</a>
-						<a class="dropdown-item" href="#">Karabiny Szturmowe/Karabinki</a>
+						<a class="dropdown-item" href="/Replicas/@WeaponCategory.Pistol">Pistolety</a>
+						<a class="dropdown-item" href="/Replicas/@WeaponCategory.MachinePistol">Pistolety Maszynowe</a>
+						<a class="dropdown-item" href="/Replicas/@WeaponCategory.Shotgun">Strzelby</a>
+						<a class="dropdown-item" href="/Replicas/@WeaponCategory.AssaultRifle">Karabiny Szturmowe/Karabinki</a>
 					</li>
 					<li class="dropdown-column">
-						<a class="dropdown-item" href="#">Karabiny</a>
-						<a class="dropdown-item" href="#">Karabiny Snajperskie</a>
-						<a class="dropdown-item" href="#">Karabiny Maszynowe</a>
-						<a class="dropdown-item" href="#">Inne</a>
+						<a class="dropdown-item" href="/Replicas/@WeaponCategory.Carbine">Karabiny</a>
+						<a class="dropdown-item" href="/Replicas/@WeaponCategory.SniperRifle">Karabiny Snajperskie</a>
+						<a class="dropdown-item" href="/Replicas/@WeaponCategory.MachineGun">Karabiny Maszynowe</a>
+						<a class="dropdown-item" href="/Replicas/@WeaponCategory.SpecialWeapon">Inne</a>
 					</li>
 				</ul>
 			</div>
 
 			<div class="nav-item dropdown">
-				<a href="#" class="nav-link" id="replicasMenu" role="button" aria-expanded="false">
+				<a href="#" class="nav-link" id="accessoriesMenu" role="button" aria-expanded="false">
 					Akcesoria
 				</a>
 				<ul class="dropdown-menu multi-column">
@@ -35,7 +38,7 @@
 					<li class="dropdown-column">
 						<a class="dropdown-item" href="#">Baterie</a>
 						<a class="dropdown-item" href="#">Farby</a>
-						<a class="dropdown-item" href="#">Oleje</a>			
+						<a class="dropdown-item" href="#">Oleje</a>
 					</li>
 					<li class="dropdown-column">
 						<a class="dropdown-item" href="#">Narzędzia</a>
@@ -46,7 +49,7 @@
 			</div>
 
 			<div class="nav-item dropdown">
-				<a href="#" class="nav-link" id="replicasMenu" role="button" aria-expanded="false">
+				<a href="#" class="nav-link" id="externalPartsMenu" role="button" aria-expanded="false">
 					Części Zewnętrzne
 				</a>
 				<ul class="dropdown-menu multi-column">
@@ -68,7 +71,7 @@
 			</div>
 
 			<div class="nav-item dropdown">
-				<a href="#" class="nav-link" id="replicasMenu" role="button" aria-expanded="false">
+				<a href="#" class="nav-link" id="internalPartsMenu" role="button" aria-expanded="false">
 					Części Wewnętrzne
 				</a>
 				<ul class="dropdown-menu multi-column">
@@ -91,14 +94,14 @@
 						<a class="dropdown-item" href="#">Komory Hop-up</a>
 						<a class="dropdown-item" href="#">Gumki Hop-up</a>
 						<a class="dropdown-item" href="#">Spusty</a>
-						<a class="dropdown-item" href="#">Elektronika</a>					
+						<a class="dropdown-item" href="#">Elektronika</a>
 					</li>
 					<li class="dropdown-column">
 						<a class="dropdown-item" href="#">Silniki</a>
 						<a class="dropdown-item" href="#">Listwy dosyłacza</a>
 						<a class="dropdown-item" href="#">Płytki selektora</a>
 						<a class="dropdown-item" href="#">Prowadnice sprężyn</a>
-						<a class="dropdown-item" href="#">Sprężyny</a>					
+						<a class="dropdown-item" href="#">Sprężyny</a>
 					</li>
 					<li class="dropdown-column">
 						<a class="dropdown-item" href="#">Części do replik gazowych</a>
@@ -124,3 +127,15 @@
 		</div>
 	</nav>
 </div>
+
+@code {
+	private string GetCategoryDisplayName(WeaponCategory category)
+	{
+		var displayAttribute = category.GetType()
+			.GetField(category.ToString())
+			?.GetCustomAttributes(typeof(DisplayAttribute), false)
+			.FirstOrDefault() as DisplayAttribute;
+
+		return displayAttribute?.Name ?? category.ToString();
+	}
+}

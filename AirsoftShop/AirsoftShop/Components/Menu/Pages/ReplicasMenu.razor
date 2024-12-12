@@ -1,7 +1,19 @@
-﻿@page "/"
+﻿@page "/Replicas/{Category?}"
+
+<PageTitle>AirsoftShop - Repliki</PageTitle>
 
 <h3>ReplicasMenu</h3>
 
-@code {
+@if (!string.IsNullOrEmpty(Category))
+{
+	<h4>Kategoria: @Category</h4>
+}
+else
+{
+	<h4>Brak kategorii</h4>
+}
 
+@code {
+	[Parameter]
+	public string? Category { get; set; }
 }
