@@ -5,52 +5,41 @@
 
 <PageTitle>AirsoftShop - Repliki</PageTitle>
 
-@if (!string.IsNullOrEmpty(Category))
-{
-    <h4>Kategoria: @Category</h4>
-}
-else
-{
-    <h4>Brak kategorii</h4>
-}
-
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-3">
-            <img src="./Images/Replicas/sample_image.jpg" alt="Product Image" class="product-image">
-            <div class="product-info">
-                <h5 class="product-name">Nazwa Produktu</h5>
-                <p class="product-price">99.99zł</p>
-                <button type="button" class="btn btn-primary">Do koszyka</button>
-            </div>
-        </div>
-    </div>   
+	<div class="row">
+		@foreach (var replica in Replicas)
+		{
+			<div class="col-md-3 product-card">
+				<img src="./Images/Replicas/sample_image.jpg" alt="Product Image" class="product-image">
+				<div class="product-info">
+					<h5 class="product-name">@replica.Name</h5>
+					<p class="product-price">@replica.Price.ToString()zł</p>
+					<button type="button" class="btn btn-primary">Do koszyka</button>
+				</div>
+			</div>
+		}
+	</div>
 </div>
 
 @code {
-    [Parameter]
-    public string? Category { get; set; }
+	[Parameter]
+	public string? Category { get; set; }
 
-    private List<Replica> Replicas { get; set; } = new List<Replica>();
+	private List<Replica> Replicas { get; set; } = new List<Replica>();
 
-    protected override async Task OnInitializedAsync()
-    {
-        var allProducts = await ProductService.GetAllProductsAsync();
+	protected override async Task OnParametersSetAsync()
+	{
+		var allProducts = await ProductService.GetAllProductsAsync();
 
-        if (!string.IsNullOrEmpty(Category))
-        {
-            Replicas = allProducts.OfType<Replica>()
-                                   .Where(r => r.WeaponCategory.ToString().Equals(Category, StringComparison.OrdinalIgnoreCase))
-                                   .ToList();
-
-            if (!string.IsNullOrEmpty(Category))
-            {
-                Replicas = Replicas.Where(r => r.WeaponType.ToString().Equals(Category, StringComparison.OrdinalIgnoreCase)).ToList();
-            }
-        }
-        else
-        {
-            Replicas = allProducts.OfType<Replica>().ToList();
-        }
-    }
+		if (!string.IsNullOrEmpty(Category))
+		{
+			Replicas = allProducts.OfType<Replica>()
+									.Where(r => r.WeaponCategory.ToString().Equals(Category, StringComparison.OrdinalIgnoreCase))
+									.ToList();
+		}
+		else
+		{
+			Replicas = allProducts.OfType<Replica>().ToList();
+		}
+	}
 }
