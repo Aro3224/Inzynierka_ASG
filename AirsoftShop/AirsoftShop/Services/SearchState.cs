@@ -11,5 +11,12 @@
             Query = query;
             OnSearchChanged?.Invoke();
         }
+
+        public void SetSearchQueryFromUrl(Uri uri)
+        {
+            var query = System.Web.HttpUtility.ParseQueryString(uri.Query).Get("query") ?? string.Empty;
+            Query = query;
+            OnSearchChanged?.Invoke();
+        }
     }
 }

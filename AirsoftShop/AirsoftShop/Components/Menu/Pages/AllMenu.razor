@@ -3,6 +3,7 @@
 @using AirsoftShop.Data
 @inject IProductService ProductService
 @inject SearchState SearchState
+@inject NavigationManager NavigationManager
 
 <PageTitle>AirsoftShop</PageTitle>
 
@@ -10,7 +11,7 @@
     <div class="row">
         @if (FilteredProducts is null)
         {
-            
+
         }
         else if (FilteredProducts.Any())
         {
@@ -33,6 +34,9 @@
     protected override async Task OnInitializedAsync()
     {
         AllProducts = await ProductService.GetAllProductsAsync();
+
+        var currentUri = new Uri(NavigationManager.Uri);
+        SearchState.SetSearchQueryFromUrl(currentUri);
 
         SearchState.OnSearchChanged += ApplySearchFilter;
     }
