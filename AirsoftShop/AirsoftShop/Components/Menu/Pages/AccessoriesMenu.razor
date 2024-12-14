@@ -1,0 +1,45 @@
+﻿@page "/Accessories/{AccType?}"
+@using AirsoftShop.Data
+
+@inject IProductService ProductService
+
+<PageTitle>AirsoftShop - Repliki</PageTitle>
+
+<div class="container-fluid">
+	<div class="row">
+		@foreach (var accessory in Accessories)
+		{
+			<div class="col-md-3 product-card">
+				<img src="./Images/Accessories/Accessory_Sample.png" alt="Product Image" class="product-image">
+				<div class="product-info">
+					<h5 class="product-name">@accessory.Name</h5>
+					<p class="product-price">@accessory.Price.ToString()zł</p>
+					<button type="button" class="btn btn-primary">Do koszyka</button>
+				</div>
+			</div>
+		}
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	public string? AccType { get; set; }
+
+	private List<Accessory> Accessories { get; set; } = new List<Accessory>();
+
+	protected override async Task OnParametersSetAsync()
+	{
+		var allProducts = await ProductService.GetAllProductsAsync();
+
+		if (!string.IsNullOrEmpty(AccType))
+		{
+			Accessories = allProducts.OfType<Accessory>()
+									.Where(r => r.AccessoryType.ToString().Equals(AccType, StringComparison.OrdinalIgnoreCase))
+									.ToList();
+		}
+		else
+		{
+			Accessories = allProducts.OfType<Accessory>().ToList();
+		}
+	}
+}

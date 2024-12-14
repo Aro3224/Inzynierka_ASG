@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\css\menu-pages.css" />
     <None Include="wwwroot\Images\Replicas\sample_image.jpg" />
   </ItemGroup>
 

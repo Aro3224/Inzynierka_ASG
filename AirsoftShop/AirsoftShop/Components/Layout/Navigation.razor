@@ -6,7 +6,7 @@
 		<div class="d-flex gap-2">
 
 			<div class="nav-item dropdown">
-				<a href="Replicas" class="nav-link" id="replicasMenu" role="button" aria-expanded="false">
+				<a href="/Replicas" class="nav-link" id="replicasMenu" role="button" aria-expanded="false">
 					Repliki ASG
 				</a>
 				<ul class="dropdown-menu multi-column">
@@ -26,87 +26,90 @@
 			</div>
 
 			<div class="nav-item dropdown">
-				<a href="#" class="nav-link" id="accessoriesMenu" role="button" aria-expanded="false">
+				<a href="/Accessories" class="nav-link" id="accessoriesMenu" role="button" aria-expanded="false">
 					Akcesoria
 				</a>
 				<ul class="dropdown-menu multi-column">
 					<li class="dropdown-column">
-						<a class="dropdown-item" href="#">Amunicja</a>
-						<a class="dropdown-item" href="#">Gazy</a>
-						<a class="dropdown-item" href="#">Ładowarki</a>
+						<a class="dropdown-item" href="/Accessories/@AccessoryType.Bbs">Amunicja</a>
+						<a class="dropdown-item" href="/Accessories/@AccessoryType.Gas">Gazy</a>
+						<a class="dropdown-item" href="/Accessories/@AccessoryType.Charger">Ładowarki</a>
 					</li>
 					<li class="dropdown-column">
-						<a class="dropdown-item" href="#">Baterie</a>
-						<a class="dropdown-item" href="#">Farby</a>
-						<a class="dropdown-item" href="#">Oleje</a>
+						<a class="dropdown-item" href="/Accessories/@AccessoryType.Battery">Baterie</a>
+						<a class="dropdown-item" href="/Accessories/@AccessoryType.Paint">Farby</a>
+						<a class="dropdown-item" href="/Accessories/@AccessoryType.Oil">Oleje</a>
 					</li>
 					<li class="dropdown-column">
-						<a class="dropdown-item" href="#">Narzędzia</a>
-						<a class="dropdown-item" href="#">Akcesoria strzelnicze</a>
-						<a class="dropdown-item" href="#">Inne</a>
+						<a class="dropdown-item" href="/Accessories/@AccessoryType.Tool">Narzędzia</a>
+						<a class="dropdown-item" href="/Accessories/@AccessoryType.Equipment">Akcesoria strzelnicze</a>
+						<a class="dropdown-item" href="/Accessories/@AccessoryType.Unspecified">Inne</a>
 					</li>
 				</ul>
 			</div>
 
 			<div class="nav-item dropdown">
-				<a href="#" class="nav-link" id="externalPartsMenu" role="button" aria-expanded="false">
+				<a href="/Parts/@PartType.External" class="nav-link" id="externalPartsMenu" role="button" aria-expanded="false">
 					Części Zewnętrzne
 				</a>
 				<ul class="dropdown-menu multi-column">
 					<li class="dropdown-column">
-						<a class="dropdown-item" href="#">Magazynki</a>
-						<a class="dropdown-item" href="#">Celowniki</a>
-						<a class="dropdown-item" href="#">Uchwyty</a>
-						<a class="dropdown-item" href="#">Montaże</a>
-						<a class="dropdown-item" href="#">Kolby i dodatki</a>
+						<a class="dropdown-item" href="/Parts/@PartType.External/@ExternalPartType.Magazine">Magazynki</a>
+						<a class="dropdown-item" href="/Parts/@PartType.External/@ExternalPartType.Scope">Celowniki</a>
+						<a class="dropdown-item" href="/Parts/@PartType.External/@ExternalPartType.Ironsight">Celowniki mechaniczne</a>
+						<a class="dropdown-item" href="/Parts/@PartType.External/@ExternalPartType.Grip">Uchwyty</a>					
 					</li>
 					<li class="dropdown-column">
-						<a class="dropdown-item" href="#">Latarki taktyczne</a>
-						<a class="dropdown-item" href="#">Dodatki do lufy</a>
-						<a class="dropdown-item" href="#">Dwójnogi</a>
-						<a class="dropdown-item" href="#">Części korpusu</a>
-						<a class="dropdown-item" href="#">Inne</a>
+						<a class="dropdown-item" href="/Parts/@PartType.External/@ExternalPartType.Mount">Montaże</a>
+						<a class="dropdown-item" href="/Parts/@PartType.External/@ExternalPartType.Stock">Kolby i dodatki</a>
+						<a class="dropdown-item" href="/Parts/@PartType.External/@ExternalPartType.Flashlight">Latarki taktyczne</a>
+						<a class="dropdown-item" href="/Parts/@PartType.External/@ExternalPartType.BarrelMod">Dodatki do lufy</a>					
+					</li>
+					<li class="dropdown-column">
+						<a class="dropdown-item" href="/Parts/@PartType.External/@ExternalPartType.Bipod">Dwójnogi</a>
+						<a class="dropdown-item" href="/Parts/@PartType.External/@ExternalPartType.BodyPart">Części korpusu</a>
+						<a class="dropdown-item" href="/Parts/@PartType.External/@ExternalPartType.Unspecified">Inne</a>
 					</li>
 				</ul>
 			</div>
 
 			<div class="nav-item dropdown">
-				<a href="#" class="nav-link" id="internalPartsMenu" role="button" aria-expanded="false">
+				<a href="/Parts/@PartType.Internal" class="nav-link" id="internalPartsMenu" role="button" aria-expanded="false">
 					Części Wewnętrzne
 				</a>
 				<ul class="dropdown-menu multi-column">
 					<li class="dropdown-column">
-						<a class="dropdown-item" href="#">Gearboxy</a>
-						<a class="dropdown-item" href="#">Szkielety gearboxa</a>
-						<a class="dropdown-item" href="#">Tłoki</a>
-						<a class="dropdown-item" href="#">Głowice tłoku</a>
-						<a class="dropdown-item" href="#">Cylindry</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.Gearbox">Gearboxy</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.GearboxSkeleton">Szkielety gearboxa</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.Piston">Tłoki</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.PistonHead">Głowice tłoku</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.Cylinder">Cylindry</a>
 					</li>
 					<li class="dropdown-column">
-						<a class="dropdown-item" href="#">Głowice cylindra</a>
-						<a class="dropdown-item" href="#">Dysze</a>
-						<a class="dropdown-item" href="#">Koła zębate</a>
-						<a class="dropdown-item" href="#">Łożyska</a>
-						<a class="dropdown-item" href="#">Lufy wewnętrzne</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.CylinderHead">Głowice cylindra</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.Nozzle">Dysze</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.GearWheel">Koła zębate</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.Bearing">Łożyska</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.InnerBarrel">Lufy wewnętrzne</a>
 					</li>
 					<li class="dropdown-column">
-						<a class="dropdown-item" href="#">Lufy precyzyjne</a>
-						<a class="dropdown-item" href="#">Komory Hop-up</a>
-						<a class="dropdown-item" href="#">Gumki Hop-up</a>
-						<a class="dropdown-item" href="#">Spusty</a>
-						<a class="dropdown-item" href="#">Elektronika</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.PrecisionBarrel">Lufy precyzyjne</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.HopUpChamber">Komory Hop-up</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.HopUpRubber">Gumki Hop-up</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.Trigger">Spusty</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.Electronics">Elektronika</a>
 					</li>
 					<li class="dropdown-column">
-						<a class="dropdown-item" href="#">Silniki</a>
-						<a class="dropdown-item" href="#">Listwy dosyłacza</a>
-						<a class="dropdown-item" href="#">Płytki selektora</a>
-						<a class="dropdown-item" href="#">Prowadnice sprężyn</a>
-						<a class="dropdown-item" href="#">Sprężyny</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.Engine">Silniki</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.FeederRail">Listwy dosyłacza</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.SelectorPlate">Płytki selektora</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.SpringGuide">Prowadnice sprężyn</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.Spring">Sprężyny</a>
 					</li>
 					<li class="dropdown-column">
-						<a class="dropdown-item" href="#">Części do replik gazowych</a>
-						<a class="dropdown-item" href="#">Części do replik snajperskich</a>
-						<a class="dropdown-item" href="#">Inne</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.GbbPart">Części do replik gazowych</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.SniperPart">Części do replik snajperskich</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.Unspecified">Inne</a>
 					</li>
 				</ul>
 			</div>

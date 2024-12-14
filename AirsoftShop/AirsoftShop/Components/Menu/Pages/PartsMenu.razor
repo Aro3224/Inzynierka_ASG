@@ -1,0 +1,75 @@
+﻿@page "/Parts/{PType}/{DetPType?}"
+@using AirsoftShop.Data
+
+@inject IProductService ProductService
+
+<PageTitle>AirsoftShop - Repliki</PageTitle>
+
+<div class="container-fluid">
+	<div class="row">
+		@foreach (var part in Parts)
+		{
+			<div class="col-md-3 product-card">
+				<img src="./Images/Parts/Part_Sample.png" alt="Product Image" class="product-image">
+				<div class="product-info">
+					<h5 class="product-name">@part.Name</h5>
+					<p class="product-price">@part.Price.ToString()zł</p>
+					<button type="button" class="btn btn-primary">Do koszyka</button>
+				</div>
+			</div>
+		}
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	public string PType { get; set; }
+
+	[Parameter]
+	public string? DetPType { get; set; }
+
+	private List<Part> Parts { get; set; } = new List<Part>();
+
+	protected override async Task OnParametersSetAsync()
+	{
+		var allProducts = await ProductService.GetAllProductsAsync();
+
+		if (Enum.TryParse<PartType>(PType, true, out var parsedPartType))
+		{
+			if (parsedPartType == PartType.Internal)
+			{
+				if (!string.IsNullOrEmpty(DetPType))
+				{
+					Parts = allProducts.OfType<Part>()
+											.Where(r => r.InternalPartType.ToString().Equals(DetPType, StringComparison.OrdinalIgnoreCase))
+											.ToList();
+				}
+				else
+				{
+					Parts = allProducts.OfType<Part>()
+					.Where(r => r.PartType.ToString().Equals(PType, StringComparison.OrdinalIgnoreCase))
+					.ToList();
+				}
+			}
+			else if (parsedPartType == PartType.External)
+			{
+				if (!string.IsNullOrEmpty(DetPType))
+				{
+					Parts = allProducts.OfType<Part>()
+											.Where(r => r.ExternalPartType.ToString().Equals(DetPType, StringComparison.OrdinalIgnoreCase))
+											.ToList();
+				}
+				else
+				{
+					Parts = allProducts.OfType<Part>()
+					.Where(r => r.PartType.ToString().Equals(PType, StringComparison.OrdinalIgnoreCase))
+					.ToList();
+				}
+			}
+		}
+		else
+		{
+			Console.WriteLine("Could not parse Ptype to enum PartType");
+		}
+	}
+}
