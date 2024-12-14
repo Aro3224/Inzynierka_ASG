@@ -1,0 +1,39 @@
+﻿@page "/Replicas/{Category?}"
+@using AirsoftShop.Components.Menu.Custom_Components
+@using AirsoftShop.Data
+
+@inject IProductService ProductService
+
+<PageTitle>AirsoftShop - Repliki</PageTitle>
+
+<div class="container-fluid">
+	<div class="row">
+		@foreach (var replica in Replicas)
+		{
+			<ItemProduct ImageSource="./Images/Replicas/sample_image.jpg" Product="replica" />
+		}
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	public string? Category { get; set; }
+
+	private List<Replica> Replicas { get; set; } = new List<Replica>();
+
+	protected override async Task OnParametersSetAsync()
+	{
+		var allProducts = await ProductService.GetAllProductsAsync();
+
+		if (!string.IsNullOrEmpty(Category))
+		{
+			Replicas = allProducts.OfType<Replica>()
+									.Where(r => r.WeaponCategory.ToString().Equals(Category, StringComparison.OrdinalIgnoreCase))
+									.ToList();
+		}
+		else
+		{
+			Replicas = allProducts.OfType<Replica>().ToList();
+		}
+	}
+}

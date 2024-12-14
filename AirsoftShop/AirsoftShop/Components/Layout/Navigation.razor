@@ -1,18 +1,120 @@
-﻿<div class="container-fluid d-flex justify-content-center">
+﻿@using System.ComponentModel.DataAnnotations
+@using AirsoftShop.Data
+
+<div class="container-fluid d-flex justify-content-center">
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="d-flex gap-2">
+
 			<div class="nav-item dropdown">
-				<a href="#" class="nav-link" id="replicasMenu" role="button" aria-expanded="false">
+				<a href="/Replicas" class="nav-link" id="replicasMenu" role="button" aria-expanded="false">
 					Repliki ASG
 				</a>
-				<ul class="dropdown-menu">
-					<li><a class="dropdown-item" href="#">Strzelby</a></li>
-					<li><a class="dropdown-item" href="#">Karabiny</a></li>
-					<li><a class="dropdown-item" href="#">Pistolety</a></li>
+				<ul class="dropdown-menu multi-column">
+					<li class="dropdown-column">
+						<a class="dropdown-item" href="/Replicas/@WeaponCategory.Pistol">Pistolety</a>
+						<a class="dropdown-item" href="/Replicas/@WeaponCategory.MachinePistol">Pistolety Maszynowe</a>
+						<a class="dropdown-item" href="/Replicas/@WeaponCategory.Shotgun">Strzelby</a>
+						<a class="dropdown-item" href="/Replicas/@WeaponCategory.AssaultRifle">Karabiny Szturmowe/Karabinki</a>
+					</li>
+					<li class="dropdown-column">
+						<a class="dropdown-item" href="/Replicas/@WeaponCategory.Carbine">Karabiny</a>
+						<a class="dropdown-item" href="/Replicas/@WeaponCategory.SniperRifle">Karabiny Snajperskie</a>
+						<a class="dropdown-item" href="/Replicas/@WeaponCategory.MachineGun">Karabiny Maszynowe</a>
+						<a class="dropdown-item" href="/Replicas/@WeaponCategory.SpecialWeapon">Inne</a>
+					</li>
 				</ul>
 			</div>
 
 			<div class="nav-item dropdown">
+				<a href="/Accessories" class="nav-link" id="accessoriesMenu" role="button" aria-expanded="false">
+					Akcesoria
+				</a>
+				<ul class="dropdown-menu multi-column">
+					<li class="dropdown-column">
+						<a class="dropdown-item" href="/Accessories/@AccessoryType.Bbs">Amunicja</a>
+						<a class="dropdown-item" href="/Accessories/@AccessoryType.Gas">Gazy</a>
+						<a class="dropdown-item" href="/Accessories/@AccessoryType.Charger">Ładowarki</a>
+					</li>
+					<li class="dropdown-column">
+						<a class="dropdown-item" href="/Accessories/@AccessoryType.Battery">Baterie</a>
+						<a class="dropdown-item" href="/Accessories/@AccessoryType.Paint">Farby</a>
+						<a class="dropdown-item" href="/Accessories/@AccessoryType.Oil">Oleje</a>
+					</li>
+					<li class="dropdown-column">
+						<a class="dropdown-item" href="/Accessories/@AccessoryType.Tool">Narzędzia</a>
+						<a class="dropdown-item" href="/Accessories/@AccessoryType.Equipment">Akcesoria strzelnicze</a>
+						<a class="dropdown-item" href="/Accessories/@AccessoryType.Unspecified">Inne</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="nav-item dropdown">
+				<a href="/Parts/@PartType.External" class="nav-link" id="externalPartsMenu" role="button" aria-expanded="false">
+					Części Zewnętrzne
+				</a>
+				<ul class="dropdown-menu multi-column">
+					<li class="dropdown-column">
+						<a class="dropdown-item" href="/Parts/@PartType.External/@ExternalPartType.Magazine">Magazynki</a>
+						<a class="dropdown-item" href="/Parts/@PartType.External/@ExternalPartType.Scope">Celowniki</a>
+						<a class="dropdown-item" href="/Parts/@PartType.External/@ExternalPartType.Ironsight">Celowniki mechaniczne</a>
+						<a class="dropdown-item" href="/Parts/@PartType.External/@ExternalPartType.Grip">Uchwyty</a>					
+					</li>
+					<li class="dropdown-column">
+						<a class="dropdown-item" href="/Parts/@PartType.External/@ExternalPartType.Mount">Montaże</a>
+						<a class="dropdown-item" href="/Parts/@PartType.External/@ExternalPartType.Stock">Kolby i dodatki</a>
+						<a class="dropdown-item" href="/Parts/@PartType.External/@ExternalPartType.Flashlight">Latarki taktyczne</a>
+						<a class="dropdown-item" href="/Parts/@PartType.External/@ExternalPartType.BarrelMod">Dodatki do lufy</a>					
+					</li>
+					<li class="dropdown-column">
+						<a class="dropdown-item" href="/Parts/@PartType.External/@ExternalPartType.Bipod">Dwójnogi</a>
+						<a class="dropdown-item" href="/Parts/@PartType.External/@ExternalPartType.BodyPart">Części korpusu</a>
+						<a class="dropdown-item" href="/Parts/@PartType.External/@ExternalPartType.Unspecified">Inne</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="nav-item dropdown">
+				<a href="/Parts/@PartType.Internal" class="nav-link" id="internalPartsMenu" role="button" aria-expanded="false">
+					Części Wewnętrzne
+				</a>
+				<ul class="dropdown-menu multi-column">
+					<li class="dropdown-column">
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.Gearbox">Gearboxy</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.GearboxSkeleton">Szkielety gearboxa</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.Piston">Tłoki</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.PistonHead">Głowice tłoku</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.Cylinder">Cylindry</a>
+					</li>
+					<li class="dropdown-column">
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.CylinderHead">Głowice cylindra</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.Nozzle">Dysze</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.GearWheel">Koła zębate</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.Bearing">Łożyska</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.InnerBarrel">Lufy wewnętrzne</a>
+					</li>
+					<li class="dropdown-column">
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.PrecisionBarrel">Lufy precyzyjne</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.HopUpChamber">Komory Hop-up</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.HopUpRubber">Gumki Hop-up</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.Trigger">Spusty</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.Electronics">Elektronika</a>
+					</li>
+					<li class="dropdown-column">
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.Engine">Silniki</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.FeederRail">Listwy dosyłacza</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.SelectorPlate">Płytki selektora</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.SpringGuide">Prowadnice sprężyn</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.Spring">Sprężyny</a>
+					</li>
+					<li class="dropdown-column">
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.GbbPart">Części do replik gazowych</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.SniperPart">Części do replik snajperskich</a>
+						<a class="dropdown-item" href="/Parts/@PartType.Internal/@InternalPartType.Unspecified">Inne</a>
+					</li>
+				</ul>
+			</div>
+
+			@* <div class="nav-item dropdown">
 				<a href="#" class="nav-link" id="replicasMenu" role="button" aria-expanded="false">
 					Wyposażenie
 				</a>
@@ -21,10 +123,22 @@
 					<li><a class="dropdown-item" href="#">Mundury</a></li>
 					<li><a class="dropdown-item" href="#">Rigi</a></li>
 				</ul>
-			</div>
+			</div> *@
 
 			<button class="btn btn-outline-primary">O nas</button>
 			<button class="btn btn-outline-primary">Kontakt</button>
 		</div>
 	</nav>
 </div>
+
+@code {
+	private string GetCategoryDisplayName(WeaponCategory category)
+	{
+		var displayAttribute = category.GetType()
+			.GetField(category.ToString())
+			?.GetCustomAttributes(typeof(DisplayAttribute), false)
+			.FirstOrDefault() as DisplayAttribute;
+
+		return displayAttribute?.Name ?? category.ToString();
+	}
+}
