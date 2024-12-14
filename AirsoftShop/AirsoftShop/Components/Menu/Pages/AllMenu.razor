@@ -1,0 +1,68 @@
+﻿@page "/All"
+@using AirsoftShop.Components.Menu.Custom_Components
+@using AirsoftShop.Data
+@inject IProductService ProductService
+@inject SearchState SearchState
+@inject NavigationManager NavigationManager
+
+<PageTitle>AirsoftShop</PageTitle>
+
+<div class="container px-5">
+    <div class="row">
+        @if (FilteredProducts is null)
+        {
+
+        }
+        else if (FilteredProducts.Any())
+        {
+            @foreach (var product in FilteredProducts)
+            {
+                <ItemProduct ImageSource="./Images/Replicas/sample_image.jpg" Product="product" />
+            }
+        }
+        else
+        {
+            <p>Brak wyników wyszukiwania.</p>
+        }
+    </div>
+</div>
+
+@code {
+    private List<Product> AllProducts { get; set; } = new List<Product>();
+    private List<Product>? FilteredProducts { get; set; } = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        AllProducts = await ProductService.GetAllProductsAsync();
+
+        var currentUri = new Uri(NavigationManager.Uri);
+        SearchState.SetSearchQueryFromUrl(currentUri);
+
+        ApplySearchFilter();
+
+        SearchState.OnSearchChanged += ApplySearchFilter;
+    }
+
+    private void ApplySearchFilter()
+    {
+        var query = SearchState.Query;
+
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            FilteredProducts = null;
+        }
+        else
+        {
+            FilteredProducts = AllProducts
+                .Where(p => p.Name.Contains(query, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+        }
+
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        SearchState.OnSearchChanged -= ApplySearchFilter;
+    }
+}

@@ -1,10 +1,23 @@
-﻿<div class="container-fluid d-flex justify-content-end">
+﻿@inject NavigationManager NavigationManager
+@inject SearchState SearchState
+
+<div class="container-fluid d-flex justify-content-end">
     <div class="col-4 d-flex justify-content-center gap-2">
-        <input />
-        <button class="btn btn-primary">szukaj</button>
+        <input @bind="SearchText" type="text" placeholder="Wyszukaj..." />
+        <button class="btn btn-primary" @onclick="Search">Szukaj</button>
     </div>
     <div class="col-4 d-flex justify-content-end align-items-center gap-2">
         <span class="d-flex justify-content-center align-items-center">0PLN</span>
         <button class="btn btn-success">koszyk</button>
     </div>
 </div>
+
+@code {
+    private string SearchText { get; set; } = string.Empty;
+
+    private void Search()
+    {
+        SearchState.SetSearchQuery(SearchText);
+        NavigationManager.NavigateTo($"/All?query={SearchText}");
+    }
+}
