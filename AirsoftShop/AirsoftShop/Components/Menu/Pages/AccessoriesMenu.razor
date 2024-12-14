@@ -1,4 +1,5 @@
 ﻿@page "/Accessories/{AccType?}"
+@using AirsoftShop.Components.Menu.Custom_Components
 @using AirsoftShop.Data
 
 @inject IProductService ProductService
@@ -9,14 +10,7 @@
 	<div class="row">
 		@foreach (var accessory in Accessories)
 		{
-			<div class="col-md-3 product-card">
-				<img src="./Images/Accessories/Accessory_Sample.png" alt="Product Image" class="product-image">
-				<div class="product-info">
-					<h5 class="product-name">@accessory.Name</h5>
-					<p class="product-price">@accessory.Price.ToString()zł</p>
-					<button type="button" class="btn btn-primary">Do koszyka</button>
-				</div>
-			</div>
+			<ItemProduct ImageSource="./Images/Accessories/Accessory_Sample.png" Product="accessory" />
 		}
 	</div>
 </div>

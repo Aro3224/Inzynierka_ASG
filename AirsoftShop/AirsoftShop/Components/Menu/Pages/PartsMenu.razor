@@ -1,5 +1,6 @@
 ﻿@page "/Parts/{PType}/{DetPType?}"
 @using AirsoftShop.Data
+@using AirsoftShop.Components.Menu.Custom_Components
 
 @inject IProductService ProductService
 
@@ -9,14 +10,7 @@
 	<div class="row">
 		@foreach (var part in Parts)
 		{
-			<div class="col-md-3 product-card">
-				<img src="./Images/Parts/Part_Sample.png" alt="Product Image" class="product-image">
-				<div class="product-info">
-					<h5 class="product-name">@part.Name</h5>
-					<p class="product-price">@part.Price.ToString()zł</p>
-					<button type="button" class="btn btn-primary">Do koszyka</button>
-				</div>
-			</div>
+			<ItemProduct ImageSource="./Images/Parts/Part_Sample.png" Product="part" />
 		}
 	</div>
 </div>

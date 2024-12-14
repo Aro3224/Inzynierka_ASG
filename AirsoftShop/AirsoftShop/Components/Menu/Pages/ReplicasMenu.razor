@@ -1,4 +1,5 @@
 ﻿@page "/Replicas/{Category?}"
+@using AirsoftShop.Components.Menu.Custom_Components
 @using AirsoftShop.Data
 
 @inject IProductService ProductService
@@ -9,14 +10,7 @@
 	<div class="row">
 		@foreach (var replica in Replicas)
 		{
-			<div class="col-md-3 product-card">
-				<img src="./Images/Replicas/sample_image.jpg" alt="Product Image" class="product-image">
-				<div class="product-info">
-					<h5 class="product-name">@replica.Name</h5>
-					<p class="product-price">@replica.Price.ToString()zł</p>
-					<button type="button" class="btn btn-primary">Do koszyka</button>
-				</div>
-			</div>
+			<ItemProduct ImageSource="./Images/Replicas/sample_image.jpg" Product="replica" />
 		}
 	</div>
 </div>

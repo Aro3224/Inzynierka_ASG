@@ -1,0 +1,18 @@
+﻿@using AirsoftShop.Data
+
+<div class="col-md-3 product-card">
+	<img src="@ImageSource" alt="Product Image" class="product-image">
+	<div class="product-info">
+		<h5 class="product-name">@Product.Name</h5>
+		<p class="product-price">@Product.Price.ToString()zł</p>
+		<button type="button" class="btn btn-primary">Do koszyka</button>
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	public string ImageSource { get; set; }
+
+	[Parameter]
+	public Product Product { get; set; }
+}
