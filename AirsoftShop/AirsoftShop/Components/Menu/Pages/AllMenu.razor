@@ -38,6 +38,8 @@
         var currentUri = new Uri(NavigationManager.Uri);
         SearchState.SetSearchQueryFromUrl(currentUri);
 
+        ApplySearchFilter();
+
         SearchState.OnSearchChanged += ApplySearchFilter;
     }
 
