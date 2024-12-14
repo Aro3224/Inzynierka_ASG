@@ -1,7 +1,7 @@
 ﻿@using AirsoftShop.Data
 
 <div class="col-md-3 product-card mb-2">
-	<img src="@ImageSource" alt="Product Image" class="product-image">
+	<img src="@ImageSource" onerror="this.src='./Images/Replicas/icon01.png'" class="product-image">
 	<div class="product-info">
 		<div class="product-name">
 			<h5>@Product.Name</h5>
