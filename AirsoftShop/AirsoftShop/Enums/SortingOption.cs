@@ -4,7 +4,7 @@ namespace AirsoftShop.Enums
 {
     public enum SortingOption
     {
-        [Display(Name = "Domyślne")]
+        [Display(Name = "Nowości")]
         None,
 
         [Display(Name = "Cena rosnąco")]

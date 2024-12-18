@@ -8,7 +8,7 @@
 	<select @onchange="ApplySorting" class="form-select">
 		@foreach (var option in Enum.GetValues<SortingOption>())
 		{
-			<option value="@option"><EnumDisplayName TEnum="SortingOption" Value="option" /></option>			
+			<option value="@option" selected="@(option == SelectedSortingOption)"><EnumDisplayName TEnum="SortingOption" Value="option" /></option>
 		}
 	</select>
 </div>
