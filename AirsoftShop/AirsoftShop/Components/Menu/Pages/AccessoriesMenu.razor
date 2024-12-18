@@ -1,16 +1,26 @@
 ﻿@page "/Accessories/{AccType?}"
 @using AirsoftShop.Components.Menu.Custom_Components
 @using AirsoftShop.Data
+@using AirsoftShop.Enums
 
 @inject IProductService ProductService
+@inject SortingState SortingState
+@inject NavigationManager NavigationManager
 
-<PageTitle>AirsoftShop - Repliki</PageTitle>
+<PageTitle>AirsoftShop - Akcesoria</PageTitle>
 
 <div class="container-fluid">
 	<div class="row">
-		@foreach (var accessory in Accessories)
+		@if (Accessories is null || !Accessories.Any())
 		{
-			<ItemProduct ImageSource="./Images/Accessories/icon03.png" Product="accessory" />
+			<p>Brak wyników.</p>
+		}
+		else
+		{
+			@foreach (var accessory in Accessories)
+			{
+				<ItemProduct ImageSource="./Images/Accessories/icon03.png" Product="accessory" />
+			}
 		}
 	</div>
 </div>
@@ -19,21 +29,55 @@
 	[Parameter]
 	public string? AccType { get; set; }
 
+	private List<Accessory> AllAccessories { get; set; } = new List<Accessory>();
 	private List<Accessory> Accessories { get; set; } = new List<Accessory>();
 
 	protected override async Task OnParametersSetAsync()
 	{
 		var allProducts = await ProductService.GetAllProductsAsync();
+		AllAccessories = allProducts.OfType<Accessory>().ToList();
 
+		ApplyCategoryFilter();
+
+		var currentUri = new Uri(NavigationManager.Uri);
+		SortingState.SetSortingOptionFromUrl(currentUri);
+
+		SortingState.OnSortingChanged += ApplySorting;
+
+		ApplySorting();
+	}
+
+	private void ApplyCategoryFilter()
+	{
 		if (!string.IsNullOrEmpty(AccType))
 		{
-			Accessories = allProducts.OfType<Accessory>()
-									.Where(r => r.AccessoryType.ToString().Equals(AccType, StringComparison.OrdinalIgnoreCase))
-									.ToList();
+			Accessories = AllAccessories
+				.Where(r => r.AccessoryType.ToString().Equals(AccType, StringComparison.OrdinalIgnoreCase))
+				.ToList();
 		}
 		else
 		{
-			Accessories = allProducts.OfType<Accessory>().ToList();
+			Accessories = AllAccessories.ToList();
 		}
+	}
+
+	private void ApplySorting()
+	{
+		Accessories = SortingState.CurrentSortingOption switch
+		{
+			SortingOption.PriceAsc => Accessories.OrderBy(r => r.Price).ToList(),
+			SortingOption.PriceDesc => Accessories.OrderByDescending(r => r.Price).ToList(),
+			SortingOption.NameAsc => Accessories.OrderBy(r => r.Name).ToList(),
+			SortingOption.NameDesc => Accessories.OrderByDescending(r => r.Name).ToList(),
+			SortingOption.None => Accessories.OrderByDescending(r => r.Id).ToList(),
+			_ => Accessories
+		};
+
+		InvokeAsync(StateHasChanged);
+	}
+
+	public void Dispose()
+	{
+		SortingState.OnSortingChanged -= ApplySorting;
 	}
 }

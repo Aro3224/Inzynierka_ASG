@@ -1,8 +1,10 @@
 ﻿@page "/All"
 @using AirsoftShop.Components.Menu.Custom_Components
 @using AirsoftShop.Data
+@using AirsoftShop.Enums
 @inject IProductService ProductService
 @inject SearchState SearchState
+@inject SortingState SortingState
 @inject NavigationManager NavigationManager
 
 <PageTitle>AirsoftShop</PageTitle>
@@ -37,8 +39,12 @@
 
         var currentUri = new Uri(NavigationManager.Uri);
         SearchState.SetSearchQueryFromUrl(currentUri);
+        SortingState.SetSortingOptionFromUrl(currentUri);
+
+        SortingState.OnSortingChanged += ApplySorting;
 
         ApplySearchFilter();
+        ApplySorting();
 
         SearchState.OnSearchChanged += ApplySearchFilter;
     }
@@ -61,8 +67,24 @@
         InvokeAsync(StateHasChanged);
     }
 
+    private void ApplySorting()
+    {
+        FilteredProducts = SortingState.CurrentSortingOption switch
+        {
+            SortingOption.PriceAsc => FilteredProducts.OrderBy(r => r.Price).ToList(),
+            SortingOption.PriceDesc => FilteredProducts.OrderByDescending(r => r.Price).ToList(),
+            SortingOption.NameAsc => FilteredProducts.OrderBy(r => r.Name).ToList(),
+            SortingOption.NameDesc => FilteredProducts.OrderByDescending(r => r.Name).ToList(),
+            SortingOption.None => FilteredProducts.OrderByDescending(r => r.Id).ToList(),
+            _ => FilteredProducts
+        };
+
+        InvokeAsync(StateHasChanged);
+    }
+
     public void Dispose()
     {
         SearchState.OnSearchChanged -= ApplySearchFilter;
+        SortingState.OnSortingChanged -= ApplySorting;
     }
 }

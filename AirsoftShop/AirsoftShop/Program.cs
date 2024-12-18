@@ -49,6 +49,7 @@ namespace AirsoftShop
             builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
             builder.Services.AddBlazoredModal();
             builder.Services.AddSingleton<SearchState>();
+            builder.Services.AddSingleton<SortingState>();
 
             var app = builder.Build();
 
