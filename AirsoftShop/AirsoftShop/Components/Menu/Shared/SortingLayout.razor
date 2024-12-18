@@ -1,7 +1,35 @@
-﻿<div class="container">
-	<h3>SortingLayout</h3>
+﻿@using AirsoftShop.Components.Custom_Components
+@using AirsoftShop.Enums
+@inject NavigationManager NavigationManager
+@inject SortingState SortingState
+
+<div class="d-flex flex-row align-items-center gap-2">
+	<span>Sortowanie: </span>
+	<select @onchange="ApplySorting" class="form-select">
+		@foreach (var option in Enum.GetValues<SortingOption>())
+		{
+			<option value="@option"><EnumDisplayName TEnum="SortingOption" Value="option" /></option>			
+		}
+	</select>
 </div>
 
 @code {
+	private SortingOption SelectedSortingOption { get; set; } = SortingOption.None;
 
+	private void ApplySorting(ChangeEventArgs e)
+	{
+		if (Enum.TryParse(e.Value?.ToString(), out SortingOption sortingOption))
+		{
+			SelectedSortingOption = sortingOption;
+
+			SortingState.SetSortingOption(SelectedSortingOption);
+
+			var uri = new Uri(NavigationManager.Uri);
+			var queryParams = System.Web.HttpUtility.ParseQueryString(uri.Query);
+			queryParams.Set("sortBy", SelectedSortingOption.ToString());
+
+			var newUrl = $"{uri.AbsolutePath}?{queryParams}";
+			NavigationManager.NavigateTo(newUrl);
+		}
+	}
 }

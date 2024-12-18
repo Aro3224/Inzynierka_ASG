@@ -1,16 +1,26 @@
 ﻿@page "/Replicas/{Category?}"
 @using AirsoftShop.Components.Menu.Custom_Components
 @using AirsoftShop.Data
+@using AirsoftShop.Enums
 
 @inject IProductService ProductService
+@inject SortingState SortingState
+@inject NavigationManager NavigationManager
 
 <PageTitle>AirsoftShop - Repliki</PageTitle>
 
 <div class="container-fluid">
 	<div class="row">
-		@foreach (var replica in Replicas)
+		@if (Replicas is null || !Replicas.Any())
 		{
-			<ItemProduct ImageSource="./Images/Replicas/icon01.jpg" Product="replica" />
+			<p>Brak wyników dla wybranej kategorii lub sortowania.</p>
+		}
+		else
+		{
+			@foreach (var replica in Replicas)
+			{
+				<ItemProduct ImageSource="./Images/Replicas/icon01.jpg" Product="replica" />
+			}
 		}
 	</div>
 </div>
@@ -19,21 +29,55 @@
 	[Parameter]
 	public string? Category { get; set; }
 
+	private List<Replica> AllReplicas { get; set; } = new List<Replica>();
 	private List<Replica> Replicas { get; set; } = new List<Replica>();
 
 	protected override async Task OnParametersSetAsync()
 	{
 		var allProducts = await ProductService.GetAllProductsAsync();
+		AllReplicas = allProducts.OfType<Replica>().ToList();
 
+		ApplyCategoryFilter();
+
+		var currentUri = new Uri(NavigationManager.Uri);
+		SortingState.SetSortingOptionFromUrl(currentUri);
+
+		SortingState.OnSortingChanged += ApplySorting;
+
+		ApplySorting();
+	}
+
+	private void ApplyCategoryFilter()
+	{
 		if (!string.IsNullOrEmpty(Category))
 		{
-			Replicas = allProducts.OfType<Replica>()
-									.Where(r => r.WeaponCategory.ToString().Equals(Category, StringComparison.OrdinalIgnoreCase))
-									.ToList();
+			Replicas = AllReplicas
+				.Where(r => r.WeaponCategory.ToString().Equals(Category, StringComparison.OrdinalIgnoreCase))
+				.ToList();
 		}
 		else
 		{
-			Replicas = allProducts.OfType<Replica>().ToList();
+			Replicas = AllReplicas.ToList();
 		}
+	}
+
+	private void ApplySorting()
+	{
+		Replicas = SortingState.CurrentSortingOption switch
+		{
+			SortingOption.PriceAsc => Replicas.OrderBy(r => r.Price).ToList(),
+			SortingOption.PriceDesc => Replicas.OrderByDescending(r => r.Price).ToList(),
+			SortingOption.NameAsc => Replicas.OrderBy(r => r.Name).ToList(),
+			SortingOption.NameDesc => Replicas.OrderByDescending(r => r.Name).ToList(),
+			SortingOption.None => Replicas.OrderByDescending(r => r.Id).ToList(),
+			_ => Replicas
+		};
+
+		InvokeAsync(StateHasChanged);
+	}
+
+	public void Dispose()
+	{
+		SortingState.OnSortingChanged -= ApplySorting;
 	}
 }
