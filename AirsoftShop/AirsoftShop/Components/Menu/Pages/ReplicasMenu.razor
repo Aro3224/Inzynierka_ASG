@@ -9,19 +9,24 @@
 
 <PageTitle>AirsoftShop - Repliki</PageTitle>
 
-<div class="container-fluid">
-	<div class="row">
-		@if (Replicas is null || !Replicas.Any())
-		{
-			<p>Brak wyników.</p>
-		}
-		else
-		{
-			@foreach (var replica in Replicas)
+<div class="col-md-3">
+	<FiltersLayout ProductList="@Replicas" />
+</div>
+<div class="col-md-9">
+	<div class="container-fluid">
+		<div class="row">
+			@if (Replicas is null || !Replicas.Any())
 			{
-				<ItemProduct ImageSource="./Images/Replicas/icon01.jpg" Product="replica" />
+				<p>Brak wyników.</p>
 			}
-		}
+			else
+			{
+				@foreach (var replica in Replicas)
+				{
+					<ItemProduct ImageSource="./Images/Replicas/icon01.jpg" Product="replica" />
+				}
+			}
+		</div>
 	</div>
 </div>
 

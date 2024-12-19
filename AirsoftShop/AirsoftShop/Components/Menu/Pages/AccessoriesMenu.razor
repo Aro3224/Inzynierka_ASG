@@ -9,19 +9,24 @@
 
 <PageTitle>AirsoftShop - Akcesoria</PageTitle>
 
-<div class="container-fluid">
-	<div class="row">
-		@if (Accessories is null || !Accessories.Any())
-		{
-			<p>Brak wyników.</p>
-		}
-		else
-		{
-			@foreach (var accessory in Accessories)
+<div class="col-md-3">
+	<FiltersLayout ProductList="@Accessories" />
+</div>
+<div class="col-md-9">
+	<div class="container-fluid">
+		<div class="row">
+			@if (Accessories is null || !Accessories.Any())
 			{
-				<ItemProduct ImageSource="./Images/Accessories/icon03.png" Product="accessory" />
+				<p>Brak wyników.</p>
 			}
-		}
+			else
+			{
+				@foreach (var accessory in Accessories)
+				{
+					<ItemProduct ImageSource="./Images/Accessories/icon03.png" Product="accessory" />
+				}
+			}
+		</div>
 	</div>
 </div>
 

@@ -1,8 +1,35 @@
-﻿<div class="container">
-	<h3>FiltersLayout</h3>
+﻿@using AirsoftShop.Data
+
+<div class="container-fluid">
+    @switch (ProductList)
+    {
+        case List<Replica> replicaList:
+            <p>Display options specific to Repliki</p>
+            break;
+        case List<Part> partList:
+            @switch (partList)
+            {
+                case var parts when parts.All(p => p.PartType == PartType.Internal):
+                    <p>Display options for internal parts</p>
+                    break;
+                case var parts when parts.All(p => p.PartType == PartType.External):
+                    <p>Display options for external parts</p>
+                    break;
+                default:
+                    <p>Display options for mixed part types</p>
+                    break;
+            }
+            break;
+        case List<Accessory> accessoryList:
+            <p>Display options specific to Akcesoria</p>
+            break;
+        default:
+            <p>Unexpected product type.</p>
+            break;
+    }
 </div>
 
-
 @code {
-
+    [Parameter]
+    public IEnumerable<Product> ProductList { get; set; }
 }
