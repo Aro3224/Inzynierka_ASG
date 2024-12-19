@@ -1,35 +1,35 @@
 ﻿@using AirsoftShop.Data
 
 <div class="container-fluid">
-    @switch (ProductList)
-    {
-        case List<Replica> replicaList:
-            <p>Display options specific to Repliki</p>
-            break;
-        case List<Part> partList:
-            @switch (partList)
-            {
-                case var parts when parts.All(p => p.PartType == PartType.Internal):
-                    <p>Display options for internal parts</p>
-                    break;
-                case var parts when parts.All(p => p.PartType == PartType.External):
-                    <p>Display options for external parts</p>
-                    break;
-                default:
-                    <p>Display options for mixed part types</p>
-                    break;
-            }
-            break;
-        case List<Accessory> accessoryList:
-            <p>Display options specific to Akcesoria</p>
-            break;
-        default:
-            <p>Unexpected product type.</p>
-            break;
-    }
+	@switch (ProductList)
+	{
+		case List<Replica> replicaList:
+			<FilterOptions T="Replica" FilterOption="@replicaList" />
+			break;
+		case List<Part> partList:
+			@switch (partList)
+			{
+				case var parts when parts.All(p => p.PartType == PartType.Internal):
+					<FilterOptions T="Part" FilterOption="@partList" />
+					break;
+				case var parts when parts.All(p => p.PartType == PartType.External):
+					<FilterOptions T="Part" FilterOption="@partList" />
+					break;
+				default:
+					<FilterOptions T="Part" FilterOption="@partList" />
+					break;
+			}
+			break;
+		case List<Accessory> accessoryList:
+			<FilterOptions T="Accessory" FilterOption="@accessoryList" />
+			break;
+		default:
+			<p>Unexpected product type.</p>
+			break;
+	}
 </div>
 
 @code {
-    [Parameter]
-    public IEnumerable<Product> ProductList { get; set; }
+	[Parameter]
+	public IEnumerable<Product> ProductList { get; set; }
 }

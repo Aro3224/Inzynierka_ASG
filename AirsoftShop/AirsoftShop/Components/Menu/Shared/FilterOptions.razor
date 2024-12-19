@@ -1,0 +1,18 @@
+﻿@using AirsoftShop.Data
+@typeparam T
+
+<div>
+	@if (typeof(T) == typeof(Replica)) {
+        <p>Repliki</p>
+	}
+</div>
+
+@code {
+    [Parameter]
+    public IEnumerable<T> FilterOption { get; set; }
+
+    private void ApplyFilters()
+    {
+        
+    }
+}
