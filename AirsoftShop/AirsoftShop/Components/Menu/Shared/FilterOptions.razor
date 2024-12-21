@@ -36,6 +36,21 @@
 					</div>
 				}
 			</div>
+			<div>
+				<span>Epoka broni:</span>
+				@foreach (WeaponAge wAge in Enum.GetValues(typeof(WeaponAge)))
+				{
+					<div>
+						<input type="checkbox"
+							   value="@wAge"
+							   checked="@SelectedWeaponAges.Contains(wAge)"
+							   @onchange="(e) => ToggleType(wAge, (bool)e.Value, SelectedWeaponAges)" />
+						<label>
+							<EnumDisplayName TEnum="WeaponAge" Value="wAge" />
+						</label>
+					</div>
+				}
+			</div>
 			<div class="d-flex flex-column gap-2">
 				<button class="btn btn-secondary" @onclick="ApplyFilters">Zastosuj filtry</button>
 				<button class="btn btn-danger" @onclick="ResetFilters">Resetuj filtry</button>
@@ -60,6 +75,7 @@
 
 	private List<WeaponType> SelectedWeaponTypes { get; set; } = new List<WeaponType>();
 	private List<GearboxType> SelectedGearboxTypes { get; set; } = new List<GearboxType>();
+	private List<WeaponAge> SelectedWeaponAges { get; set; } = new List<WeaponAge>();
 
 	private void ToggleType<TType>(TType type, bool isChecked, List<TType> selectedTypes)
 	{
@@ -97,6 +113,13 @@
 							.Where(r => r.WeaponGearboxType.HasValue && SelectedGearboxTypes.Contains(r.WeaponGearboxType.Value))
 							.Cast<T>();
 					}
+
+					if (SelectedWeaponAges.Any())
+					{
+						filtered = filtered.OfType<Replica>()
+							.Where(r => SelectedWeaponAges.Contains(r.WeaponAge))
+							.Cast<T>();
+					}
 					break;
 				}
 		}
@@ -108,6 +131,7 @@
 	{
 		SelectedWeaponTypes.Clear();
 		SelectedGearboxTypes.Clear();
+		SelectedWeaponAges.Clear();
 
 		ApplyFilters();
 	}
