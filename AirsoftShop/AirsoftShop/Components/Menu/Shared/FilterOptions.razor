@@ -73,11 +73,11 @@
 			<div>
 				<span>Akumulator w zestawie?</span>
 				<div>
-					<input type="checkbox" id="batteryYes" checked="@HasBatteryTrue" @onchange="(e) => ToggleBattery(true, (bool)e.Value)" />
+					<input type="checkbox" id="batteryYes" checked="@HasBatteryTrue" @onchange='(e) => ToggleBoolean("battery",true, (bool)e.Value)' />
 					<label for="batteryYes">Tak</label>
 				</div>
 				<div>
-					<input type="checkbox" id="batteryNo" checked="@HasBatteryFalse" @onchange="(e) => ToggleBattery(false, (bool)e.Value)" />
+					<input type="checkbox" id="batteryNo" checked="@HasBatteryFalse" @onchange='(e) => ToggleBoolean("battery",false, (bool)e.Value)' />
 					<label for="batteryNo">Nie</label>
 				</div>
 			</div>
@@ -85,11 +85,11 @@
 			<div>
 				<span>Hop-Up?</span>
 				<div>
-					<input type="checkbox" id="batteryYes" checked="@HasHopUpTrue" @onchange="(e) => ToggleHopUp(true, (bool)e.Value)" />
+					<input type="checkbox" id="batteryYes" checked="@HasHopUpTrue" @onchange='(e) => ToggleBoolean("hopUp",true, (bool)e.Value)' />
 					<label for="batteryYes">Tak</label>
 				</div>
 				<div>
-					<input type="checkbox" id="batteryNo" checked="@HasHopUpFalse" @onchange="(e) => ToggleHopUp(false, (bool)e.Value)" />
+					<input type="checkbox" id="batteryNo" checked="@HasHopUpFalse" @onchange='(e) => ToggleBoolean("hopUp",false, (bool)e.Value)' />
 					<label for="batteryNo">Nie</label>
 				</div>
 			</div>
@@ -97,11 +97,11 @@
 			<div>
 				<span>Blow-Back?</span>
 				<div>
-					<input type="checkbox" id="batteryYes" checked="@HasBlowBackTrue" @onchange="(e) => ToggleBlowBack(true, (bool)e.Value)" />
+					<input type="checkbox" id="batteryYes" checked="@HasBlowBackTrue" @onchange='(e) => ToggleBoolean("blowBack",true, (bool)e.Value)' />
 					<label for="batteryYes">Tak</label>
 				</div>
 				<div>
-					<input type="checkbox" id="batteryNo" checked="@HasBlowBackFalse" @onchange="(e) => ToggleBlowBack(false, (bool)e.Value)" />
+					<input type="checkbox" id="batteryNo" checked="@HasBlowBackFalse" @onchange='(e) => ToggleBoolean("blowBack",false, (bool)e.Value)' />
 					<label for="batteryNo">Nie</label>
 				</div>
 			</div>
@@ -164,39 +164,39 @@
 		}
 	}
 
-	private void ToggleBattery(bool isTrue, bool isChecked)
-    {
-        if (isTrue)
-        {
-			HasBatteryTrue = isChecked;
-        }
-        else
-        {
-			HasBatteryFalse = isChecked;
-        }
-    }
-
-		private void ToggleHopUp(bool isTrue, bool isChecked)
-    {
-        if (isTrue)
-        {
-			HasHopUpTrue = isChecked;
-        }
-        else
-        {
-			HasHopUpFalse = isChecked;
-        }
-    }
-
-	private void ToggleBlowBack(bool isTrue, bool isChecked)
+	private void ToggleBoolean(string type, bool isTrue, bool isChecked)
 	{
-		if (isTrue)
+		switch (type)
 		{
-			HasBlowBackTrue = isChecked;
-		}
-		else
-		{
-			HasBlowBackFalse = isChecked;
+			case "battery":
+				if (isTrue)
+				{
+					HasBatteryTrue = isChecked;
+				}
+				else
+				{
+					HasBatteryFalse = isChecked;
+				}
+				break;
+			case "hopUp":
+				if (isTrue)
+				{
+					HasHopUpTrue = isChecked;
+				}
+				else
+				{
+					HasHopUpFalse = isChecked;
+				}
+				break;
+			case "blowBack":
+				if (isTrue)
+				{
+					HasBlowBackTrue = isChecked;
+				}
+				else {
+					HasBlowBackFalse = isChecked;
+				}
+				break;
 		}
 	}
 
