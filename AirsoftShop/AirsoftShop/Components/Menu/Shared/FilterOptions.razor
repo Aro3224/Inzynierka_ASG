@@ -2,37 +2,35 @@
 @using AirsoftShop.Data
 @typeparam T
 
-<div>
-	@switch (typeof(T).Name)
-	{
-		case nameof(Replica):
-			{
-				<div>
-					<p>Napęd broni:</p>
-					@foreach (WeaponType wType in Enum.GetValues(typeof(WeaponType)))
-					{
-						<div>
-							<input type="checkbox"
-								   value="@wType"
-								   @onchange="(e) => ToggleWeaponType(wType, (bool)e.Value)" />
-							<label>
-								<EnumDisplayName TEnum="WeaponType" Value="wType" />
-							</label>
-						</div>
-					}
-				</div>
-				<button @onclick="ApplyFilters">Zastosuj filtry</button>
-				break;
-			}
-		case nameof(Accessory):
-			<p>Akcesoria</p>
+@switch (typeof(T).Name)
+{
+	case nameof(Replica):
+		{
+			<div>
+				<p>Napęd broni:</p>
+				@foreach (WeaponType wType in Enum.GetValues(typeof(WeaponType)))
+				{
+					<div>
+						<input type="checkbox"
+							   value="@wType"
+							   @onchange="(e) => ToggleWeaponType(wType, (bool)e.Value)" />
+						<label>
+							<EnumDisplayName TEnum="WeaponType" Value="wType" />
+						</label>
+					</div>
+				}
+			</div>
+			<button class="btn btn-secondary" @onclick="ApplyFilters">Zastosuj filtry</button>
 			break;
+		}
+	case nameof(Accessory):
+		<p>Akcesoria</p>
+		break;
 
-		case nameof(Part):
-			<p>Części</p>
-			break;
-	}
-</div>
+	case nameof(Part):
+		<p>Części</p>
+		break;
+}
 
 @code {
 	[Parameter]
