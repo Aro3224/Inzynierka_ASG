@@ -9,82 +9,87 @@
 
 <PageTitle>AirsoftShop</PageTitle>
 
-<div class="container px-5">
-    <div class="row">
-        @if (FilteredProducts is null)
-        {
+<div class="col-md-3">
+	<FiltersLayout ProductList="@FilteredProducts" />
+</div>
+<div class="col-md-9">
+	<div class="container">
+		<div class="row">
+			@if (FilteredProducts is null)
+			{
 
-        }
-        else if (FilteredProducts.Any())
-        {
-            @foreach (var product in FilteredProducts)
-            {
-                <ItemProduct ImageSource="./Images/Replicas/sample_image.jpg" Product="product" />
-            }
-        }
-        else
-        {
-            <p>Brak wyników wyszukiwania.</p>
-        }
-    </div>
+			}
+			else if (FilteredProducts.Any())
+			{
+				@foreach (var product in FilteredProducts)
+				{
+					<ItemProduct ImageSource="./Images/Replicas/sample_image.jpg" Product="product" />
+				}
+			}
+			else
+			{
+				<p>Brak wyników wyszukiwania.</p>
+			}
+		</div>
+	</div>
 </div>
 
 @code {
-    private List<Product> AllProducts { get; set; } = new List<Product>();
-    private List<Product>? FilteredProducts { get; set; } = null;
+	private List<Product> AllProducts { get; set; } = new List<Product>();
+	private List<Product>? FilteredProducts { get; set; } = null;
 
-    protected override async Task OnInitializedAsync()
-    {
-        AllProducts = await ProductService.GetAllProductsAsync();
+	protected override async Task OnInitializedAsync()
+	{
+		AllProducts = await ProductService.GetAllProductsAsync();
 
-        var currentUri = new Uri(NavigationManager.Uri);
-        SearchState.SetSearchQueryFromUrl(currentUri);
-        SortingState.SetSortingOptionFromUrl(currentUri);
+		var currentUri = new Uri(NavigationManager.Uri);
+		SearchState.SetSearchQueryFromUrl(currentUri);
+		SortingState.SetSortingOptionFromUrl(currentUri);
 
-        SortingState.OnSortingChanged += ApplySorting;
+		SortingState.OnSortingChanged += ApplySorting;
 
-        ApplySearchFilter();
-        ApplySorting();
+		ApplySearchFilter();
+		ApplySorting();
 
-        SearchState.OnSearchChanged += ApplySearchFilter;
-    }
+		SearchState.OnSearchChanged += ApplySearchFilter;
+	}
 
-    private void ApplySearchFilter()
-    {
-        var query = SearchState.Query;
+	private void ApplySearchFilter()
+	{
+		var query = SearchState.Query;
 
-        if (string.IsNullOrWhiteSpace(query))
-        {
-            FilteredProducts = null;
-        }
-        else
-        {
-            FilteredProducts = AllProducts
-                .Where(p => p.Name.Contains(query, StringComparison.OrdinalIgnoreCase))
-                .ToList();
-        }
+		if (string.IsNullOrWhiteSpace(query))
+		{
+			FilteredProducts = null;
+		}
+		else
+		{
+			FilteredProducts = AllProducts
+				.Where(p => p.Name.Contains(query, StringComparison.OrdinalIgnoreCase))
+				.ToList();
+		}
 
-        InvokeAsync(StateHasChanged);
-    }
+		InvokeAsync(StateHasChanged);
+	}
 
-    private void ApplySorting()
-    {
-        FilteredProducts = SortingState.CurrentSortingOption switch
-        {
-            SortingOption.PriceAsc => FilteredProducts.OrderBy(r => r.Price).ToList(),
-            SortingOption.PriceDesc => FilteredProducts.OrderByDescending(r => r.Price).ToList(),
-            SortingOption.NameAsc => FilteredProducts.OrderBy(r => r.Name).ToList(),
-            SortingOption.NameDesc => FilteredProducts.OrderByDescending(r => r.Name).ToList(),
-            SortingOption.None => FilteredProducts.OrderByDescending(r => r.Id).ToList(),
-            _ => FilteredProducts
-        };
+	private void ApplySorting()
+	{
+		FilteredProducts = SortingState.CurrentSortingOption switch
+		{
+			SortingOption.PriceAsc => FilteredProducts.OrderBy(r => r.Price).ToList(),
+			SortingOption.PriceDesc => FilteredProducts.OrderByDescending(r => r.Price).ToList(),
+			SortingOption.NameAsc => FilteredProducts.OrderBy(r => r.Name).ToList(),
+			SortingOption.NameDesc => FilteredProducts.OrderByDescending(r => r.Name).ToList(),
+			SortingOption.None => FilteredProducts.OrderByDescending(r => r.Id).ToList(),
+			_ => FilteredProducts
+		};
 
-        InvokeAsync(StateHasChanged);
-    }
+		InvokeAsync(StateHasChanged);
+	}
 
-    public void Dispose()
-    {
-        SearchState.OnSearchChanged -= ApplySearchFilter;
-        SortingState.OnSortingChanged -= ApplySorting;
-    }
+	public void Dispose()
+	{
+		SearchState.OnSearchChanged -= ApplySearchFilter;
+		SortingState.OnSortingChanged -= ApplySorting;
+	}
 }

@@ -1,0 +1,313 @@
+﻿@using AirsoftShop.Components.Custom_Components
+@using AirsoftShop.Data
+@typeparam T
+
+@switch (typeof(T).Name)
+{
+	case nameof(Replica):
+		{
+			<div>
+				<span>Napęd broni:</span>
+				@foreach (WeaponType wType in Enum.GetValues(typeof(WeaponType)))
+				{
+					<div>
+						<input class="form-check-input"
+							   type="checkbox"
+							   value="@wType"
+							   checked="@SelectedWeaponTypes.Contains(wType)"
+							   @onchange="(e) => ToggleType(wType, (bool)e.Value, SelectedWeaponTypes)" />
+						<label>
+							<EnumDisplayName TEnum="WeaponType" Value="wType" />
+						</label>
+					</div>
+				}
+			</div>
+
+			<div>
+				<span>Typ gearboxa:</span>
+				@foreach (GearboxType gType in Enum.GetValues(typeof(GearboxType)))
+				{
+					<div>
+						<input class="form-check-input"
+							type="checkbox"
+							   value="@gType"
+							   checked="@SelectedGearboxTypes.Contains(gType)"
+							   @onchange="(e) => ToggleType(gType, (bool)e.Value, SelectedGearboxTypes)" />
+						<label>
+							<EnumDisplayName TEnum="GearboxType" Value="gType" />
+						</label>
+					</div>
+				}
+			</div>
+
+			<div>
+				<span>Epoka broni:</span>
+				@foreach (WeaponAge wAge in Enum.GetValues(typeof(WeaponAge)))
+				{
+					<div>
+						<input class="form-check-input"
+							type="checkbox"
+							   value="@wAge"
+							   checked="@SelectedWeaponAges.Contains(wAge)"
+							   @onchange="(e) => ToggleType(wAge, (bool)e.Value, SelectedWeaponAges)" />
+						<label>
+							<EnumDisplayName TEnum="WeaponAge" Value="wAge" />
+						</label>
+					</div>
+				}
+			</div>
+
+			<div>
+				<span>Marka:</span>
+				@foreach (Manufacturer mType in Enum.GetValues(typeof(Manufacturer)))
+				{
+					<div>
+						<input class="form-check-input"
+							type="checkbox"
+							   value="@mType"
+							   checked="@SelectedManufacturers.Contains(mType)"
+							   @onchange="(e) => ToggleType(mType, (bool)e.Value, SelectedManufacturers)" />
+						<label>
+							<EnumDisplayName TEnum="Manufacturer" Value="mType" />
+						</label>
+					</div>
+				}
+			</div>
+
+			<div>
+				<span>Akumulator w zestawie?</span>
+				<div>
+					<input class="form-check-input" type="checkbox" id="batteryYes" checked="@HasBatteryTrue" @onchange='(e) => ToggleBoolean("battery",true, (bool)e.Value)' />
+					<label for="batteryYes">Tak</label>
+				</div>
+				<div>
+					<input class="form-check-input" type="checkbox" id="batteryNo" checked="@HasBatteryFalse" @onchange='(e) => ToggleBoolean("battery",false, (bool)e.Value)' />
+					<label for="batteryNo">Nie</label>
+				</div>
+			</div>
+
+			<div>
+				<span>Hop-Up?</span>
+				<div>
+					<input class ="form-check-input" type="checkbox" id="batteryYes" checked="@HasHopUpTrue" @onchange ='(e) => ToggleBoolean("hopUp",true, (bool)e.Value)' />
+					<label for="batteryYes">Tak</label>
+				</div>
+				<div>
+					<input class="form-check-input" type="checkbox" id="batteryNo" checked="@HasHopUpFalse" @onchange ='(e) => ToggleBoolean("hopUp",false, (bool)e.Value)' />
+					<label for="batteryNo">Nie</label>
+				</div>
+			</div>
+
+			<div>
+				<span>Blow-Back?</span>
+				<div>
+					<input class="form-check-input" type="checkbox" id="batteryYes" checked="@HasBlowBackTrue" @onchange='(e) => ToggleBoolean("blowBack",true, (bool)e.Value)' />
+					<label for="batteryYes">Tak</label>
+				</div>
+				<div>
+					<input class="form-check-input" type="checkbox" id="batteryNo" checked="@HasBlowBackFalse" @onchange='(e) => ToggleBoolean("blowBack",false, (bool)e.Value)' />
+					<label for="batteryNo">Nie</label>
+				</div>
+			</div>
+
+			<div>
+				<span>Przedział cenowy (PLN):</span>
+				<div class="d-flex flex-column gap-2">
+					<div class="d-flex flex-row align-items-center gap-2">
+						<span>Min: </span>
+						<input class="input-group form-control" type="number" placeholder="Min" @bind="MinPrice" />
+					</div>
+					<div class="d-flex flex-row align-items-center gap-2">
+						<span>Max: </span>
+						<input class="input-group form-control" type="number" placeholder="Max" @bind="MaxPrice" />
+					</div>
+				</div>
+			</div>
+
+			<div class="d-flex flex-column gap-2">
+				<button class="btn btn-secondary" @onclick="ApplyFilters">Zastosuj filtry</button>
+				<button class="btn btn-danger" @onclick="ResetFilters">Resetuj filtry</button>
+			</div>
+			break;
+		}
+	case nameof(Accessory):
+		<p>Akcesoria</p>
+		break;
+
+	case nameof(Part):
+		<p>Części</p>
+		break;
+	case nameof(Product):
+		<p>Wszystkie</p>
+		break;
+}
+
+@code {
+	[Parameter]
+	public IEnumerable<T> FilterOption { get; set; }
+
+	[Parameter]
+	public EventCallback<IEnumerable<T>> OnFilterChanged { get; set; }
+
+	private List<WeaponType> SelectedWeaponTypes { get; set; } = new List<WeaponType>();
+	private List<GearboxType> SelectedGearboxTypes { get; set; } = new List<GearboxType>();
+	private List<WeaponAge> SelectedWeaponAges { get; set; } = new List<WeaponAge>();
+	private List<Manufacturer> SelectedManufacturers { get; set; } = new List<Manufacturer>();
+
+	private bool HasBatteryTrue { get; set; } = false;
+	private bool HasBatteryFalse { get; set; } = false;
+	private bool HasHopUpTrue { get; set; } = false;
+	private bool HasHopUpFalse { get; set; } = false;
+	private bool HasBlowBackTrue { get; set; } = false;
+	private bool HasBlowBackFalse { get; set; } = false;
+
+	private decimal MinPrice { get; set; }
+	private decimal MaxPrice { get; set; }
+
+	private void ToggleType<TType>(TType type, bool isChecked, List<TType> selectedTypes)
+	{
+		if (isChecked)
+		{
+			if (!selectedTypes.Contains(type))
+			{
+				selectedTypes.Add(type);
+			}
+		}
+		else
+		{
+			selectedTypes.Remove(type);
+		}
+	}
+
+	private void ToggleBoolean(string type, bool isTrue, bool isChecked)
+	{
+		switch (type)
+		{
+			case "battery":
+				if (isTrue)
+				{
+					HasBatteryTrue = isChecked;
+				}
+				else
+				{
+					HasBatteryFalse = isChecked;
+				}
+				break;
+			case "hopUp":
+				if (isTrue)
+				{
+					HasHopUpTrue = isChecked;
+				}
+				else
+				{
+					HasHopUpFalse = isChecked;
+				}
+				break;
+			case "blowBack":
+				if (isTrue)
+				{
+					HasBlowBackTrue = isChecked;
+				}
+				else
+				{
+					HasBlowBackFalse = isChecked;
+				}
+				break;
+		}
+	}
+
+	private async Task ApplyFilters()
+	{
+		IEnumerable<T> filtered = FilterOption;
+
+		switch (typeof(T).Name)
+		{
+			case nameof(Replica):
+				{
+					if (SelectedWeaponTypes.Any())
+					{
+						filtered = filtered.OfType<Replica>()
+							.Where(r => r.WeaponType.HasValue && SelectedWeaponTypes.Contains(r.WeaponType.Value))
+							.Cast<T>();
+					}
+
+					if (SelectedGearboxTypes.Any())
+					{
+						filtered = filtered.OfType<Replica>()
+							.Where(r => r.WeaponGearboxType.HasValue && SelectedGearboxTypes.Contains(r.WeaponGearboxType.Value))
+							.Cast<T>();
+					}
+
+					if (SelectedWeaponAges.Any())
+					{
+						filtered = filtered.OfType<Replica>()
+							.Where(r => SelectedWeaponAges.Contains(r.WeaponAge))
+							.Cast<T>();
+					}
+
+					if (SelectedManufacturers.Any())
+					{
+						filtered = filtered.OfType<Replica>()
+							.Where(r => r.Manufacturer.HasValue && SelectedManufacturers.Contains(r.Manufacturer.Value))
+							.Cast<T>();
+					}
+
+					if (HasBatteryTrue && !HasBatteryFalse)
+					{
+						filtered = filtered.OfType<Replica>().Where(r => r.HasBattery == true).Cast<T>();
+					}
+					else if (!HasBatteryTrue && HasBatteryFalse)
+					{
+						filtered = filtered.OfType<Replica>().Where(r => r.HasBattery == false).Cast<T>();
+					}
+
+					if (HasHopUpTrue && !HasHopUpFalse)
+					{
+						filtered = filtered.OfType<Replica>().Where(r => r.HasHopUp == true).Cast<T>();
+					}
+					else if (!HasHopUpTrue && HasHopUpFalse)
+					{
+						filtered = filtered.OfType<Replica>().Where(r => r.HasHopUp == false).Cast<T>();
+					}
+
+					if (HasBlowBackTrue && !HasBlowBackFalse)
+					{
+						filtered = filtered.OfType<Replica>().Where(r => r.HasBlowBack == true).Cast<T>();
+					}
+					else if (!HasBlowBackTrue && HasBlowBackFalse)
+					{
+						filtered = filtered.OfType<Replica>().Where(r => r.HasBlowBack == false).Cast<T>();
+					}
+
+					if (MinPrice > 0 || MaxPrice > 0)
+					{
+						filtered = filtered.OfType<Replica>()
+							.Where(r => r.Price >= MinPrice && r.Price <= MaxPrice)
+							.Cast<T>();
+					}
+
+					break;
+				}
+		}
+
+		await OnFilterChanged.InvokeAsync(filtered);
+	}
+
+	private void ResetFilters()
+	{
+		SelectedWeaponTypes.Clear();
+		SelectedGearboxTypes.Clear();
+		SelectedWeaponAges.Clear();
+		SelectedManufacturers.Clear();
+		HasBatteryTrue = false;
+		HasBatteryFalse = false;
+		HasHopUpTrue = false;
+		HasHopUpFalse = false;
+		HasBlowBackTrue = false;
+		HasBlowBackFalse = false;
+		MinPrice = 0;
+		MaxPrice = 0;
+
+		ApplyFilters();
+	}
+}

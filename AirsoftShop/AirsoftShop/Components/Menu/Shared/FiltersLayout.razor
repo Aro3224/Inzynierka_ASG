@@ -1,8 +1,36 @@
-﻿<div class="container">
-	<h3>FiltersLayout</h3>
+﻿@using AirsoftShop.Data
+
+<div class="container-fluid d-flex flex-column px-5 gap-3">
+	@switch (ProductList)
+	{
+		case List<Replica> replicaList:
+			<FilterOptions T="Replica" FilterOption="@replicaList" OnFilterChanged="HandleFilterChanged" />
+			break;
+		case List<Part> partList:
+			<FilterOptions T="Part" FilterOption="@partList" OnFilterChanged="HandleFilterChanged" />
+			break;
+		case List<Accessory> accessoryList:
+			<FilterOptions T="Accessory" FilterOption="@accessoryList" OnFilterChanged="HandleFilterChanged" />
+			break;
+		case List<Product> allList:
+			<FilterOptions T="Product" FilterOption="@allList" OnFilterChanged="HandleFilterChanged" />
+			break;
+		default:
+			<p>Nieznany typ produktu.</p>
+			break;
+	}
 </div>
 
-
 @code {
+	[Parameter]
+	public IEnumerable<Product> ProductList { get; set; }
 
+	[Parameter]
+	public EventCallback<IEnumerable<Product>> OnFilterChanged { get; set; }
+
+	private async Task HandleFilterChanged(IEnumerable<Product> filteredProducts)
+	{
+		ProductList = filteredProducts;
+		await OnFilterChanged.InvokeAsync(filteredProducts);
+	}
 }

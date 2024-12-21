@@ -9,19 +9,24 @@
 
 <PageTitle>AirsoftShop - Repliki</PageTitle>
 
-<div class="container-fluid">
-	<div class="row">
-		@if (Replicas is null || !Replicas.Any())
-		{
-			<p>Brak wyników.</p>
-		}
-		else
-		{
-			@foreach (var replica in Replicas)
+<div class="col-md-3">
+	<FiltersLayout ProductList="@AllReplicas" OnFilterChanged="HandleFilterChanged" />
+</div>
+<div class="col-md-9">
+	<div class="container-fluid">
+		<div class="row">
+			@if (Replicas is null || !Replicas.Any())
 			{
-				<ItemProduct ImageSource="./Images/Replicas/icon01.jpg" Product="replica" />
+				<p>Brak wyników.</p>
 			}
-		}
+			else
+			{
+				@foreach (var replica in Replicas)
+				{
+					<ItemProduct ImageSource="./Images/Replicas/icon01.jpg" Product="replica" />
+				}
+			}
+		</div>
 	</div>
 </div>
 
@@ -74,6 +79,24 @@
 		};
 
 		InvokeAsync(StateHasChanged);
+	}
+
+	private async Task HandleFilterChanged(IEnumerable<Product> filteredProducts)
+	{
+		if (Category is null)
+		{
+			Replicas = filteredProducts.OfType<Replica>().ToList();
+		}
+		else
+		{
+			Replicas = filteredProducts.OfType<Replica>()
+				.Where(r => r.WeaponCategory.ToString().Equals(Category, StringComparison.OrdinalIgnoreCase))
+				.ToList();
+		}
+
+		ApplySorting();
+
+		await InvokeAsync(StateHasChanged);
 	}
 
 	public void Dispose()
