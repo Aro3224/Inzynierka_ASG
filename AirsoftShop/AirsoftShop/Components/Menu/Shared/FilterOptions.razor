@@ -7,12 +7,13 @@
 	case nameof(Replica):
 		{
 			<div>
-				<p>Napęd broni:</p>
+				<span>Napęd broni:</span>
 				@foreach (WeaponType wType in Enum.GetValues(typeof(WeaponType)))
 				{
 					<div>
 						<input type="checkbox"
 							   value="@wType"
+							   checked="@SelectedWeaponTypes.Contains(wType)"
 							   @onchange="(e) => ToggleWeaponType(wType, (bool)e.Value)" />
 						<label>
 							<EnumDisplayName TEnum="WeaponType" Value="wType" />
@@ -20,7 +21,25 @@
 					</div>
 				}
 			</div>
-			<button class="btn btn-secondary" @onclick="ApplyFilters">Zastosuj filtry</button>
+			<div>
+				<span>Typ gearboxa:</span>
+				@foreach (GearboxType gType in Enum.GetValues(typeof(GearboxType)))
+				{
+					<div>
+						<input type="checkbox"
+							   value="@gType"
+							   checked="@SelectedGearboxTypes.Contains(gType)"
+							   @onchange="(e) => ToggleGearboxType(gType, (bool)e.Value)" />
+						<label>
+							<EnumDisplayName TEnum="GearboxType" Value="gType" />
+						</label>
+					</div>
+				}
+			</div>
+			<div class="d-flex flex-column gap-2">
+				<button class="btn btn-secondary" @onclick="ApplyFilters">Zastosuj filtry</button>
+				<button class="btn btn-danger" @onclick="ResetFilters">Resetuj filtry</button>
+			</div>
 			break;
 		}
 	case nameof(Accessory):
@@ -40,6 +59,7 @@
 	public EventCallback<IEnumerable<T>> OnFilterChanged { get; set; }
 
 	private List<WeaponType> SelectedWeaponTypes { get; set; } = new List<WeaponType>();
+	private List<GearboxType> SelectedGearboxTypes { get; set; } = new List<GearboxType>();
 
 	private void ToggleWeaponType(WeaponType weaponType, bool isChecked)
 	{
@@ -56,6 +76,21 @@
 		}
 	}
 
+	private void ToggleGearboxType(GearboxType gearboxType, bool isChecked)
+	{
+		if (isChecked)
+		{
+			if (!SelectedGearboxTypes.Contains(gearboxType))
+			{
+				SelectedGearboxTypes.Add(gearboxType);
+			}
+		}
+		else
+		{
+			SelectedGearboxTypes.Remove(gearboxType);
+		}
+	}
+
 	private async Task ApplyFilters()
 	{
 		IEnumerable<T> filtered = FilterOption;
@@ -66,19 +101,29 @@
 				{
 					if (SelectedWeaponTypes.Any())
 					{
-						filtered = FilterOption
-							.OfType<Replica>()
+						filtered = filtered.OfType<Replica>()
 							.Where(r => r.WeaponType.HasValue && SelectedWeaponTypes.Contains(r.WeaponType.Value))
 							.Cast<T>();
 					}
-					else
+
+					if (SelectedGearboxTypes.Any())
 					{
-						filtered = FilterOption.OfType<Replica>().Cast<T>();
+						filtered = filtered.OfType<Replica>()
+							.Where(r => r.WeaponGearboxType.HasValue && SelectedGearboxTypes.Contains(r.WeaponGearboxType.Value))
+							.Cast<T>();
 					}
 					break;
 				}
 		}
 
 		await OnFilterChanged.InvokeAsync(filtered);
+	}
+
+	private void ResetFilters()
+	{
+		SelectedWeaponTypes.Clear();
+		SelectedGearboxTypes.Clear();
+
+		ApplyFilters();
 	}
 }
