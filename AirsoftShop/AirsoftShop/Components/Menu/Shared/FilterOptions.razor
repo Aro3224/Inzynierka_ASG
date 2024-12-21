@@ -12,9 +12,9 @@
 				{
 					<div>
 						<input type="checkbox"
-							   value="@wType"
-							   checked="@SelectedWeaponTypes.Contains(wType)"
-							   @onchange="(e) => ToggleType(wType, (bool)e.Value, SelectedWeaponTypes)" />
+						value="@wType"
+						checked="@SelectedWeaponTypes.Contains(wType)"
+						@onchange="(e) => ToggleType(wType, (bool)e.Value, SelectedWeaponTypes)" />
 						<label>
 							<EnumDisplayName TEnum="WeaponType" Value="wType" />
 						</label>
@@ -28,9 +28,9 @@
 				{
 					<div>
 						<input type="checkbox"
-							   value="@gType"
-							   checked="@SelectedGearboxTypes.Contains(gType)"
-							   @onchange="(e) => ToggleType(gType, (bool)e.Value, SelectedGearboxTypes)" />
+						value="@gType"
+						checked="@SelectedGearboxTypes.Contains(gType)"
+						@onchange="(e) => ToggleType(gType, (bool)e.Value, SelectedGearboxTypes)" />
 						<label>
 							<EnumDisplayName TEnum="GearboxType" Value="gType" />
 						</label>
@@ -44,9 +44,9 @@
 				{
 					<div>
 						<input type="checkbox"
-							   value="@wAge"
-							   checked="@SelectedWeaponAges.Contains(wAge)"
-							   @onchange="(e) => ToggleType(wAge, (bool)e.Value, SelectedWeaponAges)" />
+						value="@wAge"
+						checked="@SelectedWeaponAges.Contains(wAge)"
+						@onchange="(e) => ToggleType(wAge, (bool)e.Value, SelectedWeaponAges)" />
 						<label>
 							<EnumDisplayName TEnum="WeaponAge" Value="wAge" />
 						</label>
@@ -60,14 +60,56 @@
 				{
 					<div>
 						<input type="checkbox"
-							   value="@mType"
-							   checked="@SelectedManufacturers.Contains(mType)"
-							   @onchange="(e) => ToggleType(mType, (bool)e.Value, SelectedManufacturers)" />
+						value="@mType"
+						checked="@SelectedManufacturers.Contains(mType)"
+						@onchange="(e) => ToggleType(mType, (bool)e.Value, SelectedManufacturers)" />
 						<label>
 							<EnumDisplayName TEnum="Manufacturer" Value="mType" />
 						</label>
 					</div>
 				}
+			</div>
+
+			<div>
+				<span>Akumulator w zestawie?</span>
+				<div>
+					<input type="checkbox" id="batteryYes" checked="@HasBatteryTrue" @onchange="(e) => ToggleBattery(true, (bool)e.Value)" />
+					<label for="batteryYes">Tak</label>
+				</div>
+				<div>
+					<input type="checkbox" id="batteryNo" checked="@HasBatteryFalse" @onchange="(e) => ToggleBattery(false, (bool)e.Value)" />
+					<label for="batteryNo">Nie</label>
+				</div>
+			</div>
+
+			<div>
+				<span>Hop-Up?</span>
+				<div>
+					<input type="checkbox" id="batteryYes" checked="@HasHopUpTrue" @onchange="(e) => ToggleHopUp(true, (bool)e.Value)" />
+					<label for="batteryYes">Tak</label>
+				</div>
+				<div>
+					<input type="checkbox" id="batteryNo" checked="@HasHopUpFalse" @onchange="(e) => ToggleHopUp(false, (bool)e.Value)" />
+					<label for="batteryNo">Nie</label>
+				</div>
+			</div>
+
+			<div>
+				<span>Blow-Back?</span>
+				<div>
+					<input type="checkbox" id="batteryYes" checked="@HasBlowBackTrue" @onchange="(e) => ToggleBlowBack(true, (bool)e.Value)" />
+					<label for="batteryYes">Tak</label>
+				</div>
+				<div>
+					<input type="checkbox" id="batteryNo" checked="@HasBlowBackFalse" @onchange="(e) => ToggleBlowBack(false, (bool)e.Value)" />
+					<label for="batteryNo">Nie</label>
+				</div>
+			</div>
+
+			<div>
+				<span>Przedział cenowy:</span>
+				<input type="number" placeholder="Min" @bind="MinPrice" />
+				<input type="number" placeholder="Max" @bind="MaxPrice" />
 			</div>
 
 			<div class="d-flex flex-column gap-2">
@@ -97,6 +139,16 @@
 	private List<WeaponAge> SelectedWeaponAges { get; set; } = new List<WeaponAge>();
 	private List<Manufacturer> SelectedManufacturers { get; set; } = new List<Manufacturer>();
 
+	private bool HasBatteryTrue { get; set; } = false;
+	private bool HasBatteryFalse { get; set; } = false;
+	private bool HasHopUpTrue { get; set; } = false;
+	private bool HasHopUpFalse { get; set; } = false;
+	private bool HasBlowBackTrue { get; set; } = false;
+	private bool HasBlowBackFalse { get; set; } = false;
+
+	private decimal MinPrice { get; set; }
+	private decimal MaxPrice { get; set; }
+
 	private void ToggleType<TType>(TType type, bool isChecked, List<TType> selectedTypes)
 	{
 		if (isChecked)
@@ -109,6 +161,42 @@
 		else
 		{
 			selectedTypes.Remove(type);
+		}
+	}
+
+	private void ToggleBattery(bool isTrue, bool isChecked)
+    {
+        if (isTrue)
+        {
+			HasBatteryTrue = isChecked;
+        }
+        else
+        {
+			HasBatteryFalse = isChecked;
+        }
+    }
+
+		private void ToggleHopUp(bool isTrue, bool isChecked)
+    {
+        if (isTrue)
+        {
+			HasHopUpTrue = isChecked;
+        }
+        else
+        {
+			HasHopUpFalse = isChecked;
+        }
+    }
+
+	private void ToggleBlowBack(bool isTrue, bool isChecked)
+	{
+		if (isTrue)
+		{
+			HasBlowBackTrue = isChecked;
+		}
+		else
+		{
+			HasBlowBackFalse = isChecked;
 		}
 	}
 
@@ -147,6 +235,41 @@
 							.Where(r => r.Manufacturer.HasValue && SelectedManufacturers.Contains(r.Manufacturer.Value))
 							.Cast<T>();
 					}
+
+					if (HasBatteryTrue && !HasBatteryFalse)
+					{
+						filtered = filtered.OfType<Replica>().Where(r => r.HasBattery == true).Cast<T>();
+					}
+					else if (!HasBatteryTrue && HasBatteryFalse)
+					{
+						filtered = filtered.OfType<Replica>().Where(r => r.HasBattery == false).Cast<T>();
+					}
+
+					if (HasHopUpTrue && !HasHopUpFalse)
+					{
+						filtered = filtered.OfType<Replica>().Where(r => r.HasHopUp == true).Cast<T>();
+					}
+					else if (!HasHopUpTrue && HasHopUpFalse)
+					{
+						filtered = filtered.OfType<Replica>().Where(r => r.HasHopUp == false).Cast<T>();
+					}
+
+					if (HasBlowBackTrue && !HasBlowBackFalse)
+					{
+						filtered = filtered.OfType<Replica>().Where(r => r.HasBlowBack == true).Cast<T>();
+					}
+					else if (!HasBlowBackTrue && HasBlowBackFalse)
+					{
+						filtered = filtered.OfType<Replica>().Where(r => r.HasBlowBack == false).Cast<T>();
+					}
+
+					if (MinPrice > 0 || MaxPrice > 0)
+					{
+						filtered = filtered.OfType<Replica>()
+							.Where(r => r.Price >= MinPrice && r.Price <= MaxPrice)
+							.Cast<T>();
+					}
+
 					break;
 				}
 		}
@@ -160,6 +283,14 @@
 		SelectedGearboxTypes.Clear();
 		SelectedWeaponAges.Clear();
 		SelectedManufacturers.Clear();
+		HasBatteryTrue = false;
+		HasBatteryFalse = false;
+		HasHopUpTrue = false;
+		HasHopUpFalse = false;
+		HasBlowBackTrue = false;
+		HasBlowBackFalse = false;
+		MinPrice = 0;
+		MaxPrice = 0;
 
 		ApplyFilters();
 	}
