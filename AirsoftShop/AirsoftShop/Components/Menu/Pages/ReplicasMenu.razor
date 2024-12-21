@@ -10,7 +10,7 @@
 <PageTitle>AirsoftShop - Repliki</PageTitle>
 
 <div class="col-md-3">
-	<FiltersLayout ProductList="@Replicas" />
+	<FiltersLayout ProductList="@AllReplicas" OnFilterChanged="HandleFilterChanged" />
 </div>
 <div class="col-md-9">
 	<div class="container-fluid">
@@ -79,6 +79,15 @@
 		};
 
 		InvokeAsync(StateHasChanged);
+	}
+
+	private async Task HandleFilterChanged(IEnumerable<Product> filteredProducts)
+	{
+		Replicas = filteredProducts.OfType<Replica>().ToList();
+
+		ApplySorting();
+
+		await InvokeAsync(StateHasChanged);
 	}
 
 	public void Dispose()

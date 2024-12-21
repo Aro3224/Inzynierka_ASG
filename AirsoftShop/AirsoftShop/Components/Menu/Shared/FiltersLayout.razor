@@ -4,27 +4,27 @@
 	@switch (ProductList)
 	{
 		case List<Replica> replicaList:
-			<FilterOptions T="Replica" FilterOption="@replicaList" />
+			<FilterOptions T="Replica" FilterOption="@replicaList" OnFilterChanged="HandleFilterChanged" />
 			break;
 		case List<Part> partList:
 			@switch (partList)
 			{
 				case var parts when parts.All(p => p.PartType == PartType.Internal):
-					<FilterOptions T="Part" FilterOption="@partList" />
+					<FilterOptions T="Part" FilterOption="@partList" OnFilterChanged="HandleFilterChanged" />
 					break;
 				case var parts when parts.All(p => p.PartType == PartType.External):
-					<FilterOptions T="Part" FilterOption="@partList" />
+					<FilterOptions T="Part" FilterOption="@partList" OnFilterChanged="HandleFilterChanged" />
 					break;
 				default:
-					<FilterOptions T="Part" FilterOption="@partList" />
+					<FilterOptions T="Part" FilterOption="@partList" OnFilterChanged="HandleFilterChanged" />
 					break;
 			}
 			break;
 		case List<Accessory> accessoryList:
-			<FilterOptions T="Accessory" FilterOption="@accessoryList" />
+			<FilterOptions T="Accessory" FilterOption="@accessoryList" OnFilterChanged="HandleFilterChanged" />
 			break;
 		default:
-			<p>Unexpected product type.</p>
+			<p>Nieznany typ produktu.</p>
 			break;
 	}
 </div>
@@ -32,4 +32,13 @@
 @code {
 	[Parameter]
 	public IEnumerable<Product> ProductList { get; set; }
+
+	[Parameter]
+	public EventCallback<IEnumerable<Product>> OnFilterChanged { get; set; }
+
+	private async Task HandleFilterChanged(IEnumerable<Product> filteredProducts)
+	{
+		ProductList = filteredProducts;
+		await OnFilterChanged.InvokeAsync(filteredProducts);
+	}
 }
