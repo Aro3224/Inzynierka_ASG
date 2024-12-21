@@ -14,7 +14,7 @@
 						<input type="checkbox"
 							   value="@wType"
 							   checked="@SelectedWeaponTypes.Contains(wType)"
-							   @onchange="(e) => ToggleWeaponType(wType, (bool)e.Value)" />
+							   @onchange="(e) => ToggleType(wType, (bool)e.Value, SelectedWeaponTypes)" />
 						<label>
 							<EnumDisplayName TEnum="WeaponType" Value="wType" />
 						</label>
@@ -29,7 +29,7 @@
 						<input type="checkbox"
 							   value="@gType"
 							   checked="@SelectedGearboxTypes.Contains(gType)"
-							   @onchange="(e) => ToggleGearboxType(gType, (bool)e.Value)" />
+							   @onchange="(e) => ToggleType(gType, (bool)e.Value, SelectedGearboxTypes)" />
 						<label>
 							<EnumDisplayName TEnum="GearboxType" Value="gType" />
 						</label>
@@ -61,33 +61,18 @@
 	private List<WeaponType> SelectedWeaponTypes { get; set; } = new List<WeaponType>();
 	private List<GearboxType> SelectedGearboxTypes { get; set; } = new List<GearboxType>();
 
-	private void ToggleWeaponType(WeaponType weaponType, bool isChecked)
+	private void ToggleType<TType>(TType type, bool isChecked, List<TType> selectedTypes)
 	{
 		if (isChecked)
 		{
-			if (!SelectedWeaponTypes.Contains(weaponType))
+			if (!selectedTypes.Contains(type))
 			{
-				SelectedWeaponTypes.Add(weaponType);
+				selectedTypes.Add(type);
 			}
 		}
 		else
 		{
-			SelectedWeaponTypes.Remove(weaponType);
-		}
-	}
-
-	private void ToggleGearboxType(GearboxType gearboxType, bool isChecked)
-	{
-		if (isChecked)
-		{
-			if (!SelectedGearboxTypes.Contains(gearboxType))
-			{
-				SelectedGearboxTypes.Add(gearboxType);
-			}
-		}
-		else
-		{
-			SelectedGearboxTypes.Remove(gearboxType);
+			selectedTypes.Remove(type);
 		}
 	}
 
