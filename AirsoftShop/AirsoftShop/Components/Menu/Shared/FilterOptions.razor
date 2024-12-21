@@ -21,6 +21,7 @@
 					</div>
 				}
 			</div>
+
 			<div>
 				<span>Typ gearboxa:</span>
 				@foreach (GearboxType gType in Enum.GetValues(typeof(GearboxType)))
@@ -36,6 +37,7 @@
 					</div>
 				}
 			</div>
+
 			<div>
 				<span>Epoka broni:</span>
 				@foreach (WeaponAge wAge in Enum.GetValues(typeof(WeaponAge)))
@@ -51,6 +53,23 @@
 					</div>
 				}
 			</div>
+
+			<div>
+				<span>Marka:</span>
+				@foreach (Manufacturer mType in Enum.GetValues(typeof(Manufacturer)))
+				{
+					<div>
+						<input type="checkbox"
+							   value="@mType"
+							   checked="@SelectedManufacturers.Contains(mType)"
+							   @onchange="(e) => ToggleType(mType, (bool)e.Value, SelectedManufacturers)" />
+						<label>
+							<EnumDisplayName TEnum="Manufacturer" Value="mType" />
+						</label>
+					</div>
+				}
+			</div>
+
 			<div class="d-flex flex-column gap-2">
 				<button class="btn btn-secondary" @onclick="ApplyFilters">Zastosuj filtry</button>
 				<button class="btn btn-danger" @onclick="ResetFilters">Resetuj filtry</button>
@@ -76,6 +95,7 @@
 	private List<WeaponType> SelectedWeaponTypes { get; set; } = new List<WeaponType>();
 	private List<GearboxType> SelectedGearboxTypes { get; set; } = new List<GearboxType>();
 	private List<WeaponAge> SelectedWeaponAges { get; set; } = new List<WeaponAge>();
+	private List<Manufacturer> SelectedManufacturers { get; set; } = new List<Manufacturer>();
 
 	private void ToggleType<TType>(TType type, bool isChecked, List<TType> selectedTypes)
 	{
@@ -120,6 +140,13 @@
 							.Where(r => SelectedWeaponAges.Contains(r.WeaponAge))
 							.Cast<T>();
 					}
+
+					if (SelectedManufacturers.Any())
+					{
+						filtered = filtered.OfType<Replica>()
+							.Where(r => r.Manufacturer.HasValue && SelectedManufacturers.Contains(r.Manufacturer.Value))
+							.Cast<T>();
+					}
 					break;
 				}
 		}
@@ -132,6 +159,7 @@
 		SelectedWeaponTypes.Clear();
 		SelectedGearboxTypes.Clear();
 		SelectedWeaponAges.Clear();
+		SelectedManufacturers.Clear();
 
 		ApplyFilters();
 	}
