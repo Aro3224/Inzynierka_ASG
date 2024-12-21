@@ -83,7 +83,16 @@
 
 	private async Task HandleFilterChanged(IEnumerable<Product> filteredProducts)
 	{
-		Replicas = filteredProducts.OfType<Replica>().ToList();
+		if (Category is null)
+		{
+			Replicas = filteredProducts.OfType<Replica>().ToList();
+		}
+		else
+		{
+			Replicas = filteredProducts.OfType<Replica>()
+				.Where(r => r.WeaponCategory.ToString().Equals(Category, StringComparison.OrdinalIgnoreCase))
+				.ToList();
+		}
 
 		ApplySorting();
 
