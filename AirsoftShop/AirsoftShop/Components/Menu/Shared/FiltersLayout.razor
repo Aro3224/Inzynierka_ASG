@@ -7,21 +7,13 @@
 			<FilterOptions T="Replica" FilterOption="@replicaList" OnFilterChanged="HandleFilterChanged" />
 			break;
 		case List<Part> partList:
-			@switch (partList)
-			{
-				case var parts when parts.All(p => p.PartType == PartType.Internal):
-					<FilterOptions T="Part" FilterOption="@partList" OnFilterChanged="HandleFilterChanged" />
-					break;
-				case var parts when parts.All(p => p.PartType == PartType.External):
-					<FilterOptions T="Part" FilterOption="@partList" OnFilterChanged="HandleFilterChanged" />
-					break;
-				default:
-					<FilterOptions T="Part" FilterOption="@partList" OnFilterChanged="HandleFilterChanged" />
-					break;
-			}
+			<FilterOptions T="Part" FilterOption="@partList" OnFilterChanged="HandleFilterChanged" />
 			break;
 		case List<Accessory> accessoryList:
 			<FilterOptions T="Accessory" FilterOption="@accessoryList" OnFilterChanged="HandleFilterChanged" />
+			break;
+		case List<Product> allList:
+			<FilterOptions T="Product" FilterOption="@allList" OnFilterChanged="HandleFilterChanged" />
 			break;
 		default:
 			<p>Nieznany typ produktu.</p>
