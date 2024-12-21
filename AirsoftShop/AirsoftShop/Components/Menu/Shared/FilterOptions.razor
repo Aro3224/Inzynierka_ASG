@@ -1,64 +1,86 @@
-﻿@using AirsoftShop.Data
+﻿@using AirsoftShop.Components.Custom_Components
+@using AirsoftShop.Data
 @typeparam T
 
 <div>
-    @switch (typeof(T).Name)
-    {
-        case nameof(Replica):
-            <div>
-                <label><input type="checkbox" @bind="FilterBySpring" /> Sprężynowa</label>
-                <label><input type="checkbox" @bind="FilterByGas" /> Gazowa</label>
-                <label><input type="checkbox" @bind="FilterByElectric" /> Elektryczna</label>
-            </div>
-            <button @onclick="ApplyFilters">Zastosuj filtry</button>
-            break;
+	@switch (typeof(T).Name)
+	{
+		case nameof(Replica):
+			{
+				<div>
+					<p>Napęd broni:</p>
+					@foreach (WeaponType wType in Enum.GetValues(typeof(WeaponType)))
+					{
+						<div>
+							<input type="checkbox"
+								   value="@wType"
+								   @onchange="(e) => ToggleWeaponType(wType, (bool)e.Value)" />
+							<label>
+								<EnumDisplayName TEnum="WeaponType" Value="wType" />
+							</label>
+						</div>
+					}
+				</div>
+				<button @onclick="ApplyFilters">Zastosuj filtry</button>
+				break;
+			}
+		case nameof(Accessory):
+			<p>Akcesoria</p>
+			break;
 
-        case nameof(Accessory):
-            <p>Akcesoria</p>
-            break;
-
-        case nameof(Part):
-            <p>Części</p>
-            break;
-    }
+		case nameof(Part):
+			<p>Części</p>
+			break;
+	}
 </div>
 
 @code {
-    [Parameter]
-    public IEnumerable<T> FilterOption { get; set; }
+	[Parameter]
+	public IEnumerable<T> FilterOption { get; set; }
 
-    [Parameter]
-    public EventCallback<IEnumerable<T>> OnFilterChanged { get; set; }
+	[Parameter]
+	public EventCallback<IEnumerable<T>> OnFilterChanged { get; set; }
 
-    private bool FilterBySpring { get; set; } = false;
-    private bool FilterByGas { get; set; } = false;
-    private bool FilterByElectric { get; set; } = false;
+	private List<WeaponType> SelectedWeaponTypes { get; set; } = new List<WeaponType>();
 
-    private async Task ApplyFilters()
-    {
-        IEnumerable<T> filtered = FilterOption;
+	private void ToggleWeaponType(WeaponType weaponType, bool isChecked)
+	{
+		if (isChecked)
+		{
+			if (!SelectedWeaponTypes.Contains(weaponType))
+			{
+				SelectedWeaponTypes.Add(weaponType);
+			}
+		}
+		else
+		{
+			SelectedWeaponTypes.Remove(weaponType);
+		}
+	}
 
-        if (typeof(T) == typeof(Replica))
-        {
-            List<WeaponType> selectedWeaponTypes = new List<WeaponType>();
+	private async Task ApplyFilters()
+	{
+		IEnumerable<T> filtered = FilterOption;
 
-            if (FilterBySpring) selectedWeaponTypes.Add(WeaponType.Spring);
-            if (FilterByGas) selectedWeaponTypes.Add(WeaponType.Gas);
-            if (FilterByElectric) selectedWeaponTypes.Add(WeaponType.Electric);
+		switch (typeof(T).Name)
+		{
+			case nameof(Replica):
+				{
+					if (SelectedWeaponTypes.Any())
+					{
+						filtered = FilterOption
+							.OfType<Replica>()
+							.Where(r => r.WeaponType.HasValue && SelectedWeaponTypes.Contains(r.WeaponType.Value))
+							.Cast<T>();
+					}
+					else
+					{
+						filtered = FilterOption.OfType<Replica>().Cast<T>();
+					}
+					break;
+				}
+		}
 
-            if (selectedWeaponTypes.Count == 0)
-            {
-                filtered = FilterOption.OfType<Replica>().Cast<T>();
-            }
-            else
-            {
-                filtered = FilterOption
-                    .OfType<Replica>()
-                    .Where(r => r.WeaponType.HasValue && selectedWeaponTypes.Contains(r.WeaponType.Value))
-                    .Cast<T>();
-            }
-        }
-
-        await OnFilterChanged.InvokeAsync(filtered);
-    }
+		await OnFilterChanged.InvokeAsync(filtered);
+	}
 }
