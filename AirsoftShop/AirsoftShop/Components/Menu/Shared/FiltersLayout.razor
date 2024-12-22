@@ -7,7 +7,7 @@
 			<FilterOptions T="Replica" ProductList="@replicaList" Category="@Category" OnFilterChanged="HandleFilterChanged" />
 			break;
 		case List<Part> partList:
-			<FilterOptions T="Part" ProductList="@partList" Category="@Category" OnFilterChanged="HandleFilterChanged" />
+			<FilterOptions T="Part" ProductList="@partList" Category="@Category" DetPType="@DetPType" OnFilterChanged="HandleFilterChanged" />
 			break;
 		case List<Accessory> accessoryList:
 			<FilterOptions T="Accessory" ProductList="@accessoryList" Category="@Category" OnFilterChanged="HandleFilterChanged" />
@@ -30,6 +30,9 @@
 
 	[Parameter]
 	public string? Category { get; set; }
+
+	[Parameter]
+	public string? DetPType { get; set; }
 
 	private async Task HandleFilterChanged(IEnumerable<Product> filteredProducts)
 	{

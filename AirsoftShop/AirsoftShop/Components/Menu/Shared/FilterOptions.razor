@@ -9,10 +9,10 @@
 	{
 		<div>
 			<input class="form-check-input"
-				   type="checkbox"
-				   value="@mType"
-				   checked="@SelectedManufacturers.Contains(mType)"
-				   @onchange="(e) => ToggleType(mType, (bool)e.Value, SelectedManufacturers)" />
+			type="checkbox"
+			value="@mType"
+			checked="@SelectedManufacturers.Contains(mType)"
+			@onchange="(e) => ToggleType(mType, (bool)e.Value, SelectedManufacturers)" />
 			<label>
 				<EnumDisplayName TEnum="Manufacturer" Value="mType" />
 			</label>
@@ -44,10 +44,10 @@
 				{
 					<div>
 						<input class="form-check-input"
-							   type="checkbox"
-							   value="@wType"
-							   checked="@SelectedWeaponTypes.Contains(wType)"
-							   @onchange="(e) => ToggleType(wType, (bool)e.Value, SelectedWeaponTypes)" />
+						type="checkbox"
+						value="@wType"
+						checked="@SelectedWeaponTypes.Contains(wType)"
+						@onchange="(e) => ToggleType(wType, (bool)e.Value, SelectedWeaponTypes)" />
 						<label>
 							<EnumDisplayName TEnum="WeaponType" Value="wType" />
 						</label>
@@ -61,10 +61,10 @@
 				{
 					<div>
 						<input class="form-check-input"
-							   type="checkbox"
-							   value="@gType"
-							   checked="@SelectedGearboxTypes.Contains(gType)"
-							   @onchange="(e) => ToggleType(gType, (bool)e.Value, SelectedGearboxTypes)" />
+						type="checkbox"
+						value="@gType"
+						checked="@SelectedGearboxTypes.Contains(gType)"
+						@onchange="(e) => ToggleType(gType, (bool)e.Value, SelectedGearboxTypes)" />
 						<label>
 							<EnumDisplayName TEnum="GearboxType" Value="gType" />
 						</label>
@@ -78,10 +78,10 @@
 				{
 					<div>
 						<input class="form-check-input"
-							   type="checkbox"
-							   value="@wAge"
-							   checked="@SelectedWeaponAges.Contains(wAge)"
-							   @onchange="(e) => ToggleType(wAge, (bool)e.Value, SelectedWeaponAges)" />
+						type="checkbox"
+						value="@wAge"
+						checked="@SelectedWeaponAges.Contains(wAge)"
+						@onchange="(e) => ToggleType(wAge, (bool)e.Value, SelectedWeaponAges)" />
 						<label>
 							<EnumDisplayName TEnum="WeaponAge" Value="wAge" />
 						</label>
@@ -141,10 +141,10 @@
 								{
 									<div>
 										<input class="form-check-input"
-											   type="checkbox"
-											   value="@bbType"
-											   checked="@SelectedBbTypes.Contains(bbType)"
-											   @onchange="(e) => ToggleType(bbType, (bool)e.Value, SelectedBbTypes)" />
+										type="checkbox"
+										value="@bbType"
+										checked="@SelectedBbTypes.Contains(bbType)"
+										@onchange="(e) => ToggleType(bbType, (bool)e.Value, SelectedBbTypes)" />
 										<label>
 											<EnumDisplayName TEnum="BbType" Value="bbType" />
 										</label>
@@ -176,10 +176,10 @@
 								{
 									<div>
 										<input class="form-check-input"
-											   type="checkbox"
-											   value="@gType"
-											   checked="@SelectedGasTypes.Contains(gType)"
-											   @onchange="(e) => ToggleType(gType, (bool)e.Value, SelectedGasTypes)" />
+										type="checkbox"
+										value="@gType"
+										checked="@SelectedGasTypes.Contains(gType)"
+										@onchange="(e) => ToggleType(gType, (bool)e.Value, SelectedGasTypes)" />
 										<label>
 											<EnumDisplayName TEnum="GasType" Value="gType" />
 										</label>
@@ -197,10 +197,10 @@
 								{
 									<div>
 										<input class="form-check-input"
-											   type="checkbox"
-											   value="@batType"
-											   checked="@SelectedBatteryTypes.Contains(batType)"
-											   @onchange="(e) => ToggleType(batType, (bool)e.Value, SelectedBatteryTypes)" />
+										type="checkbox"
+										value="@batType"
+										checked="@SelectedBatteryTypes.Contains(batType)"
+										@onchange="(e) => ToggleType(batType, (bool)e.Value, SelectedBatteryTypes)" />
 										<label>
 											<EnumDisplayName TEnum="BatteryType" Value="batType" />
 										</label>
@@ -214,10 +214,10 @@
 								{
 									<div>
 										<input class="form-check-input"
-											   type="checkbox"
-											   value="@batPlug"
-											   checked="@SelectedBatteryPlugs.Contains(batPlug)"
-											   @onchange="(e) => ToggleType(batPlug, (bool)e.Value, SelectedBatteryPlugs)" />
+										type="checkbox"
+										value="@batPlug"
+										checked="@SelectedBatteryPlugs.Contains(batPlug)"
+										@onchange="(e) => ToggleType(batPlug, (bool)e.Value, SelectedBatteryPlugs)" />
 										<label>
 											<EnumDisplayName TEnum="BatteryPlug" Value="batPlug" />
 										</label>
@@ -231,10 +231,10 @@
 								{
 									<div>
 										<input class="form-check-input"
-											   type="checkbox"
-											   value="@batVolt"
-											   checked="@SelectedBatteryVoltages.Contains(batVolt)"
-											   @onchange="(e) => ToggleType(batVolt, (bool)e.Value, SelectedBatteryVoltages)" />
+										type="checkbox"
+										value="@batVolt"
+										checked="@SelectedBatteryVoltages.Contains(batVolt)"
+										@onchange="(e) => ToggleType(batVolt, (bool)e.Value, SelectedBatteryVoltages)" />
 										<label>
 											<EnumDisplayName TEnum="BatteryVoltage" Value="batVolt" />
 										</label>
@@ -258,13 +258,128 @@
 
 			break;
 		}
-
 	case nameof(Part):
-		<p>Części</p>
-		break;
+		{
+			if (Enum.TryParse<PartType>(Category, true, out var partType))
+			{
+				switch (partType)
+				{
+					case PartType.Internal:
+						{
+							if (Enum.TryParse<InternalPartType>(DetPType, true, out var internalPartType))
+							{
+								switch (internalPartType)
+								{
+									case InternalPartType.InnerBarrel:
+									case InternalPartType.PrecisionBarrel:
+										{
+											<div>
+												<span>Długość lufy (mm):</span>
+												<div>
+													<input class="form-control" type="number" placeholder="Długość" @bind="ItemLenght" />
+												</div>
+											</div>
+
+											break;
+
+											break;
+										}
+									case InternalPartType.Bearing:
+										{
+											<div>
+												<span>Średnica łożyska (mm):</span>
+												<div>
+													<input class="form-control" type="number" placeholder="Średnica" @bind="BearingDiameter" />
+												</div>
+											</div>
+
+											break;
+										}
+									case InternalPartType.Gearbox:
+									case InternalPartType.GearboxSkeleton:
+										{
+											<div>
+												<span>Typ gearboxa:</span>
+												@foreach (GearboxType gType in Enum.GetValues(typeof(GearboxType)))
+												{
+													<div>
+														<input class="form-check-input"
+														type="checkbox"
+														value="@gType"
+														checked="@SelectedGearboxTypes.Contains(gType)"
+														@onchange="(e) => ToggleType(gType, (bool)e.Value, SelectedGearboxTypes)" />
+														<label>
+															<EnumDisplayName TEnum="GearboxType" Value="gType" />
+														</label>
+													</div>
+												}
+											</div>
+
+											break;
+										}
+								}
+							}
+							else {
+								Console.WriteLine("Invalid internal part type.");
+							}
+
+							break;
+						}
+					case PartType.External:
+						{
+							if (Enum.TryParse<ExternalPartType>(DetPType, true, out var externalPartType))
+							{
+								switch (externalPartType)
+								{
+									case ExternalPartType.Magazine:
+										{
+											<div>
+												<span>Rodzaj magazynka:</span>
+												@foreach (MagazineType mType in Enum.GetValues(typeof(MagazineType)))
+												{
+													<div>
+														<input class="form-check-input"
+														type="checkbox"
+														value="@mType"
+														checked="@SelectedMagazineTypes.Contains(mType)"
+														@onchange="(e) => ToggleType(mType, (bool)e.Value, SelectedMagazineTypes)" />
+														<label>
+															<EnumDisplayName TEnum="MagazineType" Value="mType" />
+														</label>
+													</div>
+												}
+											</div>
+
+											break;
+										}
+								}
+							}
+							else {
+								Console.WriteLine("Invalid external part type.");
+							}
+
+							break;
+						}
+					default:
+						{
+							Console.WriteLine("Unknown part type.");
+
+							break;
+						}
+				}
+			}
+			else
+			{
+				Console.WriteLine("Invalid or null Category.");
+			}
+
+			break;
+		}
 	case nameof(Product):
-		<p>Wszystkie</p>
-		break;
+		{
+			<p>Wszystkie</p>
+			break;
+		}
 }
 
 <div class="d-flex flex-column gap-2">
@@ -282,6 +397,9 @@
 	[Parameter]
 	public string? Category { get; set; }
 
+	[Parameter]
+	public string? DetPType { get; set; }
+
 	private List<WeaponType> SelectedWeaponTypes { get; set; } = new List<WeaponType>();
 	private List<GearboxType> SelectedGearboxTypes { get; set; } = new List<GearboxType>();
 	private List<WeaponAge> SelectedWeaponAges { get; set; } = new List<WeaponAge>();
@@ -291,6 +409,7 @@
 	private List<BatteryType> SelectedBatteryTypes { get; set; } = new List<BatteryType>();
 	private List<BatteryPlug> SelectedBatteryPlugs { get; set; } = new List<BatteryPlug>();
 	private List<BatteryVoltage> SelectedBatteryVoltages { get; set; } = new List<BatteryVoltage>();
+	private List<MagazineType> SelectedMagazineTypes { get; set; } = new List<MagazineType>();
 
 	private bool HasBatteryTrue { get; set; } = false;
 	private bool HasBatteryFalse { get; set; } = false;
@@ -303,6 +422,8 @@
 	private decimal MaxPrice { get; set; }
 	private decimal BBWeight { get; set; }
 	private decimal BBSize { get; set; }
+	private int BearingDiameter { get; set; }
+	private int ItemLenght { get; set; }
 
 	private void ToggleType<TType>(TType type, bool isChecked, List<TType> selectedTypes)
 	{
@@ -501,6 +622,82 @@
 
 					break;
 				}
+			case nameof(Part):
+				{
+					var parts = filteredProducts.OfType<Part>();
+
+					if (!string.IsNullOrEmpty(Category))
+					{
+						parts = parts
+							.Where(r => r.PartType.ToString().Equals(Category, StringComparison.OrdinalIgnoreCase));
+
+						if (Enum.TryParse<PartType>(Category, true, out var partType)) {
+							switch (partType)
+							{
+								case PartType.Internal:
+									{
+										if (!string.IsNullOrEmpty(DetPType))
+										{
+											parts = parts
+												.Where(r => r.InternalPartType.ToString().Equals(DetPType, StringComparison.OrdinalIgnoreCase));
+										}
+
+										break;
+									}
+								case PartType.External:
+									{
+										if (!string.IsNullOrEmpty(DetPType))
+										{
+											parts = parts
+												.Where(r => r.ExternalPartType.ToString().Equals(DetPType, StringComparison.OrdinalIgnoreCase));
+										}
+
+										break;
+									}
+							}
+						}
+					}
+
+					if (SelectedGearboxTypes.Any())
+					{
+						parts = parts
+							.Where(r => r.GearboxType.HasValue && SelectedGearboxTypes.Contains(r.GearboxType.Value));
+					}
+
+					if (SelectedMagazineTypes.Any())
+					{
+						parts = parts
+							.Where(r => r.MagazineType.HasValue && SelectedMagazineTypes.Contains(r.MagazineType.Value));
+					}
+
+					if (BearingDiameter > 0)
+					{
+						parts = parts.OfType<Part>()
+							.Where(r => r.BearingDiameter == BearingDiameter);
+					}
+
+					if (ItemLenght > 0)
+					{
+						parts = parts.OfType<Part>()
+							.Where(r => r.ItemLenght == ItemLenght);
+					}
+
+					if (SelectedManufacturers.Any())
+					{
+						parts = parts.OfType<Part>()
+							.Where(r => r.Manufacturer.HasValue && SelectedManufacturers.Contains(r.Manufacturer.Value));
+					}
+
+					if (MinPrice > 0 || MaxPrice > 0)
+					{
+						parts = parts.OfType<Part>()
+							.Where(r => r.Price >= MinPrice && r.Price <= MaxPrice);
+					}
+
+					filteredProducts = parts.Cast<T>();
+
+					break;
+				}
 		}
 
 		await OnFilterChanged.InvokeAsync(filteredProducts);
@@ -540,7 +737,10 @@
 				}
 			case nameof(Part):
 				{
-
+					SelectedGearboxTypes.Clear();
+					SelectedMagazineTypes.Clear();
+					BearingDiameter = 0;
+					ItemLenght = 0;
 
 					break;
 				}
