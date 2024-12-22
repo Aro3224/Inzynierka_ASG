@@ -10,7 +10,7 @@
 <PageTitle>AirsoftShop - Repliki</PageTitle>
 
 <div class="col-md-3">
-	<FiltersLayout ProductList="@AllReplicas" OnFilterChanged="HandleFilterChanged" />
+	<FiltersLayout ProductList="@AllReplicas" Category="@Category" OnFilterChanged="HandleFilterChanged" />
 </div>
 <div class="col-md-9">
 	<div class="container-fluid">
@@ -29,78 +29,3 @@
 		</div>
 	</div>
 </div>
-
-@code {
-	[Parameter]
-	public string? Category { get; set; }
-
-	private List<Replica> AllReplicas { get; set; } = new List<Replica>();
-	private List<Replica> Replicas { get; set; } = new List<Replica>();
-
-	protected override async Task OnParametersSetAsync()
-	{
-		var allProducts = await ProductService.GetAllProductsAsync();
-		AllReplicas = allProducts.OfType<Replica>().ToList();
-
-		ApplyCategoryFilter();
-
-		var currentUri = new Uri(NavigationManager.Uri);
-		SortingState.SetSortingOptionFromUrl(currentUri);
-
-		SortingState.OnSortingChanged += ApplySorting;
-
-		ApplySorting();
-	}
-
-	private void ApplyCategoryFilter()
-	{
-		if (!string.IsNullOrEmpty(Category))
-		{
-			Replicas = AllReplicas
-				.Where(r => r.WeaponCategory.ToString().Equals(Category, StringComparison.OrdinalIgnoreCase))
-				.ToList();
-		}
-		else
-		{
-			Replicas = AllReplicas.ToList();
-		}
-	}
-
-	private void ApplySorting()
-	{
-		Replicas = SortingState.CurrentSortingOption switch
-		{
-			SortingOption.PriceAsc => Replicas.OrderBy(r => r.Price).ToList(),
-			SortingOption.PriceDesc => Replicas.OrderByDescending(r => r.Price).ToList(),
-			SortingOption.NameAsc => Replicas.OrderBy(r => r.Name).ToList(),
-			SortingOption.NameDesc => Replicas.OrderByDescending(r => r.Name).ToList(),
-			SortingOption.None => Replicas.OrderByDescending(r => r.Id).ToList(),
-			_ => Replicas
-		};
-
-		InvokeAsync(StateHasChanged);
-	}
-
-	private async Task HandleFilterChanged(IEnumerable<Product> filteredProducts)
-	{
-		if (Category is null)
-		{
-			Replicas = filteredProducts.OfType<Replica>().ToList();
-		}
-		else
-		{
-			Replicas = filteredProducts.OfType<Replica>()
-				.Where(r => r.WeaponCategory.ToString().Equals(Category, StringComparison.OrdinalIgnoreCase))
-				.ToList();
-		}
-
-		ApplySorting();
-
-		await InvokeAsync(StateHasChanged);
-	}
-
-	public void Dispose()
-	{
-		SortingState.OnSortingChanged -= ApplySorting;
-	}
-}

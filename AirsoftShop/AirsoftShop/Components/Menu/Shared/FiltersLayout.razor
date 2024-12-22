@@ -4,16 +4,16 @@
 	@switch (ProductList)
 	{
 		case List<Replica> replicaList:
-			<FilterOptions T="Replica" FilterOption="@replicaList" OnFilterChanged="HandleFilterChanged" />
+			<FilterOptions T="Replica" ProductList="@replicaList" Category="@Category" OnFilterChanged="HandleFilterChanged" />
 			break;
 		case List<Part> partList:
-			<FilterOptions T="Part" FilterOption="@partList" OnFilterChanged="HandleFilterChanged" />
+			<FilterOptions T="Part" ProductList="@partList" Category="@Category" OnFilterChanged="HandleFilterChanged" />
 			break;
 		case List<Accessory> accessoryList:
-			<FilterOptions T="Accessory" FilterOption="@accessoryList" OnFilterChanged="HandleFilterChanged" />
+			<FilterOptions T="Accessory" ProductList="@accessoryList" Category="@Category" OnFilterChanged="HandleFilterChanged" />
 			break;
 		case List<Product> allList:
-			<FilterOptions T="Product" FilterOption="@allList" OnFilterChanged="HandleFilterChanged" />
+			<FilterOptions T="Product" ProductList="@allList" Category="@Category" OnFilterChanged="HandleFilterChanged" />
 			break;
 		default:
 			<p>Nieznany typ produktu.</p>
@@ -27,6 +27,9 @@
 
 	[Parameter]
 	public EventCallback<IEnumerable<Product>> OnFilterChanged { get; set; }
+
+	[Parameter]
+	public string? Category { get; set; }
 
 	private async Task HandleFilterChanged(IEnumerable<Product> filteredProducts)
 	{
