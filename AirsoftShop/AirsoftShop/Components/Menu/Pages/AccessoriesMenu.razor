@@ -10,7 +10,7 @@
 <PageTitle>AirsoftShop - Akcesoria</PageTitle>
 
 <div class="col-md-3">
-	<FiltersLayout ProductList="@Accessories" />
+	<FiltersLayout ProductList="@AllAccessories" Category="@AccType" OnFilterChanged="HandleFilterChanged" />
 </div>
 <div class="col-md-9">
 	<div class="container-fluid">
@@ -29,60 +29,3 @@
 		</div>
 	</div>
 </div>
-
-@code {
-	[Parameter]
-	public string? AccType { get; set; }
-
-	private List<Accessory> AllAccessories { get; set; } = new List<Accessory>();
-	private List<Accessory> Accessories { get; set; } = new List<Accessory>();
-
-	protected override async Task OnParametersSetAsync()
-	{
-		var allProducts = await ProductService.GetAllProductsAsync();
-		AllAccessories = allProducts.OfType<Accessory>().ToList();
-
-		ApplyCategoryFilter();
-
-		var currentUri = new Uri(NavigationManager.Uri);
-		SortingState.SetSortingOptionFromUrl(currentUri);
-
-		SortingState.OnSortingChanged += ApplySorting;
-
-		ApplySorting();
-	}
-
-	private void ApplyCategoryFilter()
-	{
-		if (!string.IsNullOrEmpty(AccType))
-		{
-			Accessories = AllAccessories
-				.Where(r => r.AccessoryType.ToString().Equals(AccType, StringComparison.OrdinalIgnoreCase))
-				.ToList();
-		}
-		else
-		{
-			Accessories = AllAccessories.ToList();
-		}
-	}
-
-	private void ApplySorting()
-	{
-		Accessories = SortingState.CurrentSortingOption switch
-		{
-			SortingOption.PriceAsc => Accessories.OrderBy(r => r.Price).ToList(),
-			SortingOption.PriceDesc => Accessories.OrderByDescending(r => r.Price).ToList(),
-			SortingOption.NameAsc => Accessories.OrderBy(r => r.Name).ToList(),
-			SortingOption.NameDesc => Accessories.OrderByDescending(r => r.Name).ToList(),
-			SortingOption.None => Accessories.OrderByDescending(r => r.Id).ToList(),
-			_ => Accessories
-		};
-
-		InvokeAsync(StateHasChanged);
-	}
-
-	public void Dispose()
-	{
-		SortingState.OnSortingChanged -= ApplySorting;
-	}
-}
