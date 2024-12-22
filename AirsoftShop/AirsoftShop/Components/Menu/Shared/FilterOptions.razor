@@ -375,11 +375,6 @@
 
 			break;
 		}
-	case nameof(Product):
-		{
-			<p>Wszystkie</p>
-			break;
-		}
 }
 
 <div class="d-flex flex-column gap-2">
@@ -698,6 +693,26 @@
 
 					break;
 				}
+			case nameof(Product):
+				{
+					var products = filteredProducts.OfType<Product>();
+
+					if (SelectedManufacturers.Any())
+					{
+						products = products.OfType<Product>()
+							.Where(r => r.Manufacturer.HasValue && SelectedManufacturers.Contains(r.Manufacturer.Value));
+					}
+
+					if (MinPrice > 0 || MaxPrice > 0)
+					{
+						products = products.OfType<Product>()
+							.Where(r => r.Price >= MinPrice && r.Price <= MaxPrice);
+					}
+
+					filteredProducts = products.Cast<T>();
+
+					break;
+				}
 		}
 
 		await OnFilterChanged.InvokeAsync(filteredProducts);
@@ -742,10 +757,6 @@
 					BearingDiameter = 0;
 					ItemLenght = 0;
 
-					break;
-				}
-			case nameof(Equipment):
-				{
 					break;
 				}
 		}

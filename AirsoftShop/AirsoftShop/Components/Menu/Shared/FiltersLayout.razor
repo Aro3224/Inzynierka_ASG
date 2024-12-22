@@ -13,7 +13,7 @@
 			<FilterOptions T="Accessory" ProductList="@accessoryList" Category="@Category" OnFilterChanged="HandleFilterChanged" />
 			break;
 		case List<Product> allList:
-			<FilterOptions T="Product" ProductList="@allList" Category="@Category" OnFilterChanged="HandleFilterChanged" />
+			<FilterOptions T="Product" ProductList="@allList" OnFilterChanged="HandleFilterChanged" />
 			break;
 		default:
 			<p>Nieznany typ produktu.</p>
