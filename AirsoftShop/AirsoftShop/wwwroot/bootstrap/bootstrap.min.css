@@ -11597,3 +11597,35 @@ textarea.form-control-lg {
     }
 }
 /*# sourceMappingURL=bootstrap.min.css.map */
+
+.cursor-pointer {
+    cursor: pointer
+}
+
+    .cursor-pointer:hover {
+        color: blue;
+        transition: color 0.3s ease;
+    }
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.80rem;
+    list-style: none;
+}
+
+.breadcrumb-item {
+    color: #6c757d;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+    .breadcrumb-item:hover {
+        color: blue;
+    }
+
+    .breadcrumb-item.active {
+        color: #6c757d;
+        pointer-events: none;
+    }

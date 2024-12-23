@@ -1,0 +1,21 @@
+﻿@using AirsoftShop.Data
+
+<nav class="breadcrumb">
+	<a href="/Accessories" class="breadcrumb-item">Akcesoria</a>
+	@if (Accessory.AccessoryType.HasValue)
+	{
+		<a href="/Accessories/@Accessory.AccessoryType" class="breadcrumb-item">
+			<EnumDisplayName TEnum="AccessoryType" Value="@Accessory.AccessoryType.Value" />
+		</a>
+	}
+	else
+	{
+		<span class="breadcrumb-item">Nieznana kategoria</span>
+	}
+	<span class="breadcrumb-item active">@Accessory.Name</span>
+</nav>
+
+@code {
+	[Parameter]
+	public required Accessory Accessory { get; set; }
+}

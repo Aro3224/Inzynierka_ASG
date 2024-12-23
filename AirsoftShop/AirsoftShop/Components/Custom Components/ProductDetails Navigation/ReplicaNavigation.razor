@@ -1,0 +1,21 @@
+﻿@using AirsoftShop.Data
+
+<nav class="breadcrumb">
+	<a href="/Replicas" class="breadcrumb-item">Repliki ASG</a>
+	@if (Replica.WeaponCategory.HasValue)
+	{
+		<a href="/Replicas/@Replica.WeaponCategory" class="breadcrumb-item">
+			<EnumDisplayName TEnum="WeaponCategory" Value="@Replica.WeaponCategory.Value" />
+		</a>
+	}
+	else
+	{
+		<span class="breadcrumb-item">Nieznana kategoria</span>
+	}
+	<span class="breadcrumb-item active">@Replica.Name</span>
+</nav>
+
+@code {
+	[Parameter]
+	public required Replica Replica { get; set; }
+}

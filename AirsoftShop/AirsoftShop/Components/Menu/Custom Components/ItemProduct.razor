@@ -1,13 +1,20 @@
 ﻿@using AirsoftShop.Data
 
+@inject NavigationManager NavManager
+
 <div class="col-md-3 product-card mb-2">
-	<img src="@ImageSource" onerror="this.src='./Images/Replicas/icon01.png'" class="product-image">
+	<img src="@ImageSource" onerror="this.src='./Images/Replicas/icon01.png'" class="product-image cursor-pointer" @onclick="@(() => NavManager.NavigateTo($"Product/{Product.ProductType}/{Product.Id}"))">
 	<div class="product-info">
 		<div class="product-name">
-			<h5>@Product.Name</h5>
+			<h5 class="cursor-pointer hover-color" @onclick="@(() => NavManager.NavigateTo($"Product/{Product.ProductType}/{Product.Id}"))">@Product.Name</h5>
 		</div>
-		<p class="product-price">@Product.Price.ToString()zł</p>
-		<button type="button" class="btn btn-primary">Do koszyka</button>
+		@if (Product.Count != 0) {
+			<p class="product-price">@Product.Price.ToString()zł</p>
+		}
+		else {
+			<p class="product-price text-danger">Niedostępny</p>
+		}
+		<button type="button" class="btn btn-primary" disabled="@(Product?.Count == 0)">Do koszyka</button>
 	</div>
 </div>
 

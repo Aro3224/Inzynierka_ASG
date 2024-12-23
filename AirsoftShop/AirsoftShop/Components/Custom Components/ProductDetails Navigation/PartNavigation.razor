@@ -1,0 +1,30 @@
+﻿@using AirsoftShop.Data
+
+<nav class="breadcrumb">
+	@if (Part.PartType == PartType.External)
+	{
+		<a href="/Parts/@Part.PartType" class="breadcrumb-item">Części zewnętrzne</a>
+
+		<a href="/Parts/@Part.PartType/@Part.ExternalPartType" class="breadcrumb-item">
+			<EnumDisplayName TEnum="ExternalPartType" Value="@Part.ExternalPartType.Value" />
+		</a>
+	}
+	else if (Part.PartType == PartType.Internal)
+	{
+		<a href="/Parts/@Part.PartType" class="breadcrumb-item">Części wewnętrzne</a>
+
+		<a href="/Parts/@Part.PartType/@Part.InternalPartType" class="breadcrumb-item">
+			<EnumDisplayName TEnum="InternalPartType" Value="@Part.InternalPartType.Value" />
+		</a>
+	}
+	else {
+		Console.WriteLine("Unknown part type.");
+	}
+
+	<span class="breadcrumb-item active">@Part.Name</span>
+</nav>
+
+@code {
+	[Parameter]
+	public required Part Part { get; set; }
+}

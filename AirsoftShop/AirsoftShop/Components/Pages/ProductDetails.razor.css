@@ -1,0 +1,21 @@
+﻿.table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+.counter-btn {
+    background-color: #dddddd;
+}
+
+    .counter-btn:hover {
+        background-color: #cccccc;
+    }
+
+.input-number {
+    width: 2rem;
+    text-align: center;
+    border: none;
+}
