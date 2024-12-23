@@ -1,6 +1,7 @@
 ﻿@page "/Product/{ProductType}/{Id}"
 @using AirsoftShop.Data
 @using AirsoftShop.Components.Custom_Components.ProductDetails_Navigation
+@using System.ComponentModel.DataAnnotations
 
 @inject IProductService ProductService
 
@@ -30,6 +31,89 @@
 					break;
 				}
 		}
+
+		<div class="container-fluid d-flex flex-column gap-3">
+
+			<div class="row d-flex flex-row">
+
+				<div class="col-md-6 d-flex justify-content-center">
+					<img src="" onerror="this.src='./Images/Replicas/icon01.png'" class="product-image w-75">
+				</div>
+
+				<div class="col-md-6">
+					<h2>@Product.Name</h2>
+				</div>
+
+			</div>
+
+			<hr />
+
+			<div>
+				<h3>Opis</h3>
+
+				<p>@Product.Description</p>
+			</div>
+
+			<div>
+				<h3>Dane techniczne</h3>
+
+				<table class="table">
+					<tbody>
+						@foreach (var property in Product.GetType().GetProperties())
+						{
+							if (excludedProperties.Contains(property.Name))
+							{
+								continue;
+							}
+
+							var value = property.GetValue(Product);
+
+							var displayName = property.GetCustomAttributes(typeof(DisplayAttribute), false)
+							.Cast<DisplayAttribute>()
+							.FirstOrDefault()?.Name ?? property.Name;
+
+							if (value is not null)
+							{
+								if (value.GetType().IsEnum)
+								{
+									if (value.GetType().GetCustomAttributes(typeof(FlagsAttribute), false).Any())
+									{
+										var flags = Enum.GetValues(value.GetType())
+										.Cast<Enum>()
+										.Where(flag => ((Enum)value).HasFlag(flag) && Convert.ToInt32(flag) != 0)
+										.Select(flag => flag.GetType()
+										.GetField(flag.ToString())
+										?.GetCustomAttributes(typeof(DisplayAttribute), false)
+										.Cast<DisplayAttribute>()
+										.FirstOrDefault()?.Name ?? flag.ToString());
+
+										value = string.Join(", ", flags);
+									}
+									else
+									{
+										value = value.GetType()
+										.GetField(value.ToString())
+										?.GetCustomAttributes(typeof(DisplayAttribute), false)
+										.Cast<DisplayAttribute>()
+										.FirstOrDefault()?.Name ?? value.ToString();
+									}
+								}
+								else if (value is bool boolValue)
+								{
+									value = boolValue ? "Tak" : "Nie";
+								}
+
+								<tr>
+									<td>@displayName</td>
+									<td>@value</td>
+								</tr>
+							}
+						}
+					</tbody>
+				</table>
+			</div>
+
+		</div>
 	}
 	else
 	{
