@@ -34,6 +34,18 @@
 	</div>
 </div>
 
+<div>
+	<span>Dostępny:</span>
+	<div>
+		<input class="form-check-input" type="checkbox" id="AvailableYes" checked="@IsAvailable" @onchange='(e) => ToggleBoolean("available",true, (bool)e.Value)' />
+		<label for="batteryYes">Tak</label>
+	</div>
+	<div>
+		<input class="form-check-input" type="checkbox" id="AvailableNo" checked="@IsNotAvailable" @onchange='(e) => ToggleBoolean("available",false, (bool)e.Value)' />
+		<label for="batteryNo">Nie</label>
+	</div>
+</div>
+
 @switch (typeof(T).Name)
 {
 	case nameof(Replica):
@@ -104,11 +116,11 @@
 			<div>
 				<span>Hop-Up?</span>
 				<div>
-					<input class="form-check-input" type="checkbox" id="batteryYes" checked="@HasHopUpTrue" @onchange='(e) => ToggleBoolean("hopUp",true, (bool)e.Value)' />
+					<input class="form-check-input" type="checkbox" id="hopUpYes" checked="@HasHopUpTrue" @onchange='(e) => ToggleBoolean("hopUp",true, (bool)e.Value)' />
 					<label for="batteryYes">Tak</label>
 				</div>
 				<div>
-					<input class="form-check-input" type="checkbox" id="batteryNo" checked="@HasHopUpFalse" @onchange='(e) => ToggleBoolean("hopUp",false, (bool)e.Value)' />
+					<input class="form-check-input" type="checkbox" id="hopUpNo" checked="@HasHopUpFalse" @onchange='(e) => ToggleBoolean("hopUp",false, (bool)e.Value)' />
 					<label for="batteryNo">Nie</label>
 				</div>
 			</div>
@@ -116,11 +128,11 @@
 			<div>
 				<span>Blow-Back?</span>
 				<div>
-					<input class="form-check-input" type="checkbox" id="batteryYes" checked="@HasBlowBackTrue" @onchange='(e) => ToggleBoolean("blowBack",true, (bool)e.Value)' />
+					<input class="form-check-input" type="checkbox" id="blowBackYes" checked="@HasBlowBackTrue" @onchange='(e) => ToggleBoolean("blowBack",true, (bool)e.Value)' />
 					<label for="batteryYes">Tak</label>
 				</div>
 				<div>
-					<input class="form-check-input" type="checkbox" id="batteryNo" checked="@HasBlowBackFalse" @onchange='(e) => ToggleBoolean("blowBack",false, (bool)e.Value)' />
+					<input class="form-check-input" type="checkbox" id="blowBackNo" checked="@HasBlowBackFalse" @onchange='(e) => ToggleBoolean("blowBack",false, (bool)e.Value)' />
 					<label for="batteryNo">Nie</label>
 				</div>
 			</div>
@@ -412,6 +424,8 @@
 	private bool HasHopUpFalse { get; set; } = false;
 	private bool HasBlowBackTrue { get; set; } = false;
 	private bool HasBlowBackFalse { get; set; } = false;
+	private bool IsAvailable { get; set; } = false;
+	private bool IsNotAvailable { get; set; } = false;
 
 	private decimal MinPrice { get; set; }
 	private decimal MaxPrice { get; set; }
@@ -467,6 +481,16 @@
 				else
 				{
 					HasBlowBackFalse = isChecked;
+				}
+				break;
+			case "available":
+				if (isTrue)
+				{
+					IsAvailable = isChecked;
+				}
+				else
+				{
+					IsNotAvailable = isChecked;
 				}
 				break;
 		}
@@ -537,6 +561,15 @@
 					else if (!HasBlowBackTrue && HasBlowBackFalse)
 					{
 						replicas = replicas.OfType<Replica>().Where(r => r.HasBlowBack == false);
+					}
+
+					if (IsAvailable && !IsNotAvailable)
+					{
+						replicas = replicas.OfType<Replica>().Where(r => r.Count > 0);
+					}
+					else if (!IsAvailable && IsNotAvailable)
+					{
+						replicas = replicas.OfType<Replica>().Where(r => r.Count == 0);
 					}
 
 					if (MinPrice > 0 || MaxPrice > 0)
@@ -613,6 +646,15 @@
 							.Where(r => r.BbWeight == BBWeight);
 					}
 
+					if (IsAvailable && !IsNotAvailable)
+					{
+						accessories = accessories.OfType<Accessory>().Where(r => r.Count > 0);
+					}
+					else if (!IsAvailable && IsNotAvailable)
+					{
+						accessories = accessories.OfType<Accessory>().Where(r => r.Count == 0);
+					}
+
 					filteredProducts = accessories.Cast<T>();
 
 					break;
@@ -650,7 +692,7 @@
 										break;
 									}
 							}
-						}
+						}					
 					}
 
 					if (SelectedGearboxTypes.Any())
@@ -689,6 +731,15 @@
 							.Where(r => r.Price >= MinPrice && r.Price <= MaxPrice);
 					}
 
+					if (IsAvailable && !IsNotAvailable)
+					{
+						parts = parts.OfType<Part>().Where(r => r.Count > 0);
+					}
+					else if (!IsAvailable && IsNotAvailable)
+					{
+						parts = parts.OfType<Part>().Where(r => r.Count == 0);
+					}
+
 					filteredProducts = parts.Cast<T>();
 
 					break;
@@ -707,6 +758,15 @@
 					{
 						products = products.OfType<Product>()
 							.Where(r => r.Price >= MinPrice && r.Price <= MaxPrice);
+					}
+
+					if (IsAvailable && !IsNotAvailable)
+					{
+						products = products.OfType<Product>().Where(r => r.Count > 0);
+					}
+					else if (!IsAvailable && IsNotAvailable)
+					{
+						products = products.OfType<Product>().Where(r => r.Count == 0);
 					}
 
 					filteredProducts = products.Cast<T>();
@@ -764,6 +824,8 @@
 		SelectedManufacturers.Clear();
 		MinPrice = 0;
 		MaxPrice = 0;
+		IsAvailable = false;
+		IsNotAvailable = false;
 
 		ApplyFilters();
 	}
