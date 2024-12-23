@@ -46,14 +46,16 @@
 					<h4 class="fw-bold m-0">@currentPrice zł</h4>
 
 					<div class="d-flex flex-row align-items-center gap-2">
-						<h5 class="m-0 fw-bold">Ilość</h5>
-						<div class="border border-1 border-dark">
-							<div class="m-1">
-								<button class="counter-btn fw-bold" @onclick="DecreaseCounterValue">-</button>
-								<input class="input-number" @bind="productCounter" @bind:after="UpdatePrice" />
-								<button class="counter-btn fw-bold" @onclick="IncreaseCounterValue">+</button>
+						@if (Product.Count > 0) {
+							<h5 class="m-0 fw-bold">Ilość</h5>
+							<div class="border border-1 border-dark">
+								<div class="m-1">
+									<button class="counter-btn fw-bold" @onclick="DecreaseCounterValue">-</button>
+									<input class="input-number" @bind="productCounter" @bind:after="UpdatePrice" />
+									<button class="counter-btn fw-bold" @onclick="IncreaseCounterValue">+</button>
+								</div>
 							</div>
-						</div>
+						}					
 
 						@if (!string.IsNullOrEmpty(errorMessage))
 						{
@@ -64,8 +66,9 @@
 					</div>
 
 					<div>
-						<button class="btn btn-success p-4">Dodaj do koszyka</button>
+						<button class="btn btn-success p-4" disabled="@(Product?.Count == 0)">Dodaj do koszyka</button>
 					</div>
+
 				</div>
 
 			</div>

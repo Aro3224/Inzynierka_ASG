@@ -8,8 +8,13 @@
 		<div class="product-name">
 			<h5 class="cursor-pointer hover-color" @onclick="@(() => NavManager.NavigateTo($"Product/{Product.ProductType}/{Product.Id}"))">@Product.Name</h5>
 		</div>
-		<p class="product-price">@Product.Price.ToString()zł</p>
-		<button type="button" class="btn btn-primary">Do koszyka</button>
+		@if (Product.Count != 0) {
+			<p class="product-price">@Product.Price.ToString()zł</p>
+		}
+		else {
+			<p class="product-price text-danger">Niedostępny</p>
+		}
+		<button type="button" class="btn btn-primary" disabled="@(Product?.Count == 0)">Do koszyka</button>
 	</div>
 </div>
 

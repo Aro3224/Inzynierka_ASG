@@ -15,7 +15,7 @@ namespace AirsoftShop.Components.Pages
 
         private List<string> excludedProperties;
 
-        private int productCounter = 1;
+        private int productCounter;
 
         private decimal? currentPrice;
 
@@ -41,6 +41,15 @@ namespace AirsoftShop.Components.Pages
                 Console.WriteLine($"Initialized product with id: {Product.Id}");
                 currentPrice = Product.Price;
                 excludedProperties = GetExcludedProperties(Product);
+
+                if (Product.Count > 0)
+                {
+                    productCounter = 1;
+                }
+                else
+                {
+                    errorMessage = "Produkt niedostêpny";
+                }
             }
             else
             {
