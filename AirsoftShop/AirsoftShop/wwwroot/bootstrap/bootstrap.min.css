@@ -11597,3 +11597,12 @@ textarea.form-control-lg {
     }
 }
 /*# sourceMappingURL=bootstrap.min.css.map */
+
+.cursor-pointer {
+    cursor: pointer
+}
+
+    .cursor-pointer:hover {
+        color: blue;
+        transition: color 0.3s ease;
+    }
