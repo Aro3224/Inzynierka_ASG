@@ -40,8 +40,25 @@
 					<img src="" onerror="this.src='./Images/Replicas/icon01.png'" class="product-image w-75">
 				</div>
 
-				<div class="col-md-6">
-					<h2>@Product.Name</h2>
+				<div class="col-md-6 d-flex flex-column gap-4">
+					<h2 class="fw-bold m-0">@Product.Name</h2>
+
+					<h4 class="fw-bold m-0">@currentPrice zł</h4>
+
+					<div class="d-flex flex-row align-items-center gap-2">
+						<h5 class="m-0 fw-bold">Ilość</h5>
+						<div class="border border-1 border-dark">
+							<div class="m-1">
+								<button class="counter-btn fw-bold" @onclick="DecreaseCounterValue">-</button>
+								<input class="input-number" @bind="productCounter" @bind:after="UpdatePrice" />
+								<button class="counter-btn fw-bold" @onclick="IncreaseCounterValue">+</button>
+							</div>						
+						</div>
+					</div>
+
+					<div>
+						<button class="btn btn-success p-4">Dodaj do koszyka</button>
+					</div>					
 				</div>
 
 			</div>

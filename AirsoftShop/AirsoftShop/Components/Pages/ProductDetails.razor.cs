@@ -15,6 +15,10 @@ namespace AirsoftShop.Components.Pages
 
         private List<string> excludedProperties;
 
+        private int productCounter = 1;
+
+        private decimal? currentPrice;
+
         protected override async Task OnInitializedAsync()
         {
             await Task.Delay(200);
@@ -33,12 +37,47 @@ namespace AirsoftShop.Components.Pages
             if (Product != null)
             {
                 Console.WriteLine($"Initialized product with id: {Product.Id}");
+                currentPrice = Product.Price;
                 excludedProperties = GetExcludedProperties(Product);
             }
             else
             {
                 Console.WriteLine("There's no product with given Id!");
             }
+        }
+
+        private void IncreaseCounterValue()
+        {
+            if (productCounter < Product.Count)
+            {
+                productCounter++;
+
+                UpdatePrice();
+            }
+        }
+
+        private void DecreaseCounterValue()
+        {
+            if (productCounter > 1)
+            {
+                productCounter--;
+
+                UpdatePrice();
+            }
+        }
+
+        private void UpdatePrice()
+        {
+            if (productCounter > Product.Count)
+            {
+                productCounter = Product.Count;
+            }
+            else if (productCounter < 1)
+            {
+                productCounter = 1;
+            }
+
+            currentPrice = Product.Price * productCounter;
         }
 
         private List<string> GetExcludedProperties(Product product)

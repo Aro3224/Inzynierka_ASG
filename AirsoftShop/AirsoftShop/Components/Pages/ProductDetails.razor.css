@@ -5,3 +5,17 @@
 .table tbody tr:nth-child(even) {
     background-color: #ffffff;
 }
+
+.counter-btn {
+    background-color: #dddddd;
+}
+
+    .counter-btn:hover {
+        background-color: #cccccc;
+    }
+
+.input-number {
+    width: 2rem;
+    text-align: center;
+    border: none;
+}
