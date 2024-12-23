@@ -19,6 +19,8 @@ namespace AirsoftShop.Components.Pages
 
         private decimal? currentPrice;
 
+        private string? errorMessage;
+
         protected override async Task OnInitializedAsync()
         {
             await Task.Delay(200);
@@ -51,8 +53,12 @@ namespace AirsoftShop.Components.Pages
             if (productCounter < Product.Count)
             {
                 productCounter++;
-
+                errorMessage = null;
                 UpdatePrice();
+            }
+            else
+            {
+                errorMessage = $"Nie mo¿esz wybraæ wiêcej produktów ni¿ {Product.Count}!";
             }
         }
 
@@ -61,7 +67,7 @@ namespace AirsoftShop.Components.Pages
             if (productCounter > 1)
             {
                 productCounter--;
-
+                errorMessage = null;
                 UpdatePrice();
             }
         }
@@ -71,6 +77,7 @@ namespace AirsoftShop.Components.Pages
             if (productCounter > Product.Count)
             {
                 productCounter = Product.Count;
+                errorMessage = $"Nie mo¿esz wybraæ wiêcej produktów ni¿ {Product.Count}!";
             }
             else if (productCounter < 1)
             {

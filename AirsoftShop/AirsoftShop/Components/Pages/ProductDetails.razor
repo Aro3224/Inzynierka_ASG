@@ -52,13 +52,20 @@
 								<button class="counter-btn fw-bold" @onclick="DecreaseCounterValue">-</button>
 								<input class="input-number" @bind="productCounter" @bind:after="UpdatePrice" />
 								<button class="counter-btn fw-bold" @onclick="IncreaseCounterValue">+</button>
-							</div>						
+							</div>
 						</div>
+
+						@if (!string.IsNullOrEmpty(errorMessage))
+						{
+							<div class="alert-danger p-1">
+								@errorMessage
+							</div>
+						}
 					</div>
 
 					<div>
 						<button class="btn btn-success p-4">Dodaj do koszyka</button>
-					</div>					
+					</div>
 				</div>
 
 			</div>
