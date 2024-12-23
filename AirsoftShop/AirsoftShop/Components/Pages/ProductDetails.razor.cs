@@ -1,7 +1,7 @@
 using AirsoftShop.Data;
 using Microsoft.AspNetCore.Components;
 
-namespace AirsoftShop.Components.Menu.Pages
+namespace AirsoftShop.Components.Pages
 {
     public partial class ProductDetails
     {
@@ -15,7 +15,7 @@ namespace AirsoftShop.Components.Menu.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            await Task.Delay(500);
+            await Task.Delay(200);
 
             Console.WriteLine("Initializing product details...");
 

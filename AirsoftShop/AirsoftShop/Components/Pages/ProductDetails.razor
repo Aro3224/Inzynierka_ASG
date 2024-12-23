@@ -1,0 +1,38 @@
+﻿@page "/Product/{ProductType}/{Id}"
+@using AirsoftShop.Data
+@using AirsoftShop.Components.Custom_Components.ProductDetails_Navigation
+
+@inject IProductService ProductService
+
+<PageTitle>Produkt - @(Product?.Name ?? "Wczytywanie...")</PageTitle>
+
+<div class="container w-75">
+	@if (Product is not null)
+	{
+		@switch (Product.ProductType)
+		{
+			case Data.ProductType.Replica:
+				{
+					var replica = Product as Replica;
+					<ReplicaNavigation Replica="@replica" />
+					break;
+				}
+			case Data.ProductType.Accessory:
+				{
+					var accessory = Product as Accessory;
+					<AccessoryNavigation Accessory="@accessory" />
+					break;
+				}
+			case Data.ProductType.Part:
+				{
+					var part = Product as Part;
+					<PartNavigation Part="@part" />
+					break;
+				}
+		}
+	}
+	else
+	{
+		<h5>Wczytywanie...</h5>
+	}
+</div>
