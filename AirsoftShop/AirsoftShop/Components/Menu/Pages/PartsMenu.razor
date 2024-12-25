@@ -14,6 +14,9 @@
 </div>
 <div class="col-md-9">
 	<div class="container-fluid">
+		<div class="container-fluid mb-2 px-0 fw-bold">
+			<span>Ilość produktów: @Parts.Count</span>
+		</div>
 		<div class="row">
 			@if (Parts is null || !Parts.Any())
 			{
