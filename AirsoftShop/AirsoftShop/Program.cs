@@ -50,6 +50,7 @@ namespace AirsoftShop
             builder.Services.AddBlazoredModal();
             builder.Services.AddSingleton<SearchState>();
             builder.Services.AddSingleton<SortingState>();
+            builder.Services.AddSingleton<CartService>();
 
             var app = builder.Build();
 

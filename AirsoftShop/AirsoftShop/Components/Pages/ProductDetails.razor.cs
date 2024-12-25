@@ -121,5 +121,10 @@ namespace AirsoftShop.Components.Pages
 
             return excluded;
         }
+
+        private void AddToCart()
+        {
+            CartService.AddToCart(Product, productCounter);
+        }
     }
 }

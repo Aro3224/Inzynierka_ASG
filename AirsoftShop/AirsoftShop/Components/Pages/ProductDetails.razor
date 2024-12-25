@@ -4,6 +4,7 @@
 @using System.ComponentModel.DataAnnotations
 
 @inject IProductService ProductService
+@inject CartService CartService
 
 <PageTitle>Produkt - @(Product?.Name ?? "Wczytywanie...")</PageTitle>
 
@@ -66,7 +67,7 @@
 					</div>
 
 					<div>
-						<button class="btn btn-success p-4" disabled="@(Product?.Count == 0)">Dodaj do koszyka</button>
+						<button class="btn btn-success p-4" disabled="@(Product?.Count == 0)" @onclick="AddToCart">Dodaj do koszyka</button>
 					</div>
 
 				</div>
