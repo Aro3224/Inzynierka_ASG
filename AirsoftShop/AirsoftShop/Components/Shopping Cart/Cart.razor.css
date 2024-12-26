@@ -3,3 +3,16 @@
     text-align: center;
     border: none;
 }
+
+.button-remove {
+    width: 26px;
+    height: 26px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    .button-remove > span {
+        color: black;
+        font-size: 20px;
+    }
