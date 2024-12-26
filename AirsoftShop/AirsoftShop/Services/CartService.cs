@@ -53,9 +53,9 @@ namespace AirsoftShop.Services
             NotifyCartChanged();
         }
 
-        public void RemoveFromCart(int productId)
+        public void RemoveFromCart(Product product)
         {
-            var itemToRemove = _cartItems.FirstOrDefault(item => item.Product.Id == productId);
+            var itemToRemove = _cartItems.FirstOrDefault(item => item.Product.Id == product.Id);
             if (itemToRemove != null)
             {
                 _cartItems.Remove(itemToRemove);
@@ -64,19 +64,21 @@ namespace AirsoftShop.Services
             NotifyCartChanged();
         }
 
-        public void UpdateQuantity(int productId, int quantity)
+        public void UpdateQuantity(Product product, int quantity)
         {
             if (quantity <= 0)
             {
-                RemoveFromCart(productId);
+                RemoveFromCart(product);
                 return;
             }
 
-            var existingItem = _cartItems.FirstOrDefault(item => item.Product.Id == productId);
+            var existingItem = _cartItems.FirstOrDefault(item => item.Product.Id == product.Id);
             if (existingItem != null)
             {
                 existingItem.Quantity = quantity;
             }
+
+            NotifyCartChanged();
         }
 
         public decimal GetTotalPrice()

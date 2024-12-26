@@ -1,0 +1,89 @@
+﻿@page "/Cart/Products"
+
+@inject CartService CartService
+
+<div class="container-fluid w-75">
+	<div class="row d-flex align-items-center">
+		<div class="col-md-6">
+			<h1>Produkty: @CartService.GetTotalCount()</h1>
+		</div>
+		<div class="col-md-6">
+			<CartNav ActiveStep="/Cart/Products" />
+		</div>
+	</div>
+
+	<br />
+
+	<div class="row d-flex align-items-center">
+		<div class="col-md-6 d-flex"><strong>Nazwa produktu</strong></div>
+		<div class="col-md-2 d-flex justify-content-center"><strong>Cena jednostkowa</strong></div>
+		<div class="col-md-2 d-flex pe-4 justify-content-center"><strong>Ilość</strong></div>
+		<div class="col-md-2 d-flex pe-5 justify-content-center"><strong>Cena</strong></div>
+	</div>
+
+	<hr />	
+
+	<div class="row d-flex gap-2">
+		@foreach (var item in CartItems)
+		{
+			<div class="d-flex align-items-center flex-row">
+				<div class="col-md-6">
+					<span>@item.Product.Name</span>
+				</div>
+				<div class="col-md-2 d-flex justify-content-center">
+					<span>@item.Product.Price</span>
+				</div>
+				<div class="col-md-2 d-flex justify-content-center gap-2">
+					<div class="border border-1 border-dark">
+						<div class="d-flex m-1">
+							<button class="counter-btn fw-bold" @onclick="() => DecreaseCounterValue(item)">-</button>
+							<input class="input-number" @bind="item.Quantity" @bind:after="() => UpdateCount(item)" />
+							<button class="counter-btn fw-bold" @onclick="() => IncreaseCounterValue(item)">+</button>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-2 d-flex justify-content-center">
+					<span>@(@item.Product.Price * @item.Quantity)</span>
+				</div>
+			</div>
+		}
+	</div>
+</div>
+
+@code {
+	public required IEnumerable<CartItem> CartItems { get; set; }
+
+	protected override void OnInitialized()
+	{
+		CartItems = CartService.GetCartItems();
+	}
+
+	private void IncreaseCounterValue(CartItem item)
+	{
+		if (item.Quantity < item.Product.Count)
+		{
+			item.Quantity++;
+			CartService.UpdateQuantity(item.Product, item.Quantity);
+		}
+	}
+
+	private void DecreaseCounterValue(CartItem item)
+	{
+		item.Quantity--;
+		CartService.UpdateQuantity(item.Product, item.Quantity);
+	}
+
+	private void UpdateCount(CartItem item)
+	{
+		if (item.Quantity > item.Product.Count)
+		{
+			item.Quantity = item.Product.Count;
+		}
+		else if (item.Quantity < 1)
+		{
+			item.Quantity = 1;
+		}
+
+		CartService.UpdateQuantity(item.Product, item.Quantity);
+	}
+}
