@@ -51,6 +51,8 @@ namespace AirsoftShop
             builder.Services.AddScoped<SearchState>();
             builder.Services.AddSingleton<SortingState>();
             builder.Services.AddScoped<CartService>();
+            builder.Services.AddScoped<BreadcrumbService>();
+
 
             var app = builder.Build();
 
