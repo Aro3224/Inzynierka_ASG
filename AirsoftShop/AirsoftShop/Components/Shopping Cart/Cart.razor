@@ -3,51 +3,59 @@
 @inject CartService CartService
 
 <div class="container-fluid w-75">
-	<div class="row d-flex align-items-center">
-		<div class="col-md-6">
-			<h1>Produkty: @CartService.GetTotalCount()</h1>
-		</div>
-		<div class="col-md-6">
-			<CartNav ActiveStep="/Cart/Products" />
-		</div>
-	</div>
+    <div class="row d-flex align-items-center">
+        <div class="col-md-6">
+            <h1>Produkty: @CartService.GetTotalCount()</h1>
+        </div>
+        <div class="col-md-6">
+            <CartNav ActiveStep="/Cart/Products" />
+        </div>
+    </div>
 
-	<br />
+    <br />
 
-	<div class="row d-flex align-items-center">
-		<div class="col-md-6 d-flex"><strong>Nazwa produktu</strong></div>
-		<div class="col-md-2 d-flex justify-content-center"><strong>Cena jednostkowa</strong></div>
-		<div class="col-md-2 d-flex pe-4 justify-content-center"><strong>Ilość</strong></div>
-		<div class="col-md-2 d-flex pe-5 justify-content-center"><strong>Cena</strong></div>
-	</div>
-
-	<hr />	
-
-	<div class="row d-flex gap-2">
-		@foreach (var item in CartItems)
-		{
-			<div class="d-flex align-items-center flex-row">
-				<div class="col-md-6">
-					<span>@item.Product.Name</span>
-				</div>
-				<div class="col-md-2 d-flex justify-content-center">
-					<span>@item.Product.Price</span>
-				</div>
-				<div class="col-md-2 d-flex justify-content-center gap-2">
-					<div class="border border-1 border-dark">
-						<div class="d-flex m-1">
-							<button class="counter-btn fw-bold" @onclick="() => DecreaseCounterValue(item)">-</button>
-							<input class="input-number" @bind="item.Quantity" @bind:after="() => UpdateCount(item)" />
-							<button class="counter-btn fw-bold" @onclick="() => IncreaseCounterValue(item)">+</button>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-2 d-flex justify-content-center">
-					<span>@(@item.Product.Price * @item.Quantity)</span>
-				</div>
-			</div>
-		}
-	</div>
+    @if (CartItems.Count() == 0)
+    {
+        <br />
+        <br />
+        <br />
+        <br />
+        <div class="container d-flex justify-content-center">
+            <h2 class="fw-bold">Twój koszyk jest pusty</h2>
+        </div>       
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col" style="width: 40%;"><strong>Nazwa produktu</strong></th>
+                    <th scope="col" class="text-center" style="width: 15%;"><strong>Cena jednostkowa</strong></th>
+                    <th scope="col" class="text-center" style="width: 15%;"><strong>Ilość</strong></th>
+                    <th scope="col" class="text-center" style="width: 20%;"><strong>Cena</strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in CartItems)
+                {
+                    <tr style="vertical-align: middle;">
+                        <td>@item.Product.Name</td>
+                        <td class="text-center">@item.Product.Price</td>
+                        <td class="d-flex justify-content-center">
+                            <div class="border border-1 border-dark">
+                                <div class="d-flex m-1">
+                                    <button class="counter-btn fw-bold" @onclick="() => DecreaseCounterValue(item)">-</button>
+                                    <input class="input-number" @bind="item.Quantity" @bind:after="() => UpdateCount(item)" />
+                                    <button class="counter-btn fw-bold" @onclick="() => IncreaseCounterValue(item)">+</button>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="text-center">@(@item.Product.Price * @item.Quantity)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    } 
 </div>
 
 @code {
