@@ -19,7 +19,7 @@ namespace AirsoftShop.Data
         public decimal TotalAmount { get; set; }
 
         [Required]
-        public required string ShippingAddress { get; set; }
+        public string ShippingAddress { get; set; } = "";
 
         [Required]
         public PaymentMethod PaymentMethod { get; set; }
@@ -27,8 +27,10 @@ namespace AirsoftShop.Data
         [Required]
         public PaymentStatus PaymentStatus { get; set; }
 
+        public string CustomerComment { get; set; } = "";
+
         [Required]
-        public required List<OrderItem> OrderItems { get; set; }
+        public List<OrderItem> OrderItems { get; set; } = [];
     }
 
     public enum OrderStatus

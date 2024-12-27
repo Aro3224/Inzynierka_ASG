@@ -4,7 +4,7 @@ namespace AirsoftShop.Services
 {
     public interface IOrderService
     {
-        Task<Order> CreateOrderAsync(string userId, List<CartItem> cartItems, string shippingAddress, PaymentMethod paymentMethod);
+        Task<Order> CreateOrderAsync(string userId, List<CartItem> cartItems, string shippingAddress, string customerComment, PaymentMethod paymentMethod);
 
         Task DeleteOrderAsync(int id);
 

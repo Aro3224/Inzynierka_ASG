@@ -1,4 +1,6 @@
-﻿using AirsoftShop.Data;
+﻿using System.Security.Claims;
+using AirsoftShop.Data;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,11 +10,26 @@ namespace AirsoftShop.Services
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly AuthenticationStateProvider _authenticationStateProvider;
 
-        public UserService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public UserService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, AuthenticationStateProvider authenticationStateProvider)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _authenticationStateProvider = authenticationStateProvider;
+        }
+
+        public async Task<string> GetCurrentUserIdAsync()
+        {
+            var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            if (user.Identity.IsAuthenticated)
+            {
+                return user.FindFirstValue(ClaimTypes.NameIdentifier);
+            }
+
+            return null;
         }
 
         public async Task Delete(string id)

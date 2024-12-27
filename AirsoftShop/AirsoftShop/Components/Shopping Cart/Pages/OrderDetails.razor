@@ -1,4 +1,10 @@
 ﻿@page "/Cart/Order-Details"
+@using AirsoftShop.Components.Custom_Components
+
+@inject CartService CartService
+@inject IUserService UserService
+@inject NavigationManager Navigation
+@inject IOrderService OrderService
 
 <PageTitle>Koszyk - Dane</PageTitle>
 
@@ -7,3 +13,89 @@
 		<CartNav ActiveStep="/Cart/Order-Details" />
 	</div>
 </div>
+
+<div>
+	<EditForm Model="@order" OnValidSubmit="@HandleValidSubmit" class="edit-form">
+		<DataAnnotationsValidator />
+
+		<div>
+			<label for="address">Adres dostawy:</label>
+			<InputText id="address" @bind-Value="order.ShippingAddress" class="form-control" />
+			<ValidationMessage For="@(() => order.ShippingAddress)" />
+		</div>
+
+		<div>
+			<label for="description">Opis:</label>
+			<InputTextArea id="description" @bind-value="order.CustomerComment" class="form-control" />
+			<ValidationMessage For="@(() => order.CustomerComment)" />
+		</div>
+
+		<div>
+			<label for="manufacturer">Płatność:</label>
+			<select @bind="order.PaymentMethod" class="form-select">
+				<option value="" selected disabled>Wybierz...</option>
+				@foreach (PaymentMethod paymentMethod in Enum.GetValues(typeof(PaymentMethod)))
+				{
+					<option value="@paymentMethod"><EnumDisplayName TEnum="PaymentMethod" Value="paymentMethod" /></option>
+				}
+			</select>
+			<ValidationMessage For="@(() => order.PaymentMethod)" />
+		</div>
+
+		<button type="submit" class="btn btn-secondary">Utwórz zamówienie</button>
+	</EditForm>
+</div>
+
+@code {
+    private Order order = new Order();
+    private IEnumerable<CartItem> cartItems = new List<CartItem>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var userId = await UserService.GetCurrentUserIdAsync();
+        cartItems = CartService.GetCartItems();
+
+        order.UserId = userId;
+        order.OrderDate = DateTime.Now;
+        order.Status = OrderStatus.Created;
+        order.PaymentStatus = PaymentStatus.Pending;
+
+        order.OrderItems = cartItems.Select(item =>
+        {
+            var orderItem = new OrderItem
+                {
+                    Quantity = item.Quantity,
+                    Price = (decimal)item.Product.Price,
+                    Order = order
+                };
+
+            if (item.Product is Replica replica)
+            {
+                orderItem.ReplicaId = replica.Id;
+            }
+            else if (item.Product is Part part)
+            {
+                orderItem.PartId = part.Id;
+            }
+            else if (item.Product is Accessory accessory)
+            {
+                orderItem.AccessoryId = accessory.Id;
+            }
+
+            return orderItem;
+        }).ToList();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        var createdOrder = await OrderService.CreateOrderAsync(
+            order.UserId,
+            cartItems.ToList(),
+            order.ShippingAddress,
+            order.CustomerComment,
+            order.PaymentMethod
+        );
+
+        Navigation.NavigateTo($"/order/{createdOrder.Id}");
+    }
+}
