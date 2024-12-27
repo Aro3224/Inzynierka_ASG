@@ -12,9 +12,31 @@ namespace AirsoftShop.Data
 
         public DbSet<Accessory> Accessories { get; set; }
 
+         public DbSet<Order> Orders { get; set; }
+
+        public DbSet<OrderItem> OrderItems { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<OrderItem>()
+                .HasOne(o => o.Replica)
+                .WithMany()
+                .HasForeignKey(o => o.ReplicaId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<OrderItem>()
+                .HasOne(o => o.Part)
+                .WithMany() 
+                .HasForeignKey(o => o.PartId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<OrderItem>()
+                .HasOne(o => o.Accessory)
+                .WithMany()
+                .HasForeignKey(o => o.AccessoryId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             var password = new PasswordHasher<ApplicationUser>();
             var hashed = password.HashPassword(new ApplicationUser(), "Admin1!");

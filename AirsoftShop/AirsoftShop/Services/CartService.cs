@@ -26,7 +26,7 @@ namespace AirsoftShop.Services
             if (product == null || quantity <= 0)
                 return;
 
-            var existingItem = _cartItems.FirstOrDefault(item => item.Product.Id == product.Id);
+            var existingItem = _cartItems.FirstOrDefault(item => item.Product.Id == product.Id && item.Product.ProductType == product.ProductType);
 
             if (existingItem != null)
             {
@@ -55,7 +55,7 @@ namespace AirsoftShop.Services
 
         public void RemoveFromCart(Product product)
         {
-            var itemToRemove = _cartItems.FirstOrDefault(item => item.Product.Id == product.Id);
+            var itemToRemove = _cartItems.FirstOrDefault(item => item.Product.Id == product.Id && item.Product.ProductType == product.ProductType);
             if (itemToRemove != null)
             {
                 _cartItems.Remove(itemToRemove);
@@ -72,7 +72,7 @@ namespace AirsoftShop.Services
                 return;
             }
 
-            var existingItem = _cartItems.FirstOrDefault(item => item.Product.Id == product.Id);
+            var existingItem = _cartItems.FirstOrDefault(item => item.Product.Id == product.Id && item.Product.ProductType == product.ProductType);
             if (existingItem != null)
             {
                 existingItem.Quantity = quantity;
