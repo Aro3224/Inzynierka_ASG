@@ -28,7 +28,17 @@ namespace AirsoftShop.Components.Shopping_Cart.Pages
             order.Status = OrderStatus.Created;
             order.PaymentStatus = PaymentStatus.Pending;
 
-            UpdateShippingAddress();
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var userDetails = await UserService.Details(userId);
+
+                order.PhoneNumber = userDetails.PhoneNumber;
+                city = userDetails.City;
+                postalCode = userDetails.PostalCode;
+                address = userDetails.Address;
+
+                UpdateShippingAddress();
+            }
 
             order.OrderItems = cartItems.Select(item =>
             {
@@ -74,7 +84,7 @@ namespace AirsoftShop.Components.Shopping_Cart.Pages
                 order.PaymentMethod
             );
 
-            if ( order.UserId != null)
+            if (order.UserId != null)
             {
                 Navigation.NavigateTo($"/Account/Manage/Orders");
             }

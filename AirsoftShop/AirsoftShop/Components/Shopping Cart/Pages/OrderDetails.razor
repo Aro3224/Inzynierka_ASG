@@ -14,7 +14,7 @@
 	</div>
 
 	<div class="container-fluid w-50">
-		<EditForm Model="@order" OnValidSubmit="@HandleValidSubmit" class="edit-form">
+		<EditForm Model="@order" OnValidSubmit="@HandleValidSubmit" class="edit-form d-flex flex-column gap-3">
 			<DataAnnotationsValidator />
 
 			<div>
@@ -66,12 +66,12 @@
 			</div>
 
 			<div>
-				<label for="description">Uwagi:</label>
+				<label for="description">Uwagi dotyczące zamówienia:</label>
 				<InputTextArea id="description" @bind-value="order.CustomerComment" class="form-control" />
 				<ValidationMessage For="@(() => order.CustomerComment)" />
 			</div>
 
-			<button type="submit" class="btn btn-secondary">Utwórz zamówienie</button>
+			<button type="submit" class="btn btn-outline-primary">Utwórz zamówienie</button>
 		</EditForm>
 	</div>
 </div>

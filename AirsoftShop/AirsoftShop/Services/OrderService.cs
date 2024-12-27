@@ -1,4 +1,5 @@
 ﻿using AirsoftShop.Data;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 namespace AirsoftShop.Services
@@ -7,11 +8,13 @@ namespace AirsoftShop.Services
     {
         private readonly IProductService _productService;
         private readonly ApplicationDbContext _context;
+        private readonly CartService _cartService;
 
-        public OrderService(ApplicationDbContext context, IProductService productService)
+        public OrderService(ApplicationDbContext context, IProductService productService, CartService cartService)
         {
             _context = context;
             _productService = productService;
+            _cartService = cartService;
         }
 
         public async Task<Order> CreateOrderAsync(string userId, string customerName, string customerSurname, string phoneNumber, List<CartItem> cartItems, string shippingAddress, string customerComment, PaymentMethod paymentMethod)
@@ -86,6 +89,8 @@ namespace AirsoftShop.Services
 
             await _context.Orders.AddAsync(order);
             await _context.SaveChangesAsync();
+
+            _cartService.ClearCart();
 
             return order;
         }

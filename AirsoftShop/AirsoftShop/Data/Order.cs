@@ -63,19 +63,16 @@ namespace AirsoftShop.Data
 
     public enum PaymentMethod
     {
-        [Display(Name = "Karta debetowa")]
-        Card,
-
-        Blik,
-        GooglePay,
-        PayPal,
-        PayU,
-
         [Display(Name = "Za pobraniem")]
         OnDelivery,
 
         [Display(Name = "Przelew")]
-        Transfer
+        Transfer,
+
+        Blik,
+        GooglePay,
+        PayPal,
+        PayU      
     }
 
     public enum PaymentStatus

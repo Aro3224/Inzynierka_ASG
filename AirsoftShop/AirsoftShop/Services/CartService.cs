@@ -89,6 +89,7 @@ namespace AirsoftShop.Services
         public void ClearCart()
         {
             _cartItems.Clear();
+            NotifyCartChanged();
         }
     }
 }
