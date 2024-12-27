@@ -10,6 +10,15 @@ namespace AirsoftShop.Data
         public string? UserId { get; set; }
 
         [Required]
+        public string? CustomerName { get; set; }
+
+        [Required]
+        public string? CustomerSurname { get; set; }
+
+        [Required]
+        public string? PhoneNumber { get; set; }
+
+        [Required]
         public DateTime OrderDate { get; set; }
 
         [Required]
@@ -19,7 +28,7 @@ namespace AirsoftShop.Data
         public decimal TotalAmount { get; set; }
 
         [Required]
-        public string ShippingAddress { get; set; } = "";
+        public string? ShippingAddress { get; set; }
 
         [Required]
         public PaymentMethod PaymentMethod { get; set; }
@@ -27,7 +36,8 @@ namespace AirsoftShop.Data
         [Required]
         public PaymentStatus PaymentStatus { get; set; }
 
-        public string CustomerComment { get; set; } = "";
+        [Required]
+        public string? CustomerComment { get; set; }
 
         [Required]
         public List<OrderItem> OrderItems { get; set; } = [];

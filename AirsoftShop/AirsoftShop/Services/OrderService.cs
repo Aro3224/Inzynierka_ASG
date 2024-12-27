@@ -14,11 +14,14 @@ namespace AirsoftShop.Services
             _productService = productService;
         }
 
-        public async Task<Order> CreateOrderAsync(string userId, List<CartItem> cartItems, string shippingAddress, string customerComment, PaymentMethod paymentMethod)
+        public async Task<Order> CreateOrderAsync(string userId, string customerName, string customerSurname, string phoneNumber, List<CartItem> cartItems, string shippingAddress, string customerComment, PaymentMethod paymentMethod)
         {
             var order = new Order
             {
                 UserId = userId,
+                CustomerName = customerName,
+                CustomerSurname = customerSurname,
+                PhoneNumber = phoneNumber,
                 OrderDate = DateTime.Now,
                 Status = OrderStatus.Created,
                 ShippingAddress = shippingAddress,

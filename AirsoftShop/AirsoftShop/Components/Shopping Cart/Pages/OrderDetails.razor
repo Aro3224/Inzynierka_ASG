@@ -1,9 +1,9 @@
 ﻿@page "/Cart/Order-Details"
 @using AirsoftShop.Components.Custom_Components
 
-@inject CartService CartService
-@inject IUserService UserService
 @inject NavigationManager Navigation
+@inject IUserService UserService
+@inject CartService CartService
 @inject IOrderService OrderService
 
 <PageTitle>Koszyk - Dane</PageTitle>
@@ -12,90 +12,66 @@
 	<div class="d-flex justify-content-end">
 		<CartNav ActiveStep="/Cart/Order-Details" />
 	</div>
+
+	<div class="container-fluid w-50">
+		<EditForm Model="@order" OnValidSubmit="@HandleValidSubmit" class="edit-form">
+			<DataAnnotationsValidator />
+
+			<div>
+				<label for="name">Imię:</label>
+				<InputText id="name" @bind-Value="order.CustomerName" class="form-control" />
+				<ValidationMessage For="@(() => order.CustomerName)" />
+			</div>
+
+			<div>
+				<label for="surname">Nazwisko:</label>
+				<InputText id="surname" @bind-Value="order.CustomerSurname" class="form-control" />
+				<ValidationMessage For="@(() => order.CustomerSurname)" />
+			</div>
+
+			<div>
+				<label for="postalcode">Kod pocztowy:</label>
+				<InputText id="postalcode" @bind-Value="postalCode" @oninput="UpdateShippingAddress" class="form-control" />
+				<ValidationMessage For="@(() => postalCode)" />
+			</div>
+
+			<div>
+				<label for="address">Miejscowość:</label>
+				<InputText id="address" @bind-Value="city" @oninput="UpdateShippingAddress" class="form-control" />
+				<ValidationMessage For="@(() => city)" />
+			</div>
+
+			<div>
+				<label for="address">Adres:</label>
+				<InputText id="address" @bind-Value="address" @oninput="UpdateShippingAddress" class="form-control" />
+				<ValidationMessage For="@(() => address)" />
+			</div>
+
+			<div>
+				<label for="phonenumber">Numer telefonu:</label>
+				<InputText id="phonenumber" @bind-Value="order.PhoneNumber" class="form-control" />
+				<ValidationMessage For="@(() => order.PhoneNumber)" />
+			</div>
+
+			<div>
+				<label for="manufacturer">Płatność:</label>
+				<select @bind="order.PaymentMethod" class="form-select">
+					<option value="" selected disabled>Wybierz...</option>
+					@foreach (PaymentMethod paymentMethod in Enum.GetValues(typeof(PaymentMethod)))
+					{
+						<option value="@paymentMethod"><EnumDisplayName TEnum="PaymentMethod" Value="paymentMethod" /></option>
+					}
+				</select>
+				<ValidationMessage For="@(() => order.PaymentMethod)" />
+			</div>
+
+			<div>
+				<label for="description">Uwagi:</label>
+				<InputTextArea id="description" @bind-value="order.CustomerComment" class="form-control" />
+				<ValidationMessage For="@(() => order.CustomerComment)" />
+			</div>
+
+			<button type="submit" class="btn btn-secondary">Utwórz zamówienie</button>
+		</EditForm>
+	</div>
 </div>
-
-<div>
-	<EditForm Model="@order" OnValidSubmit="@HandleValidSubmit" class="edit-form">
-		<DataAnnotationsValidator />
-
-		<div>
-			<label for="address">Adres dostawy:</label>
-			<InputText id="address" @bind-Value="order.ShippingAddress" class="form-control" />
-			<ValidationMessage For="@(() => order.ShippingAddress)" />
-		</div>
-
-		<div>
-			<label for="description">Opis:</label>
-			<InputTextArea id="description" @bind-value="order.CustomerComment" class="form-control" />
-			<ValidationMessage For="@(() => order.CustomerComment)" />
-		</div>
-
-		<div>
-			<label for="manufacturer">Płatność:</label>
-			<select @bind="order.PaymentMethod" class="form-select">
-				<option value="" selected disabled>Wybierz...</option>
-				@foreach (PaymentMethod paymentMethod in Enum.GetValues(typeof(PaymentMethod)))
-				{
-					<option value="@paymentMethod"><EnumDisplayName TEnum="PaymentMethod" Value="paymentMethod" /></option>
-				}
-			</select>
-			<ValidationMessage For="@(() => order.PaymentMethod)" />
-		</div>
-
-		<button type="submit" class="btn btn-secondary">Utwórz zamówienie</button>
-	</EditForm>
-</div>
-
-@code {
-    private Order order = new Order();
-    private IEnumerable<CartItem> cartItems = new List<CartItem>();
-
-    protected override async Task OnInitializedAsync()
-    {
-        var userId = await UserService.GetCurrentUserIdAsync();
-        cartItems = CartService.GetCartItems();
-
-        order.UserId = userId;
-        order.OrderDate = DateTime.Now;
-        order.Status = OrderStatus.Created;
-        order.PaymentStatus = PaymentStatus.Pending;
-
-        order.OrderItems = cartItems.Select(item =>
-        {
-            var orderItem = new OrderItem
-                {
-                    Quantity = item.Quantity,
-                    Price = (decimal)item.Product.Price,
-                    Order = order
-                };
-
-            if (item.Product is Replica replica)
-            {
-                orderItem.ReplicaId = replica.Id;
-            }
-            else if (item.Product is Part part)
-            {
-                orderItem.PartId = part.Id;
-            }
-            else if (item.Product is Accessory accessory)
-            {
-                orderItem.AccessoryId = accessory.Id;
-            }
-
-            return orderItem;
-        }).ToList();
-    }
-
-    private async Task HandleValidSubmit()
-    {
-        var createdOrder = await OrderService.CreateOrderAsync(
-            order.UserId,
-            cartItems.ToList(),
-            order.ShippingAddress,
-            order.CustomerComment,
-            order.PaymentMethod
-        );
-
-        Navigation.NavigateTo($"/order/{createdOrder.Id}");
-    }
-}
