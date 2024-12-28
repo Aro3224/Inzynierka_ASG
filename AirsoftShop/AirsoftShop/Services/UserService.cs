@@ -46,7 +46,7 @@ namespace AirsoftShop.Services
             var userWithRole = new UserWithData
             {
                 Id = user.Id,
-                Name = user.UserName,
+                UserName = user.UserName,
                 Email = user.Email,
                 Role = userRole.FirstOrDefault(),
                 IsEmailConfirmed = user.EmailConfirmed,
@@ -55,7 +55,9 @@ namespace AirsoftShop.Services
                 IsTwoFactorEnabled = user.TwoFactorEnabled,
                 City = user.City,
                 PostalCode = user.PostalCode,
-                Address = user.Address
+                Address = user.Address,
+                Name = user.Name,
+                Surname = user.Surname
             };
 
             return userWithRole;
@@ -67,12 +69,14 @@ namespace AirsoftShop.Services
             var dbUserRoles = await _userManager.GetRolesAsync(dbUser);
             var currentRole = dbUserRoles.FirstOrDefault();
 
-            dbUser.UserName = user.Name;
+            dbUser.UserName = user.UserName;
             dbUser.Email = user.Email;
             dbUser.PhoneNumber = user.PhoneNumber;
             dbUser.City = user.City;
             dbUser.PostalCode = user.PostalCode;
             dbUser.Address = user.Address;
+            dbUser.Name = user.Name;
+            dbUser.Surname = user.Surname;
             dbUser.EmailConfirmed = user.IsEmailConfirmed;
             dbUser.PhoneNumberConfirmed = user.IsPhoneConfirmed;
             dbUser.TwoFactorEnabled = user.IsTwoFactorEnabled;
@@ -101,7 +105,7 @@ namespace AirsoftShop.Services
                 userWithRoles.Add(new UserWithData
                 {
                     Id = user.Id,
-                    Name = user.UserName,
+                    UserName = user.UserName,
                     Email = user.Email,
                     Role = role.FirstOrDefault()
                 });

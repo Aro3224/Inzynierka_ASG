@@ -32,6 +32,8 @@ namespace AirsoftShop.Components.Shopping_Cart.Pages
             {
                 var userDetails = await UserService.Details(userId);
 
+                order.CustomerName = userDetails.Name;
+                order.CustomerSurname = userDetails.Surname;
                 order.PhoneNumber = userDetails.PhoneNumber;
                 city = userDetails.City;
                 postalCode = userDetails.PostalCode;

@@ -13,9 +13,21 @@
 		<EditForm Model="User" OnValidSubmit="HandleSubmit" class="edit-form d-flex flex-column">
 			<DataAnnotationsValidator />
 			<div>
-				<label for="name">Nazwa:</label>
+				<label for="userName">Nazwa:</label>
+				<InputText id="userName" @bind-Value="User.UserName" class="form-control" />
+				<ValidationMessage For="@(() => User.UserName)" />
+			</div>
+
+			<div>
+				<label for="name">Imię:</label>
 				<InputText id="name" @bind-Value="User.Name" class="form-control" />
 				<ValidationMessage For="@(() => User.Name)" />
+			</div>
+
+			<div>
+				<label for="surname">Nazwisko:</label>
+				<InputText id="surname" @bind-Value="User.Surname" class="form-control" />
+				<ValidationMessage For="@(() => User.Surname)" />
 			</div>
 
 			<div>

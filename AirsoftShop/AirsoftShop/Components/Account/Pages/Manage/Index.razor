@@ -27,6 +27,18 @@
             </div>
 
             <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.Name" class="form-control" placeholder="Please enter your name." />
+                <label for="name" class="form-label">Imię</label>
+                <ValidationMessage For="() => Input.Name" class="text-danger" />
+            </div>
+
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.Surname" class="form-control" placeholder="Please enter your surname." />
+                <label for="surname" class="form-label">Nazwisko</label>
+                <ValidationMessage For="() => Input.Surname" class="text-danger" />
+            </div>
+
+            <div class="form-floating mb-3">
                 <InputText @bind-Value="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number." />
                 <label for="phone-number" class="form-label">Numer telefonu</label>
                 <ValidationMessage For="() => Input.PhoneNumber" class="text-danger" />
