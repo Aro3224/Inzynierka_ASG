@@ -3,8 +3,7 @@
 
 @inject NavigationManager Navigation
 @inject IUserService UserService
-@inject CartService CartService
-@inject IOrderService OrderService
+@inject OrderDraftService OrderDraftService
 
 <PageTitle>Koszyk - Dane</PageTitle>
 
@@ -31,20 +30,20 @@
 
 			<div>
 				<label for="postalcode">Kod pocztowy:</label>
-				<InputText id="postalcode" @bind-Value="postalCode" @oninput="UpdateShippingAddress" class="form-control" />
-				<ValidationMessage For="@(() => postalCode)" />
+				<InputText id="postalcode" @bind-Value="order.PostalCode" class="form-control" />
+				<ValidationMessage For="@(() => order.PostalCode)" />
 			</div>
 
 			<div>
 				<label for="address">Miejscowość:</label>
-				<InputText id="address" @bind-Value="city" @oninput="UpdateShippingAddress" class="form-control" />
-				<ValidationMessage For="@(() => city)" />
+				<InputText id="address" @bind-Value="order.City" class="form-control" />
+				<ValidationMessage For="@(() => order.City)" />
 			</div>
 
 			<div>
 				<label for="address">Adres:</label>
-				<InputText id="address" @bind-Value="address" @oninput="UpdateShippingAddress" class="form-control" />
-				<ValidationMessage For="@(() => address)" />
+				<InputText id="address" @bind-Value="order.Address" class="form-control" />
+				<ValidationMessage For="@(() => order.Address)" />
 			</div>
 
 			<div>
@@ -53,25 +52,7 @@
 				<ValidationMessage For="@(() => order.PhoneNumber)" />
 			</div>
 
-			<div>
-				<label for="manufacturer">Płatność:</label>
-				<select @bind="order.PaymentMethod" class="form-select">
-					<option value="" selected disabled>Wybierz...</option>
-					@foreach (PaymentMethod paymentMethod in Enum.GetValues(typeof(PaymentMethod)))
-					{
-						<option value="@paymentMethod"><EnumDisplayName TEnum="PaymentMethod" Value="paymentMethod" /></option>
-					}
-				</select>
-				<ValidationMessage For="@(() => order.PaymentMethod)" />
-			</div>
-
-			<div>
-				<label for="description">Uwagi dotyczące zamówienia:</label>
-				<InputTextArea id="description" @bind-value="order.CustomerComment" class="form-control" />
-				<ValidationMessage For="@(() => order.CustomerComment)" />
-			</div>
-
-			<button type="submit" class="btn btn-outline-primary">Utwórz zamówienie</button>
+			<button type="submit" class="btn btn-outline-primary">Dalej</button>
 		</EditForm>
 	</div>
 </div>

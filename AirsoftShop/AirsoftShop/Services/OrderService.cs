@@ -17,7 +17,15 @@ namespace AirsoftShop.Services
             _cartService = cartService;
         }
 
-        public async Task<Order> CreateOrderAsync(string userId, string customerName, string customerSurname, string phoneNumber, List<CartItem> cartItems, string shippingAddress, string customerComment, PaymentMethod paymentMethod)
+        public async Task<Order> CreateOrderAsync(
+    string userId,
+    string customerName,
+    string customerSurname,
+    string phoneNumber,
+    List<CartItem> cartItems,
+    string shippingAddress,
+    string customerComment,
+    PaymentMethod paymentMethod)
         {
             var order = new Order
             {
@@ -57,26 +65,44 @@ namespace AirsoftShop.Services
                             var replica = await _context.Replicas.FindAsync(cartItem.Product.Id);
                             if (replica != null)
                             {
+                                if (replica.Count < cartItem.Quantity)
+                                {
+                                    throw new InvalidOperationException($"Za mało przedmiotów w magazynie dla repliki: {replica.Name}");
+                                }
+                                replica.Count -= cartItem.Quantity;
                                 orderItem.ReplicaId = replica.Id;
                                 orderItem.Replica = replica;
                             }
                             break;
+
                         case ProductType.Part:
                             var part = await _context.Parts.FindAsync(cartItem.Product.Id);
                             if (part != null)
                             {
+                                if (part.Count < cartItem.Quantity)
+                                {
+                                    throw new InvalidOperationException($"Za mało przedmiotów w magazynie dla części: {part.Name}");
+                                }
+                                part.Count -= cartItem.Quantity;
                                 orderItem.PartId = part.Id;
                                 orderItem.Part = part;
                             }
                             break;
+
                         case ProductType.Accessory:
                             var accessory = await _context.Accessories.FindAsync(cartItem.Product.Id);
                             if (accessory != null)
                             {
+                                if (accessory.Count < cartItem.Quantity)
+                                {
+                                    throw new InvalidOperationException($"Za mało przedmiotów w magazynie dla dodatku: {accessory.Name}");
+                                }
+                                accessory.Count -= cartItem.Quantity;
                                 orderItem.AccessoryId = accessory.Id;
                                 orderItem.Accessory = accessory;
                             }
                             break;
+
                         default:
                             throw new ArgumentException("Unknown product type");
                     }

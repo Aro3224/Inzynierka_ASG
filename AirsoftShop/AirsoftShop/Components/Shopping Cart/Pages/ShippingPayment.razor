@@ -1,7 +1,56 @@
 ﻿@page "/Cart/Shipping-Payment"
+@using AirsoftShop.Components.Custom_Components
+
+@inject NavigationManager Navigation
+@inject OrderDraftService OrderDraftService
 
 <div class="container-fluid w-75">
 	<div class="d-flex justify-content-end">
 		<CartNav ActiveStep="/Cart/Shipping-Payment" />
 	</div>
+
+	<div class="container-fluid w-50">
+		<EditForm Model="@order" OnValidSubmit="@HandleValidSubmit" class="edit-form d-flex flex-column gap-3">
+			<DataAnnotationsValidator />
+
+			<div>
+				<label for="manufacturer">Płatność:</label>
+				<select @bind="order.PaymentMethod" class="form-select">
+					<option value="" selected disabled>Wybierz...</option>
+					@foreach (PaymentMethod paymentMethod in Enum.GetValues(typeof(PaymentMethod)))
+					{
+						<option value="@paymentMethod"><EnumDisplayName TEnum="PaymentMethod" Value="paymentMethod" /></option>
+					}
+				</select>
+				<ValidationMessage For="@(() => order.PaymentMethod)" />
+			</div>
+
+			<div>
+				<label for="description">Uwagi dotyczące zamówienia:</label>
+				<InputTextArea id="description" @bind-value="order.CustomerComment" class="form-control" />
+				<ValidationMessage For="@(() => order.CustomerComment)" />
+			</div>
+
+			<button type="submit" class="btn btn-outline-primary">Dalej</button>
+		</EditForm>
+	</div>
 </div>
+
+@code {
+	private OrderDraft order = new OrderDraft();
+
+	protected override void OnInitialized()
+	{
+		order = OrderDraftService.CurrentOrderDraft;
+	}
+
+	private async Task HandleValidSubmit()
+	{
+		OrderDraftService.UpdatePaymentDetails(
+		order.PaymentMethod,
+		order.CustomerComment
+	);
+
+		Navigation.NavigateTo("/Cart/Summary");
+	}
+}
