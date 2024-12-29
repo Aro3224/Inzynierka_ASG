@@ -37,6 +37,9 @@ namespace AirsoftShop.Data
         public PaymentStatus PaymentStatus { get; set; }
 
         [Required]
+        public CourierCompany CourierCompany { get; set; }
+
+        [Required]
         public string? CustomerComment { get; set; }
 
         [Required]
@@ -73,6 +76,16 @@ namespace AirsoftShop.Data
         GooglePay,
         PayPal,
         PayU      
+    }
+
+    public enum CourierCompany
+    {
+        GLS,
+
+        [Display(Name = "UPS Standard")]
+        UPS_Standard,
+
+        DPD,
     }
 
     public enum PaymentStatus

@@ -32,10 +32,11 @@ namespace AirsoftShop.Services
             CurrentOrderDraft.Address = Address;
         }
 
-        public void UpdatePaymentDetails(PaymentMethod paymentMethod, string? comment)
+        public void UpdatePaymentDetails(PaymentMethod paymentMethod, CourierCompany courierCompany, string? comment)
         {
             CurrentOrderDraft.PaymentMethod = paymentMethod;
             CurrentOrderDraft.CustomerComment = comment;
+            CurrentOrderDraft.CourierCompany = courierCompany;
         }
     }
 }

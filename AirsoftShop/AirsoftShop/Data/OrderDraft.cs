@@ -24,7 +24,9 @@ namespace AirsoftShop.Data
 
         public PaymentMethod PaymentMethod { get; set; } = PaymentMethod.OnDelivery;
 
-        public string? CustomerComment { get; set; }
+        public CourierCompany CourierCompany { get; set; } = CourierCompany.DPD;
+
+        public string? CustomerComment { get; set; } = "";
 
         public List<CartItem> CartItems { get; set; } = new List<CartItem>();
     }

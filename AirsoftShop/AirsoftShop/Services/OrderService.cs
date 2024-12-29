@@ -25,6 +25,7 @@ namespace AirsoftShop.Services
     List<CartItem> cartItems,
     string shippingAddress,
     string customerComment,
+    CourierCompany courierCompany,
     PaymentMethod paymentMethod)
         {
             var order = new Order
@@ -38,6 +39,7 @@ namespace AirsoftShop.Services
                 ShippingAddress = shippingAddress,
                 PaymentMethod = paymentMethod,
                 PaymentStatus = PaymentStatus.Pending,
+                CourierCompany = courierCompany,
                 CustomerComment = customerComment,
                 OrderItems = new List<OrderItem>()
             };

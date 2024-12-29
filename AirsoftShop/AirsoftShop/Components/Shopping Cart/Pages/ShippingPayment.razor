@@ -4,6 +4,8 @@
 @inject NavigationManager Navigation
 @inject OrderDraftService OrderDraftService
 
+<PageTitle>Koszyk - Dostawa i płatność</PageTitle>
+
 <div class="container-fluid w-75">
 	<div class="d-flex justify-content-end">
 		<CartNav ActiveStep="/Cart/Shipping-Payment" />
@@ -26,6 +28,18 @@
 			</div>
 
 			<div>
+				<label for="courier">Kurier:</label>
+				<select @bind="order.CourierCompany" class="form-select">
+					<option value="" selected disabled>Wybierz...</option>
+					@foreach (CourierCompany courierCompany in Enum.GetValues(typeof(CourierCompany)))
+					{
+						<option value="@courierCompany"><EnumDisplayName TEnum="CourierCompany" Value="courierCompany" /></option>
+					}
+				</select>
+				<ValidationMessage For="@(() => order.CourierCompany)" />
+			</div>
+
+			<div>
 				<label for="description">Uwagi dotyczące zamówienia:</label>
 				<InputTextArea id="description" @bind-value="order.CustomerComment" class="form-control" />
 				<ValidationMessage For="@(() => order.CustomerComment)" />
@@ -35,22 +49,3 @@
 		</EditForm>
 	</div>
 </div>
-
-@code {
-	private OrderDraft order = new OrderDraft();
-
-	protected override void OnInitialized()
-	{
-		order = OrderDraftService.CurrentOrderDraft;
-	}
-
-	private async Task HandleValidSubmit()
-	{
-		OrderDraftService.UpdatePaymentDetails(
-		order.PaymentMethod,
-		order.CustomerComment
-	);
-
-		Navigation.NavigateTo("/Cart/Summary");
-	}
-}
