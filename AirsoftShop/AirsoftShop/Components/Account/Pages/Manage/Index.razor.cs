@@ -23,6 +23,8 @@ namespace AirsoftShop.Components.Account.Pages.Manage
             phoneNumber = await UserManager.GetPhoneNumberAsync(user);
 
             Input.UserName ??= username;
+            Input.Name ??= user.Name;
+            Input.Surname ??= user.Surname;
             Input.PhoneNumber ??= phoneNumber;
             Input.City ??= user.City;
             Input.Address ??= user.Address;
@@ -52,7 +54,8 @@ namespace AirsoftShop.Components.Account.Pages.Manage
                 username = Input.UserName;
             }
 
-
+            user.Name = Input.Name;
+            user.Surname = Input.Surname;
             user.PhoneNumber = Input.PhoneNumber;
             user.City = Input.City;
             user.Address = Input.Address;
@@ -76,6 +79,12 @@ namespace AirsoftShop.Components.Account.Pages.Manage
             [Required]
             [Display(Name = "Username")]
             public string? UserName { get; set; }
+
+            [Display(Name = "Name")]
+            public string? Name { get; set; }
+
+            [Display(Name = "Surname")]
+            public string? Surname { get; set; }
 
             [Phone]
             [Display(Name = "Phone number")]

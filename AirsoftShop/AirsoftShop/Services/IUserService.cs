@@ -16,5 +16,7 @@ namespace AirsoftShop.Services
         Task Delete(string id);
 
         Task<List<UserWithData>> FilterUsersAsync(string searchTerm);
+
+        Task<string> GetCurrentUserIdAsync();
     }
 }

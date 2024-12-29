@@ -1,0 +1,100 @@
+﻿@page "/Cart/Products"
+
+@inject CartService CartService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Koszyk - Produkty</PageTitle>
+
+<div class="container-fluid w-75">
+	<div class="row d-flex align-items-center">
+		<div class="col-md-6">
+			<h2>Produkty: @CartService.GetTotalCount()</h2>
+		</div>
+		<div class="col-md-6 d-flex justify-content-end">
+			<CartNav ActiveStep="/Cart/Products" />
+		</div>
+	</div>
+
+	<br />
+
+	@if (CartItems.Count() == 0)
+	{
+		<br />
+		<br />
+		<br />
+		<br />
+		<div class="container d-flex justify-content-center">
+			<h2 class="fw-bold">Twój koszyk jest pusty</h2>
+		</div>
+	}
+	else
+	{
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col" style="width: 40%;"><strong>Nazwa produktu</strong></th>
+					<th scope="col" class="text-center" style="width: 15%;"><strong>Cena jednostkowa</strong></th>
+					<th scope="col" class="text-center" style="width: 15%;"><strong>Ilość</strong></th>
+					<th scope="col" class="text-center" style="width: 15%;"><strong>Cena</strong></th>
+					<th scope="col" class="text-center" style="width: 5%;"><strong>Usuń</strong></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in CartItems)
+				{
+					<tr style="vertical-align: middle;">
+						<td>@item.Product.Name</td>
+						<td class="text-center">@item.Product.Price PLN</td>
+						<td>
+							<div class="d-flex justify-content-center">
+								<div class="border border-1 border-dark">
+									<div class="d-flex m-1">
+										<button class="counter-btn fw-bold" @onclick="() => DecreaseCounterValue(item)">-</button>
+										<input class="input-number" @bind="item.Quantity" @bind:after="() => UpdateCount(item)" />
+										<button class="counter-btn fw-bold" @onclick="() => IncreaseCounterValue(item)">+</button>
+									</div>
+								</div>
+							</div>
+						</td>
+						<td class="text-center">@(@item.Product.Price * @item.Quantity) PLN</td>
+						<td>
+							<div class="d-flex justify-content-center align-middle">
+								<button class="btn btn-danger button-remove rounded-1" @onclick="() => RemoveItem(item)">
+									<span>×</span>
+								</button>
+							</div>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+
+		<br />
+
+		<div class="row">
+			<div class="col-md-8"></div>
+			<div class="col-md-4 d-flex flex-column">
+				<div class="d-flex flex-row justify-content-between">
+					<p>Łączna wartość zamówienia: </p>
+					<p>@CartService.GetTotalPrice() PLN</p>
+				</div>
+				<div class="d-flex flex-row justify-content-between">
+					<p>Koszt przesyłki: </p>
+					<p>0,00 PLN</p>
+				</div>
+				<br />
+				<div class="d-flex flex-row justify-content-between">
+					<h4><strong>Suma do zapłaty: </strong></h4>
+					<h4><strong>@CartService.GetTotalPrice() PLN</strong></h4>
+				</div>
+			</div>
+		</div>
+
+		<br />
+
+		<div class="d-flex flex-row justify-content-between">
+			<button class="btn btn-outline-secondary p-4" @onclick='() => NavigationManager.NavigateTo("/Replicas")'>Kontynuuj zakupy</button>
+			<button class="btn btn-outline-primary p-4" @onclick='() => NavigationManager.NavigateTo("/Cart/Order-Details")'>Dalej</button>
+		</div>
+	}
+</div>

@@ -1,0 +1,29 @@
+﻿@inject BreadcrumbService BreadcrumbService
+
+<nav class="breadcrumb">
+    @foreach (var step in BreadcrumbService.Steps)
+    {
+        if (step.IsActive)
+        {
+            <span class="breadcrumb-item active">@step.Title</span>
+        }
+        else if (step.IsClickable)
+        {
+            <a href="@step.Link" class="breadcrumb-item">@step.Title</a>
+        }
+        else
+        {
+            <span class="breadcrumb-item active">@step.Title</span>
+        }
+    }
+</nav>
+
+@code {
+    [Parameter]
+    public required string ActiveStep { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        BreadcrumbService.UpdateActiveStep(ActiveStep);
+    }
+}

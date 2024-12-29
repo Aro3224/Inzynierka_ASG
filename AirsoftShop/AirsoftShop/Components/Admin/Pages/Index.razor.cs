@@ -23,7 +23,7 @@ namespace AirsoftShop.Components.Admin.Pages
             {
                 case "Name":
                     {
-                        users = isAscending ? users.OrderBy(u => u.Name).ToList() : users.OrderByDescending(u => u.Name).ToList();
+                        users = isAscending ? users.OrderBy(u => u.UserName).ToList() : users.OrderByDescending(u => u.UserName).ToList();
                         break;
                     }
                 case "Role":
@@ -96,7 +96,7 @@ namespace AirsoftShop.Components.Admin.Pages
 
             Console.WriteLine("Initializing users list...");
             users = await UserService.GetAllUsersAsync();
-            users = users.OrderBy(u => u.Name).ToList();
+            users = users.OrderBy(u => u.UserName).ToList();
         }
     }
 }

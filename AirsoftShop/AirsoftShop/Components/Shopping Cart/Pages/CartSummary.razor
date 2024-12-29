@@ -1,0 +1,102 @@
+﻿@page "/Cart/Summary"
+@using AirsoftShop.Components.Custom_Components
+
+@inject CartService CartService
+@inject OrderDraftService OrderDraftService
+@inject NavigationManager Navigation
+@inject IUserService UserService
+@inject IOrderService OrderService
+
+<PageTitle>Koszyk - Podsumowanie</PageTitle>
+
+<div class="container-fluid w-75">
+	<div class="d-flex justify-content-end">
+		<CartNav ActiveStep="/Cart/Summary" />
+	</div>
+
+	<div class="d-flex flex-column gap-2">
+
+		<div class="container-fluid">
+			<h2>Dane zamawiającego</h2>
+			<hr />
+
+			<div class="d-flex flex-row gap-5">
+				<div class="d-flex flex-column me-5">
+					<h5><strong>Zamawiający</strong></h5>
+					<span>Imię: @orderDraft.CustomerName</span>
+					<span>Nazwisko: @orderDraft.CustomerSurname</span>
+					<span>Numer telefonu: @orderDraft.PhoneNumber</span>
+				</div>
+
+				<div class="d-flex flex-column ms-5">
+					<h5><strong>Adres dostawy</strong></h5>
+					<span>Kod pocztowy: @orderDraft.PostalCode</span>
+					<span>Miejscowość: @orderDraft.City</span>
+					<span>Adres: @orderDraft.Address</span>
+				</div>
+			</div>
+
+			<br />
+		</div>
+
+
+		<div class="container-fluid">
+			<h2>Produkty</h2>
+			<hr />
+
+			<table class="w-100">
+				<thead>
+					<tr>
+						<th scope="col"><strong>Nazwa produktu</strong></th>
+						<th scope="col"><strong>Cena jednostkowa</strong></th>
+						<th scope="col"><strong>Ilość</strong></th>
+						<th scope="col"><strong>Cena</strong></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in cartItems)
+					{
+						<tr>
+							<td>@item.Product.Name</td>
+							<td>@item.Product.Price</td>
+							<td>@item.Quantity</td>
+							<td>@(@item.Product.Price * @item.Quantity)</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+
+			<br />
+		</div>
+
+		<div class="container-fluid">
+			<h2>Dostawa i płatność</h2>
+			<hr />
+
+			<div class="d-flex flex-column">
+				<span><strong>Kurier: </strong><EnumDisplayName TEnum="CourierCompany" Value="orderDraft.CourierCompany" /></span>
+				<span><strong>Płatność: </strong><EnumDisplayName TEnum="PaymentMethod" Value="orderDraft.PaymentMethod" /></span>
+			</div>
+
+			<br />
+		</div>
+
+		<div class="container-fluid">
+			<h2>Podsumowanie</h2>
+			<hr />
+
+			<div class="d-flex flex-column align-items-end">
+				<div class="col-md-5 d-flex flex-row justify-content-between align-items-center pb-4">
+					<h4><strong>Do zapłaty:</strong></h4>
+
+					<h2><strong>@CartService.GetTotalPrice() PLN</strong></h2>
+				</div>
+
+				<div class="container p-0 d-flex justify-content-between">
+					<button type="submit" class="btn btn-outline-secondary p-4" @onclick='() => Navigation.NavigateTo("/Replicas")'>Kontynuuj zakupy</button>
+					<button type="submit" class="btn btn-outline-primary p-4" @onclick="SubmitOrder">Zamawiam i płacę</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
