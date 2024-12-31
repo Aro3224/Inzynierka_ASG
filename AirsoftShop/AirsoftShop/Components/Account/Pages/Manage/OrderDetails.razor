@@ -1,8 +1,39 @@
-﻿@page "/Account/Manage/Orders/{OrderId}"
+﻿@page "/Account/Manage/Orders/{OrderId:int}"
+@using AirsoftShop.Components.Custom_Components
 
-<h3>OrderDetails</h3>
+@inject IOrderService OrderService
+
+@if (Order is null)
+{
+	<p>Wczytywanie...</p>
+}
+else
+{
+	<h3>Szczegóły zamówienia nr. @OrderId</h3>
+
+	<h4>Status zamówienia: <EnumDisplayName TEnum="OrderStatus" Value="Order.OrderStatus"/></h4>
+
+	<h4>Wpłata:</h4>
+
+	<p><EnumDisplayName TEnum="PaymentMethod" Value="Order.PaymentMethod" /> - <EnumDisplayName TEnum="PaymentStatus" Value="Order.PaymentStatus" /></p>
+
+	<h4>Kurier: <EnumDisplayName TEnum="CourierCompany" Value="Order.CourierCompany" /></h4>
+
+	<h4>Zamówione produkty</h4>
+
+	<span>Wartość zamówienia</span>
+
+	<span><strong>@Order.TotalAmount</strong></span>
+}
 
 @code {
 	[Parameter]
-	public required string OrderId { get; set; }
+	public required int OrderId { get; set; }
+
+	public required Order Order { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		Order = await OrderService.GetOrderByIdAsync(OrderId);
+	}
 }

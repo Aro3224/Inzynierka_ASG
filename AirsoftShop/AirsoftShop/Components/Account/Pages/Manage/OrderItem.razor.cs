@@ -10,7 +10,6 @@ namespace AirsoftShop.Components.Account.Pages.Manage
 
         public void NavigateToDetails(int OrderId)
         {
-            Console.WriteLine($"Test:");
             Navigation.NavigateTo($"/Account/Manage/Orders/{OrderId}");
         }
     }
