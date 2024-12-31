@@ -18,7 +18,7 @@ namespace AirsoftShop.Components.Shopping_Cart.Pages
             orderDraft = OrderDraftService.CurrentOrderDraft;
 
             order.OrderDate = DateTime.Now;
-            order.Status = OrderStatus.Created;
+            order.OrderStatus = OrderStatus.Created;
             order.PaymentStatus = PaymentStatus.Pending;
 
             order.OrderItems = cartItems.Select(item =>

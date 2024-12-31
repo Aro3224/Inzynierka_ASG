@@ -35,7 +35,7 @@ namespace AirsoftShop.Services
                 CustomerSurname = customerSurname,
                 PhoneNumber = phoneNumber,
                 OrderDate = DateTime.Now,
-                Status = OrderStatus.Created,
+                OrderStatus = OrderStatus.Created,
                 ShippingAddress = shippingAddress,
                 PaymentMethod = paymentMethod,
                 PaymentStatus = PaymentStatus.Pending,
@@ -158,7 +158,7 @@ namespace AirsoftShop.Services
             var order = await GetOrderByIdAsync(orderId);
             if (order != null)
             {
-                order.Status = OrderStatus.Canceled;
+                order.OrderStatus = OrderStatus.Canceled;
                 await UpdateOrderAsync(order);
             }
             else
