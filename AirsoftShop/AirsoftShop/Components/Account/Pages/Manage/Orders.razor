@@ -1,15 +1,11 @@
 ﻿@page "/Account/Manage/Orders"
 @using AirsoftShop.Components.Custom_Components
-
 @inject IUserService UserService
 @inject IOrderService OrderService
-@inject IdentityRedirectManager RedirectManager
-@inject IdentityUserAccessor UserAccessor
 
 <h3>Twoje zamówienia</h3>
 
 <PageTitle>Zamówienia</PageTitle>
-
 @if (OrdersList is null)
 {
 	<p>Wczytywanie</p>
@@ -35,16 +31,7 @@ else
 			<tbody>
 				@foreach (var order in OrdersList)
 				{
-					<tr style="vertical-align: middle;">
-						<td>@order.Id</td>
-						<td>@order.OrderDate</td>
-						<td>@order.TotalAmount PLN</td>
-						<td><EnumDisplayName TEnum="PaymentStatus" Value="order.PaymentStatus" /></td>
-						<td><EnumDisplayName TEnum="OrderStatus" Value="order.OrderStatus" /></td>
-						<td>
-							<button type="button" class="btn btn-outline-primary" @onclick='@(() => NavigateToDetails(order.Id))'>Zobacz</button>
-						</td>
-					</tr>
+					<OrderItem @rendermode="RenderMode.InteractiveServer" Order="order" />
 				}
 			</tbody>
 		</table>
