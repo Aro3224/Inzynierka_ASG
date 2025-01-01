@@ -1,13 +1,22 @@
 ﻿@page "/Account/Manage/Orders/{OrderId:int}"
 @using AirsoftShop.Components.Custom_Components
+@using Microsoft.AspNetCore.Identity
 @rendermode InteractiveServer
 
 @inject IOrderService OrderService
 @inject IProductService ProductService
+@inject UserManager<ApplicationUser> UserManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <PageTitle>Szczegóły zamówienia @OrderId</PageTitle>
 
-@if (Order is null)
+@if (!IsAuthorized)
+{
+	<div class="alert alert-danger">
+		Nie masz dostępu do tego zamówienia.
+	</div>
+}
+else if (Order is null)
 {
 	<p>Wczytywanie...</p>
 }
