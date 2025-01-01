@@ -1,0 +1,54 @@
+﻿@page "/Admin/Orders"
+
+@rendermode InteractiveServer
+
+@inject IUserService UserService
+@inject IOrderService OrderService
+@inject NavigationManager Navigation
+
+<PageTitle>Zamówienia</PageTitle>
+
+<h3>Zarządzanie zamówieniami</h3>
+
+@if (OrdersList is null)
+{
+	<p>Wczytywanie</p>
+}
+else if (OrdersList.Count == 0)
+{
+	<p>Nie masz żadnych zamówień</p>
+}
+else
+{
+	<div class="container-fluid">
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col"><strong>ID zamówienia</strong></th>
+					<th scope="col"><strong>Zamawiający</strong></th>
+					<th scope="col"><strong>Data zamówienia</strong></th>
+					<th scope="col"><strong>Wartość zamówienia</strong></th>
+					<th scope="col"><strong>Status opłaty</strong></th>
+					<th scope="col"><strong>Status zamówienia</strong></th>
+					<th scope="col"><strong>Szczegóły</strong></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var order in OrdersList)
+				{
+					<tr style="vertical-align: middle;">
+						<td>@order.Id</td>
+						<td>@order.CustomerName @order.CustomerSurname</td>
+						<td>@order.OrderDate</td>
+						<td>@order.TotalAmount PLN</td>
+						<td><EnumDisplayName TEnum="PaymentStatus" Value="order.PaymentStatus" /></td>
+						<td><EnumDisplayName TEnum="OrderStatus" Value="order.OrderStatus" /></td>
+						<td>
+							<button type="button" class="btn btn-outline-primary" @onclick="@(() => NavigateToDetails(order.Id))">Zobacz</button>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+}

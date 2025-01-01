@@ -145,6 +145,10 @@ namespace AirsoftShop.Services
                 .FirstOrDefaultAsync(o => o.Id == orderId);
         }
 
+        public async Task<List<Order>> GetAllOrdersAsync()
+        {
+            return await _context.Orders.ToListAsync();
+        }
 
         public async Task<List<Order>> GetOrdersByUserIdAsync(string userId)
         {
