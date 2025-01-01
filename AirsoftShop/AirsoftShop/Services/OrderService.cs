@@ -133,12 +133,18 @@ namespace AirsoftShop.Services
             }
         }
 
-        public async Task<Order> GetOrderByIdAsync(int id)
+        public async Task<Order> GetOrderByIdAsync(int orderId)
         {
             return await _context.Orders
                 .Include(o => o.OrderItems)
-                .FirstOrDefaultAsync(o => o.Id == id);
+                    .ThenInclude(oi => oi.Replica)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Part)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Accessory)
+                .FirstOrDefaultAsync(o => o.Id == orderId);
         }
+
 
         public async Task<List<Order>> GetOrdersByUserIdAsync(string userId)
         {

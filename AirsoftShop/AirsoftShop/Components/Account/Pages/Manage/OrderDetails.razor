@@ -1,7 +1,11 @@
 ﻿@page "/Account/Manage/Orders/{OrderId:int}"
 @using AirsoftShop.Components.Custom_Components
+@rendermode InteractiveServer
 
 @inject IOrderService OrderService
+@inject IProductService ProductService
+
+<PageTitle>Szczegóły zamówienia @OrderId</PageTitle>
 
 @if (Order is null)
 {
@@ -9,31 +13,93 @@
 }
 else
 {
-	<h3>Szczegóły zamówienia nr. @OrderId</h3>
+	<div class="d-flex flex-column gap-3">
+		<h3>Szczegóły zamówienia nr. @OrderId</h3>
 
-	<h4>Status zamówienia: <EnumDisplayName TEnum="OrderStatus" Value="Order.OrderStatus"/></h4>
+		<div>
+			<h5>Status zamówienia: <EnumDisplayName TEnum="OrderStatus" Value="Order.OrderStatus" /></h5>
+		</div>
 
-	<h4>Wpłata:</h4>
+		<div>
+			<h5>Wpłata:</h5>
 
-	<p><EnumDisplayName TEnum="PaymentMethod" Value="Order.PaymentMethod" /> - <EnumDisplayName TEnum="PaymentStatus" Value="Order.PaymentStatus" /></p>
+			<div class="d-flex flex-row align-items-center gap-2">
+				<span><EnumDisplayName TEnum="PaymentMethod" Value="Order.PaymentMethod" /> - <EnumDisplayName TEnum="PaymentStatus" Value="Order.PaymentStatus" /></span>
+				@if (Order.PaymentMethod != PaymentMethod.OnDelivery && Order.PaymentStatus == PaymentStatus.Pending)
+				{
+					<button type="button" class="btn btn-outline-primary" @onclick="PayForOrderAsync">Zapłać</button>
+				}
+			</div>		
+		</div>
 
-	<h4>Kurier: <EnumDisplayName TEnum="CourierCompany" Value="Order.CourierCompany" /></h4>
+		<div>
+			<h4>Kurier: <EnumDisplayName TEnum="CourierCompany" Value="Order.CourierCompany" /></h4>
+		</div>
 
-	<h4>Zamówione produkty</h4>
+		<div>
+			<h4>Dane zamawiającego</h4>
 
-	<span>Wartość zamówienia</span>
+			<span><strong>@Order.CustomerName @Order.CustomerSurname</strong></span>
+			<br />
+			<span><strong>Adres: </strong>@Order.ShippingAddress</span>
+		</div>
 
-	<span><strong>@Order.TotalAmount</strong></span>
-}
+		<div>
+			<h4>Zamówione produkty</h4>
 
-@code {
-	[Parameter]
-	public required int OrderId { get; set; }
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">Nazwa produktu</th>
+						<th scope="col">Kod produktu</th>
+						<th scope="col">Ilość</th>
+						<th scope="col">Wartość</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Order.OrderItems)
+					{
+						<tr style="vertical-align: middle;">
+							@if (item.ReplicaId is not null)
+							{
+								<td>
+									<a href="/Product/Replica/@item.ReplicaId" class="text-decoration-none">@item.Replica.Name</a>
+								</td>
+								<td>@item.Replica.ProductId</td>
+								<td>@item.Quantity</td>
+								<td>@item.Price PLN</td>
+							}
+							else if (item.PartId is not null)
+							{
+								<td>
+									<a href="/Product/Part/@item.PartId" class="text-decoration-none">@item.Part.Name</a>
+								</td>
+								<td>@item.Part.ProductId</td>
+								<td>@item.Quantity</td>
+								<td>@item.Price PLN</td>
+							}
+							else if (item.AccessoryId is not null)
+							{
+								<td>
+									<a href="/Product/Accessory/@item.AccessoryId" class="text-decoration-none">@item.Accessory.Name</a>
+								</td>
+								<td>@item.Accessory.ProductId</td>
+								<td>@item.Quantity</td>
+								<td>@item.Price PLN</td>
+							}
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
 
-	public required Order Order { get; set; }
+		<div class="row">
+			<div class="col-md-8"></div>
+			<div class="col-md-4 d-flex justify-content-between">
+				<span>Wartość zamówienia</span>
 
-	protected override async Task OnInitializedAsync()
-	{
-		Order = await OrderService.GetOrderByIdAsync(OrderId);
-	}
+				<span><strong>@Order.TotalAmount PLN</strong></span>
+			</div>
+		</div>
+	</div>
 }
