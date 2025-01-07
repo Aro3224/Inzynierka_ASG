@@ -1,11 +1,17 @@
-﻿@page "/Account/Manage/Orders"
-@using AirsoftShop.Components.Custom_Components
+﻿@page "/Admin/Orders"
+
+@rendermode InteractiveServer
+
 @inject IUserService UserService
 @inject IOrderService OrderService
+@inject NavigationManager Navigation
 
-<h3>Twoje zamówienia</h3>
+@attribute [Authorize(Roles = "Admin")]
 
 <PageTitle>Zamówienia</PageTitle>
+
+<h3>Zarządzanie zamówieniami</h3>
+
 @if (OrdersList is null)
 {
 	<p>Wczytywanie</p>
@@ -21,6 +27,7 @@ else
 			<thead>
 				<tr>
 					<th scope="col"><strong>ID zamówienia</strong></th>
+					<th scope="col"><strong>Zamawiający</strong></th>
 					<th scope="col"><strong>Data zamówienia</strong></th>
 					<th scope="col"><strong>Wartość zamówienia</strong></th>
 					<th scope="col"><strong>Status opłaty</strong></th>
@@ -31,7 +38,17 @@ else
 			<tbody>
 				@foreach (var order in OrdersList)
 				{
-					<OrderItem @rendermode="RenderMode.InteractiveServer" Order="order" />
+					<tr style="vertical-align: middle;">
+						<td>@order.Id</td>
+						<td>@order.CustomerName @order.CustomerSurname</td>
+						<td>@order.OrderDate</td>
+						<td>@order.TotalAmount PLN</td>
+						<td><EnumDisplayName TEnum="PaymentStatus" Value="order.PaymentStatus" /></td>
+						<td><EnumDisplayName TEnum="OrderStatus" Value="order.OrderStatus" /></td>
+						<td>
+							<button type="button" class="btn btn-outline-primary" @onclick="@(() => NavigateToDetails(order.Id))">Zobacz</button>
+						</td>
+					</tr>
 				}
 			</tbody>
 		</table>

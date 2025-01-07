@@ -17,5 +17,7 @@ namespace AirsoftShop.Services
         Task CancelOrderAsync(int orderId);
 
         Task UpdatePaymentStatusAsync(int orderId, PaymentStatus paymentStatus);
+
+        Task<List<Order>> GetAllOrdersAsync();
     }
 }

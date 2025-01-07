@@ -22,7 +22,7 @@ namespace AirsoftShop.Data
         public DateTime OrderDate { get; set; }
 
         [Required]
-        public OrderStatus Status { get; set; }
+        public OrderStatus OrderStatus { get; set; }
 
         [Required]
         public decimal TotalAmount { get; set; }
@@ -93,7 +93,7 @@ namespace AirsoftShop.Data
         [Display(Name = "Oczekująca")]
         Pending,
 
-        [Display(Name = "Zapłacono")]
+        [Display(Name = "Zapłacona")]
         Paid,
 
         [Display(Name = "Nieudana")]

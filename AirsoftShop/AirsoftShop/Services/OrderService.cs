@@ -35,7 +35,7 @@ namespace AirsoftShop.Services
                 CustomerSurname = customerSurname,
                 PhoneNumber = phoneNumber,
                 OrderDate = DateTime.Now,
-                Status = OrderStatus.Created,
+                OrderStatus = OrderStatus.Created,
                 ShippingAddress = shippingAddress,
                 PaymentMethod = paymentMethod,
                 PaymentStatus = PaymentStatus.Pending,
@@ -130,14 +130,25 @@ namespace AirsoftShop.Services
             {
                 _context.Orders.Remove(order);
                 await _context.SaveChangesAsync();
+                Console.WriteLine("Usunięto zamówienie.");
             }
         }
 
-        public async Task<Order> GetOrderByIdAsync(int id)
+        public async Task<Order> GetOrderByIdAsync(int orderId)
         {
             return await _context.Orders
                 .Include(o => o.OrderItems)
-                .FirstOrDefaultAsync(o => o.Id == id);
+                    .ThenInclude(oi => oi.Replica)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Part)
+                .Include(o => o.OrderItems)
+                    .ThenInclude(oi => oi.Accessory)
+                .FirstOrDefaultAsync(o => o.Id == orderId);
+        }
+
+        public async Task<List<Order>> GetAllOrdersAsync()
+        {
+            return await _context.Orders.ToListAsync();
         }
 
         public async Task<List<Order>> GetOrdersByUserIdAsync(string userId)
@@ -151,6 +162,7 @@ namespace AirsoftShop.Services
         {
             _context.Orders.Update(order);
             await _context.SaveChangesAsync();
+            Console.WriteLine("Zapisano zmiany w bazie");
         }
 
         public async Task CancelOrderAsync(int orderId)
@@ -158,7 +170,7 @@ namespace AirsoftShop.Services
             var order = await GetOrderByIdAsync(orderId);
             if (order != null)
             {
-                order.Status = OrderStatus.Canceled;
+                order.OrderStatus = OrderStatus.Canceled;
                 await UpdateOrderAsync(order);
             }
             else

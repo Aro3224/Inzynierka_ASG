@@ -1,0 +1,153 @@
+﻿@page "/Admin/Orders/{OrderId:int}"
+
+@inject IOrderService OrderService
+@inject NavigationManager NavManager
+
+@attribute [Authorize(Roles = "Admin")]
+
+<PageTitle>Zamówienie @OrderId</PageTitle>
+
+@if (Order is null)
+{
+	<p>Wczytywanie...</p>
+}
+else
+{
+	<div class="d-flex flex-column gap-3">
+		<h3>Szczegóły zamówienia nr. @OrderId</h3>
+
+		<EditForm Model="Order" OnValidSubmit="HandleSubmit" class="edit-form d-flex flex-column gap-3">
+
+			<div class="d-flex flex-row align-items-center gap-2">
+				<h5 class="m-0">Status zamówienia: </h5>
+
+				<div>
+					<InputSelect id="orderStatus" @bind-Value="Order.OrderStatus" class="form-select">
+						@foreach (var orderStatus in Enum.GetValues<OrderStatus>())
+						{
+							<option value="@orderStatus"><EnumDisplayName TEnum="OrderStatus" Value="orderStatus" /></option>
+						}
+					</InputSelect>
+					<ValidationMessage For="@(() => Order.OrderStatus)" />
+				</div>
+			</div>
+
+			<div class="d-flex flex-row align-items-center gap-2">
+				<h5 class="m-0">Wpłata:</h5>
+
+				<div>
+					<InputSelect id="paymentMethod" @bind-Value="Order.PaymentMethod" class="form-select">
+						@foreach (var paymentMethod in Enum.GetValues<PaymentMethod>())
+						{
+							<option value="@paymentMethod"><EnumDisplayName TEnum="PaymentMethod" Value="paymentMethod" /></option>
+						}
+					</InputSelect>
+					<ValidationMessage For="@(() => Order.PaymentMethod)" />
+				</div>
+			</div>
+
+			<div class="d-flex flex-row align-items-center gap-2">
+				<h5 class="m-0">Status wpłaty:</h5>
+
+				<div>
+					<InputSelect id="paymentStatus" @bind-Value="Order.PaymentStatus" class="form-select">
+						@foreach (var paymentStatus in Enum.GetValues<PaymentStatus>())
+						{
+							<option value="@paymentStatus"><EnumDisplayName TEnum="PaymentStatus" Value="paymentStatus" /></option>
+						}
+					</InputSelect>
+					<ValidationMessage For="@(() => Order.PaymentStatus)" />
+				</div>
+			</div>
+
+			<div class="d-flex flex-row align-items-center gap-2">
+				<h4 class="m-0">Kurier:</h4>
+
+				<div>
+					<InputSelect id="courierCompany" @bind-Value="Order.CourierCompany" class="form-select">
+						@foreach (var courierCompany in Enum.GetValues<CourierCompany>())
+						{
+							<option value="@courierCompany"><EnumDisplayName TEnum="CourierCompany" Value="courierCompany" /></option>
+						}
+					</InputSelect>
+					<ValidationMessage For="@(() => Order.CourierCompany)" />
+				</div>
+			</div>
+
+			<div>
+				<h4>Dane zamawiającego</h4>
+
+				<span><strong>@Order.CustomerName @Order.CustomerSurname</strong></span>
+				<br />
+				<span><strong>Adres: </strong>@Order.ShippingAddress</span>
+			</div>
+
+			<div class="d-flex justify-content-between mt-3">
+				<button type="submit" class="btn btn-outline-primary">Zapisz zmiany</button>
+
+				<button type="button" class="btn btn-outline-danger" @onclick="CancelUpdate">Anuluj</button>
+			</div>
+
+		</EditForm>
+
+		<div>
+			<h4>Zamówione produkty</h4>
+
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">Nazwa produktu</th>
+						<th scope="col">Kod produktu</th>
+						<th scope="col">Ilość</th>
+						<th scope="col">Wartość</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Order.OrderItems)
+					{
+						<tr style="vertical-align: middle;">
+							@if (item.ReplicaId is not null)
+							{
+								<td>
+									<a href="/Product/Replica/@item.ReplicaId" class="text-decoration-none">@item.Replica.Name</a>
+								</td>
+								<td>@item.Replica.ProductId</td>
+								<td>@item.Quantity</td>
+								<td>@item.Price PLN</td>
+							}
+							else if (item.PartId is not null)
+							{
+								<td>
+									<a href="/Product/Part/@item.PartId" class="text-decoration-none">@item.Part.Name</a>
+								</td>
+								<td>@item.Part.ProductId</td>
+								<td>@item.Quantity</td>
+								<td>@item.Price PLN</td>
+							}
+							else if (item.AccessoryId is not null)
+							{
+								<td>
+									<a href="/Product/Accessory/@item.AccessoryId" class="text-decoration-none">@item.Accessory.Name</a>
+								</td>
+								<td>@item.Accessory.ProductId</td>
+								<td>@item.Quantity</td>
+								<td>@item.Price PLN</td>
+							}
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+
+		<div class="row">
+			<div class="col-md-8">
+				<button type="button" class="btn btn-danger" @onclick="DeleteOrder">Usuń zamówienie</button>
+			</div>
+			<div class="col-md-4 d-flex justify-content-between">
+				<span>Wartość zamówienia</span>
+
+				<span><strong>@Order.TotalAmount PLN</strong></span>
+			</div>
+		</div>
+	</div>
+}
