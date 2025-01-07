@@ -130,6 +130,7 @@ namespace AirsoftShop.Services
             {
                 _context.Orders.Remove(order);
                 await _context.SaveChangesAsync();
+                Console.WriteLine("Usunięto zamówienie.");
             }
         }
 
@@ -161,6 +162,7 @@ namespace AirsoftShop.Services
         {
             _context.Orders.Update(order);
             await _context.SaveChangesAsync();
+            Console.WriteLine("Zapisano zmiany w bazie");
         }
 
         public async Task CancelOrderAsync(int orderId)

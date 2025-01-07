@@ -6,6 +6,8 @@
 @inject IOrderService OrderService
 @inject NavigationManager Navigation
 
+@attribute [Authorize(Roles = "Admin")]
+
 <PageTitle>Zamówienia</PageTitle>
 
 <h3>Zarządzanie zamówieniami</h3>
