@@ -90,8 +90,9 @@ else
 			<ValidationMessage For="@(() => complaint.CustomerComplaintChoice)" />
 		</div>
 
-		<div>
+		<div class="d-flex flex-row gap-2 align-items-center">
 			<button type="submit" class="btn btn-outline-primary">Złóż reklamację</button>
+			<span class="text-danger">@errorMessage</span>
 		</div>
 
 	</EditForm>

@@ -112,7 +112,7 @@ else
 			</div>
 		</div>
 
-		@if (Order.OrderStatus == OrderStatus.Completed)
+		@if (Order.OrderStatus == OrderStatus.Completed && Order.IsDuringComplaint == false)
 		{
 			<div class="row">
 				<h4>Dodatkowe opcje</h4>

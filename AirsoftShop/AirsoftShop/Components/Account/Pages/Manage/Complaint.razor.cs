@@ -1,5 +1,4 @@
 using AirsoftShop.Data;
-using AirsoftShop.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
@@ -15,6 +14,8 @@ namespace AirsoftShop.Components.Account.Pages.Manage
         private bool IsAuthorized { get; set; }
 
         public required Data.Complaint complaint { get; set; }
+
+        private string? errorMessage;
 
         private List<Data.OrderItem> SelectedItems { get; set; } = new();
 
@@ -86,9 +87,26 @@ namespace AirsoftShop.Components.Account.Pages.Manage
                     Complaint = complaint
                 }).ToList();
 
+                Order.IsDuringComplaint = true;
+
+                await OrderService.UpdateOrderAsync(Order);
+
                 await ComplaintService.CreateComplaintAsync(complaint);
 
+                errorMessage = null;
+
                 NavManager.NavigateTo("/Account/Manage/Complaints", forceLoad: true);
+            }
+            else
+            {
+                if (complaint.ComplaintDescription == "")
+                {
+                    errorMessage = "Podaj opis usterki!";
+                }
+                else
+                {
+                    errorMessage = "Wybierz przedmioty, które chcesz zareklamowaæ!";
+                }
             }
         }
     }
