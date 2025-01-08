@@ -14,7 +14,8 @@
 else
 {
 	<div class="d-flex flex-column gap-3">
-		<h3>Szczegóły zamówienia nr. @OrderId</h3>
+		<GoToPrevPage Page="Admin/Orders" Text="Szczegóły zamówienia" />
+		<h4>Numer zamówienia: @OrderId</h4>
 
 		<EditForm Model="Order" OnValidSubmit="HandleSubmit" class="edit-form d-flex flex-column gap-3">
 
