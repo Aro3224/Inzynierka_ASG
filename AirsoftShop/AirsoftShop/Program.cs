@@ -48,6 +48,7 @@ namespace AirsoftShop
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<IComplaintService, ComplaintService>();
             builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
             builder.Services.AddBlazoredModal();
             builder.Services.AddScoped<SearchState>();

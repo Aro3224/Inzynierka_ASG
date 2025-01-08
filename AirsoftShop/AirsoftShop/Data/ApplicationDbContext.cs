@@ -16,6 +16,8 @@ namespace AirsoftShop.Data
 
         public DbSet<OrderItem> OrderItems { get; set; }
 
+        public DbSet<Complaint> Complaints { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

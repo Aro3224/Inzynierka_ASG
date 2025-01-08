@@ -38,6 +38,9 @@ namespace AirsoftShop.Data
         [Display(Name = "Reklamacja")]
         Complaint,
 
+        [Display(Name = "Zwrot")]
+        Return,
+
         [Display(Name = "Serwis")]
         Service
     }
