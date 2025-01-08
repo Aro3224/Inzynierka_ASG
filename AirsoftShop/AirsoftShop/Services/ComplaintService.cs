@@ -6,36 +6,36 @@ namespace AirsoftShop.Services
 {
     public class ComplaintService : IComplaintService
     {
-        private readonly ApplicationDbContext _dbContext;
+        private readonly ApplicationDbContext _context;
 
         public ComplaintService(ApplicationDbContext context)
         {
-            _dbContext = context;
+            _context = context;
         }
 
         public async Task AddComplaintItemAsync(int complaintId, ComplaintItem item)
         {
-            var complaint = await _dbContext.Complaints.Include(c => c.ComplaintItems)
+            var complaint = await _context.Complaints.Include(c => c.ComplaintItems)
                      .FirstOrDefaultAsync(c => c.Id == complaintId);
 
             if (complaint == null)
                 throw new KeyNotFoundException("Nie znaleziono zgłoszenia.");
 
             complaint.ComplaintItems.Add(item);
-            await _dbContext.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             Console.WriteLine("Dodano przedmiot do zgłoszenia.");
         }
 
         public async Task CreateComplaintAsync(Complaint complaint)
         {
-            _dbContext.Complaints.Add(complaint);
-            await _dbContext.SaveChangesAsync();
+            _context.Complaints.Add(complaint);
+            await _context.SaveChangesAsync();
             Console.WriteLine("Utworzono zgłoszenie.");
         }
 
         public async Task<Complaint> GetComplaintByIdAsync(int complaintId)
         {
-            return await _dbContext.Complaints
+            return await _context.Complaints
                  .Include(c => c.ComplaintItems)
                  .FirstOrDefaultAsync(c => c.Id == complaintId)
            ?? throw new KeyNotFoundException("Nie znaleziono zgłoszenia.");
@@ -43,7 +43,7 @@ namespace AirsoftShop.Services
 
         public async Task<List<Complaint>> GetComplaintsByUserIdAsync(string userId)
         {
-            return await _dbContext.Complaints
+            return await _context.Complaints
                  .Where(c => c.UserId == userId)
                  .Include(c => c.ComplaintItems)
                  .ToListAsync();
@@ -51,7 +51,7 @@ namespace AirsoftShop.Services
 
         public async Task<bool> IsProductReturnableAsync(int orderItemId)
         {
-            var orderItem = await _dbContext.OrderItems
+            var orderItem = await _context.OrderItems
                       .Include(oi => oi.Order)
                       .FirstOrDefaultAsync(oi => oi.Id == orderItemId);
 
@@ -64,13 +64,13 @@ namespace AirsoftShop.Services
 
         public async Task UpdateComplaintStatusAsync(int complaintId, ComplaintStatus newStatus)
         {
-            var complaint = await _dbContext.Complaints.FirstOrDefaultAsync(c => c.Id == complaintId);
+            var complaint = await _context.Complaints.FirstOrDefaultAsync(c => c.Id == complaintId);
 
             if (complaint == null)
                 throw new KeyNotFoundException("Complaint not found.");
 
             complaint.ComplaintStatus = newStatus;
-            await _dbContext.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
     }
 }

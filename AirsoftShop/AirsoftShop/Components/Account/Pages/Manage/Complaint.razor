@@ -4,6 +4,7 @@
 @rendermode InteractiveServer
 
 @inject IOrderService OrderService
+@inject IComplaintService ComplaintService
 @inject UserManager<ApplicationUser> UserManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavManager
@@ -18,7 +19,7 @@
 		Nie masz dostępu do tego zamówienia.
 	</div>
 }
-else if (Order is null)
+else if (Order is null || complaint is null)
 {
 	<p>Wczytywanie...</p>
 }
@@ -63,11 +64,35 @@ else
 					<td>@item.Quantity</td>
 					<td>@item.Price PLN</td>
 					<td>
-						<!--Tutaj checkbox-->
+						<input type="checkbox" @onchange="(e) => ToggleItemSelection(e, item)" />
 					</td>
 				</tr>
 			}
 		</tbody>
 	</table>
 
+	<EditForm Model="@complaint" OnValidSubmit="SubmitComplaint" class="d-flex flex-column gap-3">
+
+		<div class="form-group">
+			<label for="complaintDescription">Opis usterki:</label>
+			<InputTextArea id="complaintDescription" class="form-control" @bind-Value="complaint.ComplaintDescription" />
+			<ValidationMessage For="@(() => complaint.ComplaintDescription)" />
+		</div>
+
+		<div>
+			<label for="complaintChoice">Oczekiwania wobec reklamacji:</label>
+			<InputSelect id="complaintChoice" @bind-Value="complaint.CustomerComplaintChoice" class="form-select">
+				@foreach (var complaintChoice in Enum.GetValues<CustomerComplaintChoice>())
+				{
+					<option value="@complaintChoice"><EnumDisplayName TEnum="CustomerComplaintChoice" Value="complaintChoice" /></option>
+				}
+			</InputSelect>
+			<ValidationMessage For="@(() => complaint.CustomerComplaintChoice)" />
+		</div>
+
+		<div>
+			<button type="submit" class="btn btn-outline-primary">Złóż reklamację</button>
+		</div>
+
+	</EditForm>
 }

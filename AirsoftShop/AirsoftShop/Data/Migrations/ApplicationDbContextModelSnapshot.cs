@@ -85,7 +85,7 @@ namespace AirsoftShop.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Accessories");
+                    b.ToTable("Accessories", (string)null);
                 });
 
             modelBuilder.Entity("AirsoftShop.Data.ApplicationUser", b =>
@@ -270,7 +270,7 @@ namespace AirsoftShop.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Complaints");
+                    b.ToTable("Complaints", (string)null);
                 });
 
             modelBuilder.Entity("AirsoftShop.Data.ComplaintItem", b =>
@@ -297,7 +297,7 @@ namespace AirsoftShop.Migrations
 
                     b.HasIndex("ComplaintId");
 
-                    b.ToTable("ComplaintItem");
+                    b.ToTable("ComplaintItem", (string)null);
                 });
 
             modelBuilder.Entity("AirsoftShop.Data.Order", b =>
@@ -351,7 +351,7 @@ namespace AirsoftShop.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("AirsoftShop.Data.OrderItem", b =>
@@ -390,7 +390,7 @@ namespace AirsoftShop.Migrations
 
                     b.HasIndex("ReplicaId");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderItems", (string)null);
                 });
 
             modelBuilder.Entity("AirsoftShop.Data.Part", b =>
@@ -459,7 +459,7 @@ namespace AirsoftShop.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Parts");
+                    b.ToTable("Parts", (string)null);
                 });
 
             modelBuilder.Entity("AirsoftShop.Data.Replica", b =>
@@ -546,7 +546,7 @@ namespace AirsoftShop.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Replicas");
+                    b.ToTable("Replicas", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
