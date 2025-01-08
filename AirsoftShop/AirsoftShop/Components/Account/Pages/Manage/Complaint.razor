@@ -1,7 +1,73 @@
 ﻿@page "/Account/Manage/Complaint/{OrderId:int}"
 @using AirsoftShop.Components.Custom_Components
+@using Microsoft.AspNetCore.Identity
 @rendermode InteractiveServer
+
+@inject IOrderService OrderService
+@inject UserManager<ApplicationUser> UserManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavManager
 
 <PageTitle>Nowa reklamacja</PageTitle>
 
 <GoToPrevPage Page="Account/Manage/Orders" Text="Reklamacja zamówienia" Id="@OrderId.ToString()" />
+
+@if (!IsAuthorized)
+{
+	<div class="alert alert-danger">
+		Nie masz dostępu do tego zamówienia.
+	</div>
+}
+else if (Order is null)
+{
+	<p>Wczytywanie...</p>
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th scope="col">Nazwa produktu</th>
+				<th scope="col">Gwarancja (miesiące)</th>
+				<th scope="col">Zamówiona ilość</th>
+				<th scope="col">Wartość</th>
+				<th scope="col">Reklamacja</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var item in Order.OrderItems)
+			{
+				<tr style="vertical-align: middle;">
+					@if (item.ReplicaId is not null)
+					{
+						<td>
+							<a href="/Product/Replica/@item.ReplicaId" class="text-decoration-none">@item.Replica.Name</a>
+						</td>
+						<td>@item.Replica.WarrantyPeriodMonths</td>
+					}
+					else if (item.PartId is not null)
+					{
+						<td>
+							<a href="/Product/Part/@item.PartId" class="text-decoration-none">@item.Part.Name</a>
+						</td>
+						<td>@item.Part.WarrantyPeriodMonths</td>
+					}
+					else if (item.AccessoryId is not null)
+					{
+						<td>
+							<a href="/Product/Accessory/@item.AccessoryId" class="text-decoration-none">@item.Accessory.Name</a>
+						</td>
+						<td>@item.Accessory.WarrantyPeriodMonths</td>
+					}
+
+					<td>@item.Quantity</td>
+					<td>@item.Price PLN</td>
+					<td>
+						<!--Tutaj checkbox-->
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+
+}
