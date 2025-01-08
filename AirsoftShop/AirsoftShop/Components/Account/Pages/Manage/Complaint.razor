@@ -1,0 +1,7 @@
+﻿@page "/Account/Manage/Complaint/{OrderId:int}"
+@using AirsoftShop.Components.Custom_Components
+@rendermode InteractiveServer
+
+<PageTitle>Nowa reklamacja</PageTitle>
+
+<GoToPrevPage Page="Account/Manage/Orders" Text="Reklamacja zamówienia" Id="@OrderId.ToString()" />

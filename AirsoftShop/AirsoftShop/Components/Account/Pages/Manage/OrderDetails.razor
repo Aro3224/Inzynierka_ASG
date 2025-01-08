@@ -7,6 +7,7 @@
 @inject IProductService ProductService
 @inject UserManager<ApplicationUser> UserManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavManager
 
 <PageTitle>Szczegóły zamówienia @OrderId</PageTitle>
 
@@ -121,7 +122,7 @@ else
 						{
 							<button type="button" class="btn btn-outline-secondary">Zwrot towaru</button>
 						}
-						<button type="button" class="btn btn-outline-primary">Reklamacja</button>
+						<button type="button" class="btn btn-outline-primary" @onclick="@(() => NavManager.NavigateTo($"/Account/Manage/Complaint/{Order.Id}"))">Reklamacja</button>
 					</div>
 				</div>
 			</div>
