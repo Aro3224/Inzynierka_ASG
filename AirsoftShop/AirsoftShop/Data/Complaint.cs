@@ -7,8 +7,10 @@ namespace AirsoftShop.Data
         public int Id { get; set; }
         public required string UserId { get; set; }
         public int OrderId { get; set; }
+        public required string ComplaintDescription { get; set; }
         public ComplaintType ComplaintType { get; set; }
         public ComplaintStatus ComplaintStatus { get; set; }
+        public CustomerComplaintChoice CustomerComplaintChoice { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; }
 
@@ -43,5 +45,17 @@ namespace AirsoftShop.Data
 
         [Display(Name = "Serwis")]
         Service
+    }
+
+    public enum CustomerComplaintChoice
+    {
+        [Display(Name = "Zwrot pieniędzy")]
+        MoneyReturn,
+
+        [Display(Name = "Naprawa produktu")]
+        ProductFix,
+
+        [Display(Name = "Wymiana produktu na nowy")]
+        ProductReplacement
     }
 }
