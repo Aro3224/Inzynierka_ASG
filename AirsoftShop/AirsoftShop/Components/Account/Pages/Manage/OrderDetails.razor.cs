@@ -57,5 +57,10 @@ namespace AirsoftShop.Components.Account.Pages.Manage
 
             StateHasChanged();
         }
+
+        private bool IsReturnAllowed()
+        {
+            return (DateTime.Now - Order.OrderDate).TotalDays <= 14;
+        }
     }
 }
