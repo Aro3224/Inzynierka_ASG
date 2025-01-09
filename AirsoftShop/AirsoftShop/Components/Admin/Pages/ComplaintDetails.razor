@@ -1,29 +1,20 @@
-﻿@page "/Account/Manage/Complaints/{complaintId:int}"
-@using AirsoftShop.Components.Custom_Components
-@using Microsoft.AspNetCore.Identity
-@rendermode InteractiveServer
+﻿@page "/Admin/Complaints/{ComplaintId:int}"
 
-@inject AuthenticationStateProvider AuthenticationStateProvider
-@inject UserManager<ApplicationUser> UserManager
 @inject IProductService ProductService
 @inject IComplaintService ComplaintService
 
-<PageTitle>Szczegóły zgłoszenia @complaintId</PageTitle>
+@attribute [Authorize(Roles = "Admin")]
 
-@if (!IsAuthorized)
-{
-	<div class="alert alert-danger">
-		Nie masz dostępu do tego zamówienia.
-	</div>
-}
-else if (Complaint is null)
+<PageTitle>Szczegóły zgłoszenia @ComplaintId</PageTitle>
+
+@if (Complaint is null)
 {
 	<p>Wczytywanie...</p>
 }
 else
 {
 	<div class="d-flex flex-column gap-3">
-		<GoToPrevPage Page="Account/Manage/Complaints" Text="Szczegóły zgłoszenia" />
+		<GoToPrevPage Page="Admin/Complaints" Text="Szczegóły zgłoszenia" />
 		<h5>Numer zgłoszenia: @Complaint.Id</h5>
 		<div>
 			<h5>Status zgłoszenia: <EnumDisplayName TEnum="ComplaintStatus" Value="Complaint.ComplaintStatus" /></h5>
@@ -46,7 +37,7 @@ else
 
 		<div>
 			<h4>Opis usterki:</h4>
-			<span>@Complaint.ComplaintDescription</span>		
+			<span>@Complaint.ComplaintDescription</span>
 		</div>
 
 		<div>

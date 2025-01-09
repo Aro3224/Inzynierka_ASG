@@ -41,6 +41,13 @@ namespace AirsoftShop.Services
            ?? throw new KeyNotFoundException("Nie znaleziono zgłoszenia.");
         }
 
+        public async Task<List<Complaint>> GetComplaintsAsync()
+        {
+            return await _context.Complaints
+                 .Include(c => c.ComplaintItems)
+                 .ToListAsync();
+        }
+
         public async Task<List<Complaint>> GetComplaintsByUserIdAsync(string userId)
         {
             return await _context.Complaints

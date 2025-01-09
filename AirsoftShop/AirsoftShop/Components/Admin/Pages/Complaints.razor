@@ -1,5 +1,49 @@
 ﻿@page "/Admin/Complaints"
 
+@inject IComplaintService ComplaintService
+@inject NavigationManager NavigationManager
+
+@attribute [Authorize(Roles = "Admin")]
+
 <PageTitle>Reklamacje/Serwis</PageTitle>
 
-<h2>WIP: Reklamacje i serwis</h2>
+<h2>Zgłoszenia użytkowników</h2>
+
+@if (ComplaintList is null)
+{
+	<p>Wczytywanie...</p>
+}
+else if (ComplaintList.Count == 0)
+{
+	<p>Nie ma żadnych zgłoszeń</p>
+}
+else
+{
+	<div class="container-fluid">
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col"><strong>ID zgłoszenia</strong></th>
+					<th scope="col"><strong>Typ zgłoszenia</strong></th>
+					<th scope="col"><strong>Status zgłoszenia</strong></th>
+					<th scope="col"><strong>Data utworzenia</strong></th>
+					<th scope="col"><strong>Szczegóły</strong></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var complaint in ComplaintList)
+				{
+					<tr style="vertical-align: middle;">
+						<td>@complaint.Id</td>
+						<td><EnumDisplayName TEnum="ComplaintType" Value="complaint.ComplaintType" /></td>
+						<td><EnumDisplayName TEnum="ComplaintStatus" Value="complaint.ComplaintStatus" /></td>
+						<td>@complaint.CreatedAt</td>
+						<td>
+							<button type="button" class="btn btn-outline-primary" @onclick='@(() => NavigationManager.NavigateTo($"/Admin/Complaints/{complaint.Id}"))'>Zobacz</button>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+}

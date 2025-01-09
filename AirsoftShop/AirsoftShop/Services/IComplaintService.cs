@@ -6,6 +6,7 @@ namespace AirsoftShop.Services
     {
         Task CreateComplaintAsync(Complaint complaint);
         Task AddComplaintItemAsync(int complaintId, ComplaintItem item);
+        Task<List<Complaint>> GetComplaintsAsync();
         Task<List<Complaint>> GetComplaintsByUserIdAsync(string userId);
         Task<Complaint> GetComplaintByIdAsync(int complaintId);
         Task UpdateComplaintStatusAsync(int complaintId, ComplaintStatus newStatus);
