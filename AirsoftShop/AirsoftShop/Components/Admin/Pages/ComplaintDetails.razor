@@ -2,6 +2,8 @@
 
 @inject IProductService ProductService
 @inject IComplaintService ComplaintService
+@inject IOrderService OrderService
+@inject NavigationManager NavManager
 
 @attribute [Authorize(Roles = "Admin")]
 
@@ -16,29 +18,61 @@ else
 	<div class="d-flex flex-column gap-3">
 		<GoToPrevPage Page="Admin/Complaints" Text="Szczegóły zgłoszenia" />
 		<h5>Numer zgłoszenia: @Complaint.Id</h5>
-		<div>
-			<h5>Status zgłoszenia: <EnumDisplayName TEnum="ComplaintStatus" Value="Complaint.ComplaintStatus" /></h5>
-		</div>
 
-		@if (Complaint.UpdatedAt is not null)
-		{
-			<div>
-				<h5>Aktualizacja: @Complaint.UpdatedAt</h5>
+		<EditForm Model="Complaint" OnValidSubmit="HandleSubmit" class="edit-form d-flex flex-column gap-3">
+
+			<div class="d-flex flex-row align-items-center gap-2">
+				<h5>Status zgłoszenia: </h5>
+
+				<div>
+					<InputSelect id="complaintStatus" @bind-Value="Complaint.ComplaintStatus" class="form-select">
+						@foreach (var complaintStatus in Enum.GetValues<ComplaintStatus>())
+						{
+							<option value="@complaintStatus"><EnumDisplayName TEnum="ComplaintStatus" Value="complaintStatus" /></option>
+						}
+					</InputSelect>
+					<ValidationMessage For="@(() => Complaint.ComplaintStatus)" />
+				</div>
 			</div>
-		}
 
-		<div>
-			<h5>Typ zgłoszenia: <EnumDisplayName TEnum="ComplaintType" Value="Complaint.ComplaintType" /></h5>
-		</div>
+			@if (Complaint.UpdatedAt is not null)
+			{
+				<div>
+					<h5>Aktualizacja: @Complaint.UpdatedAt</h5>
+				</div>
+			}
 
-		<div>
-			<h5>Wybrany sposób rozwiązania: <EnumDisplayName TEnum="CustomerComplaintChoice" Value="Complaint.CustomerComplaintChoice" /></h5>
-		</div>
+			<div>
+				<h5>Typ zgłoszenia: <EnumDisplayName TEnum="ComplaintType" Value="Complaint.ComplaintType" /></h5>
+			</div>
 
-		<div>
-			<h4>Opis usterki:</h4>
-			<span>@Complaint.ComplaintDescription</span>
-		</div>
+			<div>
+				<h5>Wybrany sposób rozwiązania: <EnumDisplayName TEnum="CustomerComplaintChoice" Value="Complaint.CustomerComplaintChoice" /></h5>
+			</div>
+
+			<div>
+				<h4>Opis usterki:</h4>
+				<span>@Complaint.ComplaintDescription</span>
+			</div>
+
+			<div class="form-group">
+				<label for="complaintDescription">Odpowiedź:
+					@if (errorMessage is not null)
+					{
+						<span class="text-danger">@errorMessage</span>
+					}
+				</label>
+				<InputTextArea id="complaintDescription" class="form-control" @bind-Value="Complaint.ComplaintAnswer" />
+				<ValidationMessage For="@(() => Complaint.ComplaintAnswer)" />
+			</div>
+
+			<div class="d-flex justify-content-between mt-3">
+				<button type="submit" class="btn btn-outline-primary">Zapisz zmiany</button>
+
+				<button type="button" class="btn btn-outline-danger" @onclick="CancelUpdate">Anuluj</button>
+			</div>
+
+		</EditForm>
 
 		<div>
 			<h4>Zareklamowane produkty</h4>
@@ -81,6 +115,10 @@ else
 					}
 				</tbody>
 			</table>
+		</div>
+
+		<div class="col-md-8">
+			<button type="button" class="btn btn-danger" @onclick="DeleteOrder">Usuń zgłoszenie</button>
 		</div>
 	</div>
 }

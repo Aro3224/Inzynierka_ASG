@@ -51,7 +51,8 @@ namespace AirsoftShop.Components.Account.Pages.Manage
             complaint = new Data.Complaint
             {
                 UserId = currentUser.Id,
-                ComplaintDescription = ""
+                ComplaintDescription = "",
+                ComplaintAnswer = ""
             };
         }
 

@@ -1,5 +1,4 @@
 ﻿using AirsoftShop.Data;
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace AirsoftShop.Services
@@ -69,14 +68,24 @@ namespace AirsoftShop.Services
             return daysSinceOrder <= 14;
         }
 
-        public async Task UpdateComplaintStatusAsync(int complaintId, ComplaintStatus newStatus)
+        public async Task RemoveComplaintAsync(int complaintId)
         {
-            var complaint = await _context.Complaints.FirstOrDefaultAsync(c => c.Id == complaintId);
+            var complaint = await _context.Complaints.FindAsync(complaintId);
+            if (complaint != null)
+            {
+                _context.Complaints.Remove(complaint);
+                await _context.SaveChangesAsync();
+                Console.WriteLine("Usunięto zgłoszenie.");
+            }
+        }
 
-            if (complaint == null)
-                throw new KeyNotFoundException("Complaint not found.");
+        public async Task UpdateComplaintAsync(Complaint complaint)
+        {
+            complaint.UpdatedAt = DateTime.Now;
 
-            complaint.ComplaintStatus = newStatus;
+            Console.WriteLine("Zapisano zmiany w bazie");
+
+             _context.Complaints.Update(complaint);
             await _context.SaveChangesAsync();
         }
     }

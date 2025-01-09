@@ -36,6 +36,14 @@ else
 			</div>
 		}
 
+		@if (Complaint.ComplaintAnswer != "")
+		{
+			<div>
+				<h4>Odpowiedź:</h4>
+				<span>@Complaint.ComplaintAnswer</span>
+			</div>
+		}
+
 		<div>
 			<h5>Typ zgłoszenia: <EnumDisplayName TEnum="ComplaintType" Value="Complaint.ComplaintType" /></h5>
 		</div>

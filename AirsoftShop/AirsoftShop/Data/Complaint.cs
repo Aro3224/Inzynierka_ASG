@@ -8,6 +8,7 @@ namespace AirsoftShop.Data
         public required string UserId { get; set; }
         public int OrderId { get; set; }
         public required string ComplaintDescription { get; set; }
+        public required string ComplaintAnswer { get; set; }
         public ComplaintType ComplaintType { get; set; }
         public ComplaintStatus ComplaintStatus { get; set; }
         public CustomerComplaintChoice CustomerComplaintChoice { get; set; }
