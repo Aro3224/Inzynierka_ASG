@@ -1,17 +1,18 @@
-using AirsoftShop.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace AirsoftShop.Components.Account.Pages.Manage
 {
-    public partial class OrderDetails
+    public partial class ComplaintDetails
     {
         [Parameter]
-        public required int OrderId { get; set; }
+        public int complaintId { get; set; }
 
-        public required Order Order { get; set; }
+        public required Data.Complaint Complaint { get; set; }
 
         private bool IsAuthorized { get; set; }
+
+        private Dictionary<int, object> ProductDetails { get; set; } = new();
 
         protected override async Task OnInitializedAsync()
         {
@@ -31,36 +32,25 @@ namespace AirsoftShop.Components.Account.Pages.Manage
                 return;
             }
 
-            Order = await OrderService.GetOrderByIdAsync(OrderId);
-            if (Order is not null && Order.UserId == currentUser.Id)
+            Complaint = await ComplaintService.GetComplaintByIdAsync(complaintId);
+            if (Complaint is not null && Complaint.UserId == currentUser.Id)
             {
                 IsAuthorized = true;
             }
             else
             {
                 IsAuthorized = false;
-                Order = null;
+                Complaint = null;
             }
-        }
 
-        private async Task PayForOrderAsync()
-        {
-            if (!IsAuthorized || Order is null) return;
-
-            var paidOrder = Order;
-
-            paidOrder.PaymentStatus = PaymentStatus.Paid;
-
-            await OrderService.UpdateOrderAsync(paidOrder);
-
-            Console.WriteLine("User has paid for order.");
-
-            StateHasChanged();
-        }
-
-        private bool IsReturnAllowed()
-        {
-            return (DateTime.Now - Order.OrderDate).TotalDays <= 14;
+            foreach (var item in Complaint.ComplaintItems)
+            {
+                var productDetails = await ProductService.GetProductDetailsAsync(item.ProductId, item.ProductType);
+                if (productDetails is not null)
+                {
+                    ProductDetails[item.ProductId] = productDetails;
+                }
+            }
         }
     }
 }

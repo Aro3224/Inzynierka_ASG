@@ -1,9 +1,50 @@
 ﻿@page "/Account/Manage/Complaints"
+@using AirsoftShop.Components.Custom_Components
+@rendermode InteractiveServer
 
-<h3>Reklamacje usera</h3>
+@inject IComplaintService ComplaintService
+@inject IUserService UserService
+@inject NavigationManager NavigationManager
+
+<h3>Twoje reklamacje</h3>
 
 <PageTitle>Reklamacje</PageTitle>
 
-@code {
-
+@if (ComplaintList is null)
+{
+	<p>Wczytywanie</p>
+}
+else if (ComplaintList.Count == 0)
+{
+	<p>Nie masz żadnych zgłoszeń</p>
+}
+else
+{
+	<div class="container-fluid">
+		<table class="table">
+			<thead>
+				<tr>
+					<th scope="col"><strong>ID zgłoszenia</strong></th>
+					<th scope="col"><strong>Typ zgłoszenia</strong></th>
+					<th scope="col"><strong>Status zgłoszenia</strong></th>
+					<th scope="col"><strong>Data utworzenia</strong></th>
+					<th scope="col"><strong>Szczegóły</strong></th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var complaint in ComplaintList)
+				{
+					<tr style="vertical-align: middle;">
+						<td>@complaint.Id</td>
+						<td><EnumDisplayName TEnum="ComplaintType" Value="complaint.ComplaintType" /></td>
+						<td><EnumDisplayName TEnum="ComplaintStatus" Value="complaint.ComplaintStatus" /></td>
+						<td>@complaint.CreatedAt</td>
+						<td>
+							<button type="button" class="btn btn-outline-primary" @onclick='@(() => NavigationManager.NavigateTo($"/Account/Manage/Complaints/{complaint.Id}"))'>Zobacz</button>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
 }

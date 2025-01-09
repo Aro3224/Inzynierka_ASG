@@ -7,6 +7,7 @@
 @inject IProductService ProductService
 @inject UserManager<ApplicationUser> UserManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavManager
 
 <PageTitle>Szczegóły zamówienia @OrderId</PageTitle>
 
@@ -23,8 +24,8 @@ else if (Order is null)
 else
 {
 	<div class="d-flex flex-column gap-3">
-		<h3>Szczegóły zamówienia nr. @OrderId</h3>
-
+		<GoToPrevPage Page="Account/Manage/Orders" Text="Szczegóły zamówienia" />
+		<h5>Numer zamówienia: @Order.Id</h5>
 		<div>
 			<h5>Status zamówienia: <EnumDisplayName TEnum="OrderStatus" Value="Order.OrderStatus" /></h5>
 		</div>
@@ -38,7 +39,7 @@ else
 				{
 					<button type="button" class="btn btn-outline-primary" @onclick="PayForOrderAsync">Zapłać</button>
 				}
-			</div>		
+			</div>
 		</div>
 
 		<div>
@@ -110,5 +111,21 @@ else
 				<span><strong>@Order.TotalAmount PLN</strong></span>
 			</div>
 		</div>
+
+		@if (Order.OrderStatus == OrderStatus.Completed && Order.IsDuringComplaint == false)
+		{
+			<div class="row">
+				<h4>Dodatkowe opcje</h4>
+				<div class="col-md-3">
+					<div class="d-flex flex-column gap-2">
+						@if (IsReturnAllowed())
+						{
+							<button type="button" class="btn btn-outline-secondary" @onclick="@(() => NavManager.NavigateTo($"/Account/Manage/Return/{Order.Id}"))">Zwrot towaru</button>
+						}
+						<button type="button" class="btn btn-outline-primary" @onclick="@(() => NavManager.NavigateTo($"/Account/Manage/Complaint/{Order.Id}"))">Reklamacja</button>
+					</div>
+				</div>
+			</div>
+		}
 	</div>
 }

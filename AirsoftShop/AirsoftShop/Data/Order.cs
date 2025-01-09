@@ -43,6 +43,9 @@ namespace AirsoftShop.Data
         public string? CustomerComment { get; set; }
 
         [Required]
+        public bool IsDuringComplaint { get; set; } = false;
+
+        [Required]
         public List<OrderItem> OrderItems { get; set; } = [];
     }
 

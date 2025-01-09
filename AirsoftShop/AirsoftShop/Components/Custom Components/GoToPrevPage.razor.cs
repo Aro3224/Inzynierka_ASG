@@ -20,15 +20,15 @@ namespace AirsoftShop.Components.Custom_Components
         {
             if (Id == null && ProductType == "")
             {
-                NavManager.NavigateTo($"/{Page}");
+                NavManager.NavigateTo($"/{Page}", forceLoad: true);
             }
             else if (ProductType == "")
             {
-                NavManager.NavigateTo($"/{Page}/{Id}");
+                NavManager.NavigateTo($"/{Page}/{Id}", forceLoad: true);
             }
             else if (ProductType != "" && Id != null)
             {
-                NavManager.NavigateTo($"/{Page}/{ProductType}/{Id}");
+                NavManager.NavigateTo($"/{Page}/{ProductType}/{Id}", forceLoad: true);
             }
         }
     }

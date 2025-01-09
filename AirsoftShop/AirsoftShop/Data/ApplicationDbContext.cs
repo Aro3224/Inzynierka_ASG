@@ -12,9 +12,11 @@ namespace AirsoftShop.Data
 
         public DbSet<Accessory> Accessories { get; set; }
 
-         public DbSet<Order> Orders { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         public DbSet<OrderItem> OrderItems { get; set; }
+
+        public DbSet<Complaint> Complaints { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,7 +30,7 @@ namespace AirsoftShop.Data
 
             modelBuilder.Entity<OrderItem>()
                 .HasOne(o => o.Part)
-                .WithMany() 
+                .WithMany()
                 .HasForeignKey(o => o.PartId)
                 .OnDelete(DeleteBehavior.SetNull);
 
@@ -37,6 +39,12 @@ namespace AirsoftShop.Data
                 .WithMany()
                 .HasForeignKey(o => o.AccessoryId)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<Complaint>()
+                .HasMany(c => c.ComplaintItems)
+                .WithOne(ci => ci.Complaint)
+                .HasForeignKey(ci => ci.ComplaintId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             var password = new PasswordHasher<ApplicationUser>();
             var hashed = password.HashPassword(new ApplicationUser(), "Admin1!");
