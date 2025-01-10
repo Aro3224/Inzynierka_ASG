@@ -1,12 +1,90 @@
 ﻿@page "/Account/Manage/Request/{RequestId:int}"
 @using AirsoftShop.Components.Custom_Components
+@using Microsoft.AspNetCore.Identity
 @rendermode InteractiveServer
+
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject UserManager<ApplicationUser> UserManager
+@inject IPostWarrantyService WarrantyService
 
 <PageTitle>Szczegóły zgłoszenia</PageTitle>
 
-<GoToPrevPage Page="Account/Manage/Repairs" Text="Szczegóły zgłoszenia" />
+@if (!IsAuthorized)
+{
+	<div class="alert alert-danger">
+		Nie masz dostępu do tego zamówienia.
+	</div>
+}
+else if (PostWarranty is null)
+{
+	<p>Wczytywanie...</p>
+}
+else
+{
+	<div class="d-flex flex-column gap-3">
+		<GoToPrevPage Page="Account/Manage/Repairs" Text="Szczegóły zgłoszenia" />
+		<h5>Numer zgłoszenia: @PostWarranty.Id</h5>
+		<div>
+			<h5>Status zgłoszenia: <EnumDisplayName TEnum="ServiceStatus" Value="PostWarranty.ServiceStatus" /></h5>
+		</div>
 
-@code {
-	[Parameter]
-	public int RequestId { get; set; }
+		@if (PostWarranty.UpdatedAt is not null)
+		{
+			<div>
+				<h5>Aktualizacja: @PostWarranty.UpdatedAt</h5>
+			</div>
+		}
+
+		@if (PostWarranty.ServiceAnswer is not null)
+		{
+			<div>
+				<h5>Odpowiedź:</h5>
+				<span>@PostWarranty.ServiceAnswer</span>
+			</div>
+		}
+
+		@if (PostWarranty.EstimatedCost > 0)
+		{
+			<div>
+				<h5>Szacowany koszt:</h5>
+				<span>@PostWarranty.EstimatedCost zł</span>
+			</div>
+		}
+
+		@if (PostWarranty.ServiceAnswerAfterRepair is not null)
+		{
+			<div>
+				<h5>Odpowiedź po serwisie:</h5>
+				<span>@PostWarranty.ServiceAnswerAfterRepair</span>
+			</div>
+		}
+
+		@if (PostWarranty.EstimatedCost > 0)
+		{
+			<div>
+				<h5>Do zapłaty:
+					@if (PostWarranty.ServiceStatus == ServiceStatus.WaitingForPayment)
+					{
+						<button type="button" class="btn btn-outline-primary" @onclick="PayForRepair">Zapłać</button>
+					}
+				</h5>
+				<span>@PostWarranty.Cost zł</span>
+			</div>
+		}
+
+		<div>
+			<h5>Dane repliki:</h5>
+			<span>@PostWarranty.WeaponName</span>
+		</div>
+
+		<div>
+			<h5>ID repliki:</h5>
+			<span>@PostWarranty.WeaponId</span>
+		</div>
+
+		<div>
+			<h5>Opis usterki:</h5>
+			<span>@PostWarranty.DamageDescription</span>
+		</div>
+	</div>
 }

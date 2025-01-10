@@ -25,17 +25,20 @@ namespace AirsoftShop.Data
         [Display(Name = "Utworzono")]
         Created,
 
-        [Display(Name = "Przyjęto na serwis")]
-        Confirmed,
-
         [Display(Name = "Anulowano")]
         Canceled,
+
+        [Display(Name = "Zaakceptowano")]
+        Accepted,
+
+        [Display(Name = "Przyjęto na serwis")]
+        Confirmed,
 
         [Display(Name = "Oczekuje na wpłatę")]
         WaitingForPayment,
 
-        [Display(Name = "Naprawiono")]
-        Repaired,
+        [Display(Name = "Zapłacono")]
+        Payed,
 
         [Display(Name = "Odesłano")]
         Returned
