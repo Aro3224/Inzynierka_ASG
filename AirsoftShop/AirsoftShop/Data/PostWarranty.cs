@@ -31,6 +31,9 @@ namespace AirsoftShop.Data
         [Display(Name = "Anulowano")]
         Canceled,
 
+        [Display(Name = "Oczekuje na wpłatę")]
+        WaitingForPayment,
+
         [Display(Name = "Naprawiono")]
         Repaired,
 

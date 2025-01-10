@@ -1,0 +1,10 @@
+﻿@page "/Admin/Request/{RequestId:int}"
+
+<PageTitle>Szczegóły zgłoszenia</PageTitle>
+
+<GoToPrevPage Page="Admin/ServiceRequests" Text="Szczegóły zgłoszenia" />
+
+@code {
+	[Parameter]
+	public int RequestId { get; set; }
+}

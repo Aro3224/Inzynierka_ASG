@@ -1,0 +1,12 @@
+﻿@page "/Account/Manage/Request/{RequestId:int}"
+@using AirsoftShop.Components.Custom_Components
+@rendermode InteractiveServer
+
+<PageTitle>Szczegóły zgłoszenia</PageTitle>
+
+<GoToPrevPage Page="Account/Manage/Repairs" Text="Szczegóły zgłoszenia" />
+
+@code {
+	[Parameter]
+	public int RequestId { get; set; }
+}

@@ -41,7 +41,7 @@ else
 						<td><EnumDisplayName TEnum="ServiceStatus" Value="request.ServiceStatus" /></td>
 						<td>@request.CreatedAt</td>
 						<td>
-							<button type="button" class="btn btn-outline-primary" @onclick='@(() => NavigationManager.NavigateTo($"/Admin/Request/{request.Id}"))'>Zobacz</button>
+							<button type="button" class="btn btn-outline-primary" @onclick='@(() => NavigationManager.NavigateTo($"/Account/Manage/Request/{request.Id}"))'>Zobacz</button>
 						</td>
 					</tr>
 				}
