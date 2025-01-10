@@ -57,10 +57,6 @@ else
 
 			<div class="form-group">
 				<label for="complaintDescription">Odpowiedź:
-					@if (errorMessage is not null)
-					{
-						<span class="text-danger">@errorMessage</span>
-					}
 				</label>
 				<InputTextArea id="complaintDescription" class="form-control" @bind-Value="Complaint.ComplaintAnswer" />
 				<ValidationMessage For="@(() => Complaint.ComplaintAnswer)" />

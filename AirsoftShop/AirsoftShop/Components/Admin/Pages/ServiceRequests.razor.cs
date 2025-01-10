@@ -1,16 +1,16 @@
-using AirsoftShop.Services;
+using AirsoftShop.Data;
 
 namespace AirsoftShop.Components.Admin.Pages
 {
-    public partial class Complaints
+    public partial class ServiceRequests
     {
-        public required List<Data.Complaint> ComplaintList { get; set; }
+        public required List<PostWarranty> RequestsList { get; set; }
 
         private Dictionary<string, string> UserEmails = new();
 
         protected override async Task OnInitializedAsync()
         {
-            ComplaintList = await ComplaintService.GetComplaintsAsync();
+            RequestsList = await PostWarrantyService.GetPostWarrantiesAsync();
 
             var allUsers = await UserService.GetAllUsersAsync();
 

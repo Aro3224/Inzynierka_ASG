@@ -1,0 +1,46 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AirsoftShop.Data
+{
+    public class PostWarranty
+    {
+        public int Id { get; set; }
+        public required string UserId { get; set; }
+        [Required]
+        public required string WeaponName { get; set; }
+        public string? WeaponId { get; set; }
+        [Required]
+        public required string DamageDescription { get; set; }
+        public string? ServiceAnswer { get; set; }
+        public string? ServiceAnswerAfterRepair { get; set; }
+        public decimal EstimatedCost { get; set; }
+        public decimal Cost { get; set; }
+        public ServiceStatus ServiceStatus { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime? UpdatedAt { get; set; }
+    }
+
+    public enum ServiceStatus
+    {
+        [Display(Name = "Utworzono")]
+        Created,
+
+        [Display(Name = "Anulowano")]
+        Canceled,
+
+        [Display(Name = "Zaakceptowano")]
+        Accepted,
+
+        [Display(Name = "Przyjęto na serwis")]
+        Confirmed,
+
+        [Display(Name = "Oczekuje na wpłatę")]
+        WaitingForPayment,
+
+        [Display(Name = "Zapłacono")]
+        Payed,
+
+        [Display(Name = "Odesłano")]
+        Returned
+    }
+}

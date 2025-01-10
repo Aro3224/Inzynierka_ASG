@@ -4,6 +4,7 @@ using AirsoftShop.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AirsoftShop.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250110134709_WeaponIdForWarranty")]
+    partial class WeaponIdForWarranty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,7 +88,7 @@ namespace AirsoftShop.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Accessories", (string)null);
+                    b.ToTable("Accessories");
                 });
 
             modelBuilder.Entity("AirsoftShop.Data.ApplicationUser", b =>
@@ -274,7 +277,7 @@ namespace AirsoftShop.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Complaints", (string)null);
+                    b.ToTable("Complaints");
                 });
 
             modelBuilder.Entity("AirsoftShop.Data.ComplaintItem", b =>
@@ -301,7 +304,7 @@ namespace AirsoftShop.Migrations
 
                     b.HasIndex("ComplaintId");
 
-                    b.ToTable("ComplaintItem", (string)null);
+                    b.ToTable("ComplaintItem");
                 });
 
             modelBuilder.Entity("AirsoftShop.Data.Order", b =>
@@ -358,7 +361,7 @@ namespace AirsoftShop.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("AirsoftShop.Data.OrderItem", b =>
@@ -397,7 +400,7 @@ namespace AirsoftShop.Migrations
 
                     b.HasIndex("ReplicaId");
 
-                    b.ToTable("OrderItems", (string)null);
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("AirsoftShop.Data.Part", b =>
@@ -466,7 +469,7 @@ namespace AirsoftShop.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Parts", (string)null);
+                    b.ToTable("Parts");
                 });
 
             modelBuilder.Entity("AirsoftShop.Data.PostWarranty", b =>
@@ -515,7 +518,7 @@ namespace AirsoftShop.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PostWarranties", (string)null);
+                    b.ToTable("PostWarranties");
                 });
 
             modelBuilder.Entity("AirsoftShop.Data.Replica", b =>
@@ -602,7 +605,7 @@ namespace AirsoftShop.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Replicas", (string)null);
+                    b.ToTable("Replicas");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

@@ -16,8 +16,6 @@ namespace AirsoftShop.Components.Admin.Pages
 
         private Dictionary<int, object> ProductDetails { get; set; } = new();
 
-        private string? errorMessage;
-
         protected override async Task OnInitializedAsync()
         {
             Complaint = await ComplaintService.GetComplaintByIdAsync(ComplaintId);
@@ -36,26 +34,18 @@ namespace AirsoftShop.Components.Admin.Pages
 
         private async Task HandleSubmit()
         {
-            if (Complaint.ComplaintAnswer == "")
+            try
             {
-                errorMessage = "Wpisz odpowiedü!";
+                await ComplaintService.UpdateComplaintAsync(Complaint);
+                Order.IsDuringComplaint = false;
+                await OrderService.UpdateOrderAsync(Order);
+                Console.WriteLine("Zg≥oszenie zosta≥o zaktualizowane.");
+                NavManager.NavigateTo("/Admin/Complaints", forceLoad: true);
             }
-            else
+            catch (Exception ex)
             {
-                try
-                {
-                    await ComplaintService.UpdateComplaintAsync(Complaint);
-                    Order.IsDuringComplaint = false;
-                    await OrderService.UpdateOrderAsync(Order);
-                    Console.WriteLine("Zg≥oszenie zosta≥o zaktualizowane.");
-                    errorMessage = null;
-                    NavManager.NavigateTo("/Admin/Complaints", forceLoad: true);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Wystπpi≥ b≥πd: {ex.Message}");
-                }
-            }          
+                Console.WriteLine($"Wystπpi≥ b≥πd: {ex.Message}");
+            }
         }
 
         private void CancelUpdate()

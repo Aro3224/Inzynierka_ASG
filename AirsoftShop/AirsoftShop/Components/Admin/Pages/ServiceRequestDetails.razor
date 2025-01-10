@@ -1,0 +1,107 @@
+﻿@page "/Admin/Request/{RequestId:int}"
+
+@inject IPostWarrantyService WarrantyService
+@inject NavigationManager NavManager
+
+@attribute [Authorize(Roles = "Admin")]
+
+<PageTitle>Szczegóły zgłoszenia</PageTitle>
+
+@if (PostWarranty is null)
+{
+	<p>Wczytywanie...</p>
+}
+else
+{
+	<div class="d-flex flex-column gap-3">
+		<div class="d-flex flex-row justify-content-between">
+			<GoToPrevPage Page="Admin/ServiceRequests" Text="Szczegóły zgłoszenia" />
+			<button type="button" class="btn btn-danger" @onclick="DeleteOrder">Usuń zgłoszenie</button>
+		</div>
+		
+		<h5>Numer zgłoszenia: @PostWarranty.Id</h5>
+
+		<div>
+			<h5>Dane repliki:</h5>
+			<span>@PostWarranty.WeaponName</span>
+		</div>
+
+		<div>
+			<h5>ID repliki:</h5>
+			<span>@PostWarranty.WeaponId</span>
+		</div>
+
+		<div>
+			<h5>Opis usterki:</h5>
+			<span>@PostWarranty.DamageDescription</span>
+		</div>
+
+		<EditForm Model="PostWarranty" OnValidSubmit="HandleSubmit" class="edit-form d-flex flex-column gap-3">
+			<div class="d-flex flex-row align-items-center gap-2">
+				<h5>Status zgłoszenia: </h5>
+				<div>
+					<InputSelect id="serviceStatus" @bind-Value="PostWarranty.ServiceStatus" class="form-select">
+						@foreach (var serviceStatus in Enum.GetValues<ServiceStatus>())
+						{
+							<option value="@serviceStatus"><EnumDisplayName TEnum="ServiceStatus" Value="serviceStatus" /></option>
+						}
+					</InputSelect>
+					<ValidationMessage For="@(() => PostWarranty.ServiceStatus)" />
+				</div>
+			</div>
+
+			@if (PostWarranty.UpdatedAt is not null)
+			{
+				<div>
+					<h5>Aktualizacja: @PostWarranty.UpdatedAt</h5>
+				</div>
+			}
+
+			<div class="form-group">
+				<label for="complaintDescription">
+					Odpowiedź:
+					@if (errorMessage is not null)
+					{
+						<span class="text-danger">@errorMessage</span>
+					}
+				</label>
+				<InputTextArea id="complaintDescription" class="form-control" @bind-Value="PostWarranty.ServiceAnswer" />
+				<ValidationMessage For="@(() => PostWarranty.ServiceAnswer)" />
+			</div>
+
+			<div class="form-group">
+				<label for="estimatedCost">
+					Szacowany koszt (PLN):
+				</label>
+				<InputNumber id="estimatedCost" class="form-control" @bind-Value="PostWarranty.EstimatedCost" />
+				<ValidationMessage For="@(() => PostWarranty.EstimatedCost)" />
+			</div>
+
+			<div class="form-group">
+				<label for="complaintDescription">
+					Odpowiedź po serwisie:
+					@if (errorMessage is not null)
+					{
+						<span class="text-danger">@errorMessage</span>
+					}
+				</label>
+				<InputTextArea id="complaintDescription" class="form-control" @bind-Value="PostWarranty.ServiceAnswerAfterRepair" />
+				<ValidationMessage For="@(() => PostWarranty.ServiceAnswerAfterRepair)" />
+			</div>
+
+			<div class="form-group">
+				<label for="estimatedCost">
+					Koszt (PLN):
+				</label>
+				<InputNumber id="estimatedCost" class="form-control" @bind-Value="PostWarranty.Cost" />
+				<ValidationMessage For="@(() => PostWarranty.Cost)" />
+			</div>
+
+			<div class="d-flex justify-content-between mt-3">
+				<button type="submit" class="btn btn-outline-primary">Zapisz zmiany</button>
+
+				<button type="button" class="btn btn-outline-danger" @onclick="CancelUpdate">Anuluj</button>
+			</div>
+		</EditForm>
+	</div>
+}

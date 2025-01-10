@@ -1,17 +1,14 @@
-﻿@page "/Account/Manage/Repairs"
-@using AirsoftShop.Components.Custom_Components
-@rendermode InteractiveServer
+﻿@page "/Admin/ServiceRequests"
 
 @inject IPostWarrantyService PostWarrantyService
 @inject IUserService UserService
 @inject NavigationManager NavigationManager
 
+@attribute [Authorize(Roles = "Admin")]
+
 <PageTitle>Serwis</PageTitle>
 
-<div class="d-flex flex-row gap-3 mb-3">
-	<h3>Serwis pogwarancyjny</h3>
-	<button type="button" class="btn btn-outline-primary" @onclick='@(() => NavigationManager.NavigateTo("/Account/Manage/Repairs/Create"))'>Utwórz zgłoszenie</button>
-</div>
+<h2>Zgłoszenia serwisowe</h2>
 
 @if (RequestsList is null)
 {
@@ -19,7 +16,7 @@
 }
 else if (RequestsList.Count == 0)
 {
-	<p>Brak zgłoszeń serwisowych</p>
+	<p>Nie ma żadnych zgłoszeń</p>
 }
 else
 {
@@ -28,6 +25,7 @@ else
 			<thead>
 				<tr>
 					<th scope="col"><strong>ID zgłoszenia</strong></th>
+					<th scope="col"><strong>Zgłaszający</strong></th>
 					<th scope="col"><strong>Status zgłoszenia</strong></th>
 					<th scope="col"><strong>Data utworzenia</strong></th>
 					<th scope="col"><strong>Szczegóły</strong></th>
@@ -38,10 +36,11 @@ else
 				{
 					<tr style="vertical-align: middle;">
 						<td>@request.Id</td>
+						<td>@(UserEmails.ContainsKey(request.UserId) ? UserEmails[request.UserId] : "Nieznany użytkownik")</td>
 						<td><EnumDisplayName TEnum="ServiceStatus" Value="request.ServiceStatus" /></td>
 						<td>@request.CreatedAt</td>
 						<td>
-							<button type="button" class="btn btn-outline-primary" @onclick='@(() => NavigationManager.NavigateTo($"/Account/Manage/Request/{request.Id}"))'>Zobacz</button>
+							<button type="button" class="btn btn-outline-primary" @onclick='@(() => NavigationManager.NavigateTo($"/Admin/Request/{request.Id}"))'>Zobacz</button>
 						</td>
 					</tr>
 				}
