@@ -6,6 +6,10 @@ namespace AirsoftShop.Data
     {
         public int Id { get; set; }
         public required string UserId { get; set; }
+        [Required]
+        public required string WeaponName { get; set; }
+        public string? WeaponId { get; set; }
+        [Required]
         public required string DamageDescription { get; set; }
         public string? ServiceAnswer { get; set; }
         public string? ServiceAnswerAfterRepair { get; set; }

@@ -1,17 +1,13 @@
-﻿@page "/Account/Manage/Repairs"
-@using AirsoftShop.Components.Custom_Components
-@rendermode InteractiveServer
+﻿@page "/Admin/ServiceRequests"
 
 @inject IPostWarrantyService PostWarrantyService
-@inject IUserService UserService
 @inject NavigationManager NavigationManager
+
+@attribute [Authorize(Roles = "Admin")]
 
 <PageTitle>Serwis</PageTitle>
 
-<div class="d-flex flex-row gap-3 mb-3">
-	<h3>Serwis pogwarancyjny</h3>
-	<button type="button" class="btn btn-outline-primary" @onclick='@(() => NavigationManager.NavigateTo("/Account/Manage/Repairs/Create"))'>Utwórz zgłoszenie</button>
-</div>
+<h2>Zgłoszenia serwisowe</h2>
 
 @if (RequestsList is null)
 {
@@ -19,7 +15,7 @@
 }
 else if (RequestsList.Count == 0)
 {
-	<p>Brak zgłoszeń serwisowych</p>
+	<p>Nie ma żadnych zgłoszeń</p>
 }
 else
 {

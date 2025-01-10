@@ -1,0 +1,34 @@
+﻿@page "/Account/Manage/Repairs/Create"
+@rendermode InteractiveServer
+
+@inject IUserService UserService
+@inject NavigationManager NavigationManager
+@inject IPostWarrantyService PostWarrantyService
+
+<PageTitle>Stwórz zgłoszenie</PageTitle>
+
+<h3>Utwórz zgłoszenie</h3>
+
+<EditForm Model="Warranty" OnValidSubmit="HandleValidSubmit" class="d-flex flex-column gap-3 w-50">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="weaponName">Dane broni (np. nazwa, producent, rok zakupu itd.):</label>
+        <InputText id="weaponName" class="form-control" @bind-Value="Warranty.WeaponName" />
+    </div>
+
+    <div class="form-group">
+        <label for="weaponId">Kod broni (opcjonalne, jednak brak kodu może utrudnić proces serwisowania):</label>
+        <InputText id="weaponId" class="form-control" @bind-Value="Warranty.WeaponId" />
+    </div>
+
+    <div class="form-group">
+        <label for="damageDescription">Opis uszkodzenia:</label>
+        <InputTextArea id="damageDescription" class="form-control" @bind-Value="Warranty.DamageDescription" />
+    </div>
+
+    <div>
+        <button type="submit" class="btn btn-primary">Utwórz zgłoszenie</button>
+    </div>  
+</EditForm>
