@@ -1,4 +1,5 @@
 ﻿@page "/Account/Manage/Repairs/Create"
+@using AirsoftShop.Components.Custom_Components
 @rendermode InteractiveServer
 
 @inject IUserService UserService
@@ -7,7 +8,7 @@
 
 <PageTitle>Stwórz zgłoszenie</PageTitle>
 
-<h3>Utwórz zgłoszenie</h3>
+<GoToPrevPage Page="Account/Manage/Repairs" Text="Utwórz zgłoszenie" />
 
 <EditForm Model="Warranty" OnValidSubmit="HandleValidSubmit" class="d-flex flex-column gap-3 w-50">
     <DataAnnotationsValidator />

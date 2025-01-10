@@ -1,6 +1,7 @@
 ﻿@page "/Admin/Complaints"
 
 @inject IComplaintService ComplaintService
+@inject IUserService UserService
 @inject NavigationManager NavigationManager
 
 @attribute [Authorize(Roles = "Admin")]
@@ -24,6 +25,7 @@ else
 			<thead>
 				<tr>
 					<th scope="col"><strong>ID zgłoszenia</strong></th>
+					<th scope="col"><strong>Zgłaszający</strong></th>
 					<th scope="col"><strong>Typ zgłoszenia</strong></th>
 					<th scope="col"><strong>Status zgłoszenia</strong></th>
 					<th scope="col"><strong>Data utworzenia</strong></th>
@@ -35,6 +37,7 @@ else
 				{
 					<tr style="vertical-align: middle;">
 						<td>@complaint.Id</td>
+						<td>@(UserEmails.ContainsKey(complaint.UserId) ? UserEmails[complaint.UserId] : "Nieznany użytkownik")</td>
 						<td><EnumDisplayName TEnum="ComplaintType" Value="complaint.ComplaintType" /></td>
 						<td><EnumDisplayName TEnum="ComplaintStatus" Value="complaint.ComplaintStatus" /></td>
 						<td>@complaint.CreatedAt</td>

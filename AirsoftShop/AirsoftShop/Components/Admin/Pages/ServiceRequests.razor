@@ -1,6 +1,7 @@
 ﻿@page "/Admin/ServiceRequests"
 
 @inject IPostWarrantyService PostWarrantyService
+@inject IUserService UserService
 @inject NavigationManager NavigationManager
 
 @attribute [Authorize(Roles = "Admin")]
@@ -24,6 +25,7 @@ else
 			<thead>
 				<tr>
 					<th scope="col"><strong>ID zgłoszenia</strong></th>
+					<th scope="col"><strong>Zgłaszający</strong></th>
 					<th scope="col"><strong>Status zgłoszenia</strong></th>
 					<th scope="col"><strong>Data utworzenia</strong></th>
 					<th scope="col"><strong>Szczegóły</strong></th>
@@ -34,6 +36,7 @@ else
 				{
 					<tr style="vertical-align: middle;">
 						<td>@request.Id</td>
+						<td>@(UserEmails.ContainsKey(request.UserId) ? UserEmails[request.UserId] : "Nieznany użytkownik")</td>
 						<td><EnumDisplayName TEnum="ServiceStatus" Value="request.ServiceStatus" /></td>
 						<td>@request.CreatedAt</td>
 						<td>
