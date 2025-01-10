@@ -42,10 +42,7 @@ namespace AirsoftShop.Data
         Complaint,
 
         [Display(Name = "Zwrot")]
-        Return,
-
-        [Display(Name = "Serwis")]
-        Service
+        Return
     }
 
     public enum CustomerComplaintChoice

@@ -18,6 +18,8 @@ namespace AirsoftShop.Data
 
         public DbSet<Complaint> Complaints { get; set; }
 
+        public DbSet<PostWarranty> PostWarranties { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
